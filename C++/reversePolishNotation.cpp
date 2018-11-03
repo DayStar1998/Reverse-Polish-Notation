@@ -21,9 +21,40 @@
 
 	Description:
 		Implementation file for reversePolishNotation.h
+
+	Outline:
+		Public Functions:
+			evaluateAlgorithm
+
+		Private Functions
+			stripValuesFromAlgorithm
+			convertInfixToPostFix
+			calcResult
+			calcResult
+			nextVariable
+			getNumber
+			isOperator
+			isLowerPrecedence
+			getPrecedenceLevel
+			getOperandsFromStack
+			getOperandsFromStack
 ******************************************************************************/
 
 #include "reversePolishNotation.h"
+
+double ReversePolishNotation::evaluateAlgorithm(const char *algorithm, int length) {
+
+	vector<double> values;
+	double result;
+
+	string editedAlgorithm = stripValuesFromAlgorithm(algorithm, length, values);
+
+	editedAlgorithm = convertInfixToPostFix(editedAlgorithm.c_str(), editedAlgorithm.size());
+
+	result = calcResult(editedAlgorithm.c_str(), editedAlgorithm.size(), values);
+
+	return result;
+}
 
 string ReversePolishNotation::stripValuesFromAlgorithm(const char *algorithm, int length, vector<double> &values) {
 

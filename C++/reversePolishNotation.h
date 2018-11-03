@@ -25,10 +25,22 @@
 		Converts a mathematical algorithm from in-fix notation to post-fix
 		notation then solves for the answer.
 
-	Functions:
-		string convertInfixToPostFix(char *algorithm, int length)
-		double calcResult(char *algorithm, int length, double variables[])
-		bool calcResult(char *algorithm, int length, bool variables[])
+	Outline:
+		Public Functions:
+			evaluateAlgorithm
+
+		Private Functions
+			stripValuesFromAlgorithm
+			convertInfixToPostFix
+			calcResult
+			calcResult
+			nextVariable
+			getNumber
+			isOperator
+			isLowerPrecedence
+			getPrecedenceLevel
+			getOperandsFromStack
+			getOperandsFromStack
 ******************************************************************************/
 
 #pragma once
@@ -58,6 +70,23 @@ private:
 
 	enum precedenceLevel { OPENING_PARENTHESIS, ADD_SUB, MUL_DIV_MOD, EXP, CLOSING_PARENTHESIS };
 public:
+
+	/******************************************************************************
+		Function Name: evaluateAlgorithm
+		
+		Des:
+			Evaluates the algorithm to find the answer
+			
+		Params:
+			algorithm - type const char *, the algorithm to be evaluated
+			length - type int, the length of the param algorithm.
+			
+		Returns:
+			type double, the answer to the algorithm
+	******************************************************************************/
+	double evaluateAlgorithm(const char *algorithm, int length);
+
+private:
 
 	/******************************************************************************
 		Function Name: stripValuesFromAlgorithm
@@ -152,8 +181,6 @@ public:
 				of typing '====' which would have a different result than expected
 	******************************************************************************/
 	bool calcResult(const char *algorithm, int length, vector<bool> &values);
-
-private:
 
 	/******************************************************************************
 		Function Name: nextVariable
