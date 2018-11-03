@@ -16,7 +16,7 @@
 
 /******************************************************************************
 	File Name: reversePolishNotation.cpp
-	
+
 	Author: Matthew Day
 
 	Description:
@@ -25,13 +25,76 @@
 
 #include "reversePolishNotation.h"
 
-// TODO: Document the function
-string ReversePolishNotation::convertToRPN(char *algorithm, int length, double variables[]) {
+string ReversePolishNotation::convertInfixToPostFix(const char *algorithm, int length) {
 
-	//TODO: Stub
+	if (algorithm == nullptr)
+		throw invalid_argument("Algorithm is null");
+
+	stack<char> operatorStack;
+	string postFixString;
+
+	for (int i = 0; i < length; i++) {
+
+		// Variables are pushed to the post-fix string
+		if (isalpha(algorithm[i]))
+			postFixString += algorithm[i];
+		else {
+
+			if (operatorStack.size() == 0) {
+
+				operatorStack.push(algorithm[i]);
+				//IF the current operator has lower precedence than the operator on top of the operator stack
+			} else if (isLowerPrecedence(operatorStack.top(), algorithm[i])) {
+
+				if (algorithm[i] == ')') {
+
+					while (operatorStack.top() != '(') {
+
+						postFixString += operatorStack.top();
+						operatorStack.pop();
+					}
+
+					// Remove '(' from the stack
+					operatorStack.pop();
+				} else {
+
+					operatorStack.push(algorithm[i]);
+				}
+			} else {
+
+				if(algorithm[i] != ')')
+					throw invalid_argument("Too many closing parenthesis");
+
+				if (algorithm[i] != '(') {
+
+					postFixString += operatorStack.top();
+					operatorStack.pop();
+				}
+
+				operatorStack.push(algorithm[i]);
+			}
+		}
+	}
+
+	while (!operatorStack.empty()) {
+
+		// Allow input to leave off the closing parenthesis at the end
+		if(operatorStack.top() != '(')
+			postFixString += operatorStack.top();
+
+		operatorStack.pop();
+	}
+
+	return postFixString;
 }
 
-double ReversePolishNotation::calcResult(char *algorithm, int length, double variables[]) {
+double ReversePolishNotation::calcResult(const char *algorithm, int length, double variables[]) {
+
+	if (algorithm == nullptr)
+		throw invalid_argument("Algorithm is null");
+
+	if (variables == nullptr)
+		throw invalid_argument("Variables is invalid");
 
 	stack<double> operandStack;
 	double result;
@@ -97,7 +160,13 @@ double ReversePolishNotation::calcResult(char *algorithm, int length, double var
 	return result;
 }
 
-bool ReversePolishNotation::calcResult(char *algorithm, int length, bool variables[]) {
+bool ReversePolishNotation::calcResult(const char *algorithm, int length, bool variables[]) {
+
+	if (algorithm == nullptr)
+		throw invalid_argument("Algorithm is null");
+
+	if (variables == nullptr)
+		throw invalid_argument("Variables is invalid");
 
 	stack<bool> operandStack;
 	bool result;
@@ -150,7 +219,60 @@ bool ReversePolishNotation::calcResult(char *algorithm, int length, bool variabl
 
 	if (!operandStack.empty())
 		throw invalid_argument("Algorithm is invalid");
-	
+
+	return result;
+}
+
+bool ReversePolishNotation::isLowerPrecedence(char firstOperator, char secondOperator) {
+
+	bool result;
+	precedenceLevel firstPrecedenceLevel, secondPrecedenceLevel;
+
+	firstPrecedenceLevel = getPrecedenceLevel(firstOperator);
+	secondPrecedenceLevel = getPrecedenceLevel(secondOperator);
+
+	if (firstPrecedenceLevel < secondPrecedenceLevel)
+		result = true;
+	else
+		result = false;
+
+	return result;
+}
+
+ReversePolishNotation::precedenceLevel ReversePolishNotation::getPrecedenceLevel(char curOperator) {
+
+	precedenceLevel result;
+
+	switch (curOperator) {
+
+		case '(':
+
+			result = OPENING_PARENTHESIS;
+			break;
+		case '+':
+		case '-':
+
+			result = ADD_SUB;
+			break;
+		case '*':
+		case '/':
+		case '%':
+
+			result = MUL_DIV_MOD;
+			break;
+		case '^':
+
+			result = EXP;
+			break;
+		case ')':
+
+			result = CLOSING_PARENTHESIS;
+			break;
+		default:
+
+			throw invalid_argument(curOperator + "is not a valid operator");
+	};
+
 	return result;
 }
 

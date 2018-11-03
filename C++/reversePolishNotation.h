@@ -19,13 +19,22 @@
 
 	Author: Matthew Day
 
+	Class Name: ReversePolishNotation
+
 	Description:
-		TODO: Write description for file
+		Converts a mathematical algorithm from in-fix notation to post-fix
+		notation then solves for the answer.
+
+	Functions:
+		string convertInfixToPostFix(char *algorithm, int length)
+		double calcResult(char *algorithm, int length, double variables[])
+		bool calcResult(char *algorithm, int length, bool variables[])
 ******************************************************************************/
 
 #pragma once
 
 #include <string>
+#include <cctype>
 #include <stack>
 #include <cmath>
 #include <stdexcept>
@@ -34,34 +43,39 @@ using std::string;
 using std::stack;
 using std::pow;
 using std::invalid_argument;
+using std::isalpha;
 
 class ReversePolishNotation {
 
+private:
+
+	enum precedenceLevel { OPENING_PARENTHESIS, ADD_SUB, MUL_DIV_MOD, EXP, CLOSING_PARENTHESIS };
 public:
 
 	/******************************************************************************
-		Function Name: convertToRPN
+		Function Name: convertInfixToPostFix
 
 		Des:
-			TODO: Write description
+			Takes an algorithm that uses in-fix notation and converts it to
+				post-fix notation.
 
 		Params:
-			TODO: Write description for method parameters
-			algorithm - type char *,
-			length - type int,
-			variables - type double,
+			algorithm - type char *, the list of operands and operators sorted
+				in in-fix notation. All numbers are expected to have been replaced
+				with letters. Case matters so 'A' is not equal to 'a.'
+				Example input: (A+B)*C.
+			length - type int, the length of the param algorithm.
 
 		Returns:
-			TODO: Write description for method return value
-			string
+			type string, the in-fix algorithm converted to post-fix.
 	******************************************************************************/
-	string convertToRPN(char *algorithm, int length, double variables[]);
+	string convertInfixToPostFix(const char *algorithm, int length);
 
 	/******************************************************************************
 		Function Name: calcResult
 
 		Des:
-			Calculates the result of the algorithm used with the values
+			Calculates the result of the algorithm used with the values.
 
 		Params:
 			algorithm - type char *, the list of operands and operators sorted
@@ -70,21 +84,21 @@ public:
 				Example input: AB+c*.
 			length - type int, the length of the param algorithm.
 			variables - type double [], array containing all values corresponding
-				to the letters in param algorithm
+				to the letters in param algorithm.
 
 		Returns:
 			type double, result of the algorithm.
 
 		Note:
-			Throws exception if the algorithm is unsolvable
+			Throws exception if the algorithm is unsolvable.
 	******************************************************************************/
-	double calcResult(char *algorithm, int length, double variables[]);
+	double calcResult(const char *algorithm, int length, double variables[]);
 
 	/******************************************************************************
 		Function Name: calcResult
 
 		Des:
-			Calculates the result of the algorithm used with the values
+			Calculates the result of the algorithm used with the values.
 
 		Params:
 			algorithm - type char *, the list of operands and operators sorted
@@ -93,7 +107,7 @@ public:
 				Example input: AB=c|.
 			length - type int, the length of the param algorithm.
 			variables - type bool [], array containing all values corresponding
-				to the letters in param algorithm
+				to the letters in param algorithm.
 
 		Returns:
 			type bool, result of the algorithm.
@@ -104,9 +118,41 @@ public:
 				of typing '====' which would have a different result than expected
 			Throws exception if the algorithm is unsolvable.
 	******************************************************************************/
-	bool calcResult(char *algorithm, int length, bool variables[]);
+	bool calcResult(const char *algorithm, int length, bool variables[]);
 
 private:
+
+	
+	/******************************************************************************
+		Function Name: isLowerPrecedence
+		
+		Des:
+			Checks if the first operator has lower precedence than the second operator
+			
+		Params:
+			firstOperator - type char, the first operator
+			secondOperator - type char, the second operator
+			
+		Returns:
+			type bool, is the first operater lower precedence than the second one;
+	******************************************************************************/
+	bool isLowerPrecedence(char firstOperator, char secondOperator);
+
+	
+	/******************************************************************************
+		Function Name: getPrecedenceLevel
+		
+		Des:
+			Finds the precedence level of the operator
+			
+		Params:
+			curOperator - type char, the operator to be checked
+			
+		Returns:
+			type ReversePolishNotation::precedenceLevel, the level of precedence
+				that the operator has
+	******************************************************************************/
+	precedenceLevel getPrecedenceLevel(char curOperator);
 	
 	/******************************************************************************
 		Function Name: getOperandsFromStack
@@ -115,8 +161,8 @@ private:
 			Pops the top two int's off the top of the stack.
 			
 		Params:
-			operandStack - type stack<bool>, is a stack containing all unprocessed.
-				operands
+			operandStack - type stack<bool>, is a stack containing all unprocessed
+				operands.
 			num1 - type int &, output to get the first int in the equation.
 			num2 - type int &, output to get the second int in the equation.
 
