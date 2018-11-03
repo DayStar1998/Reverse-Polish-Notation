@@ -25,7 +25,7 @@
 
 #include "reversePolishNotation.h"
 
-string ReversePolishNotation::stripValuesFromAlgorithm(char *algorithm, int length, double values[]) {
+string ReversePolishNotation::stripValuesFromAlgorithm(const char *algorithm, int length, vector<double> &values) {
 
 	if (algorithm == nullptr)
 		throw invalid_argument("Algorithm is null");
@@ -33,6 +33,7 @@ string ReversePolishNotation::stripValuesFromAlgorithm(char *algorithm, int leng
 	queue<double> valuesQueue;
 	int numVariablesUsed = 0;
 	string result = "";
+	int endPos;
 
 	for (int i = 0; i < length; i++) {
 
@@ -41,7 +42,7 @@ string ReversePolishNotation::stripValuesFromAlgorithm(char *algorithm, int leng
 			continue;
 
 		// Check whether a minus sign is being used to subtract or to make the number negative
-		if (algorithm[i] == '-' && (i - 1 < 0 || (isOperator(algorithm[i - 1] && algorithm[i - 1] != ')')))) {
+		if (algorithm[i] == '-' && (i - 1 < 0 || (isOperator(algorithm[i - 1]) && algorithm[i - 1] != ')'))) {
 
 			if (i == length)
 				throw invalid_argument("Algorithm is invalid");
@@ -54,24 +55,36 @@ string ReversePolishNotation::stripValuesFromAlgorithm(char *algorithm, int leng
 				result.push_back('*');
 			} else {
 
-				int endPos;
-
 				// Replace the number in the resulting algorithm with a variable
 				result.push_back(nextVariable(numVariablesUsed));
 				valuesQueue.push(getNumber(algorithm, length, i, endPos));
 
 				i = endPos;
 			}
+		} else if (isdigit(algorithm[i])) {
+
+			result.push_back(nextVariable(numVariablesUsed));
+			valuesQueue.push(getNumber(algorithm, length, i, endPos));
+
+			i = endPos;
+		// if the algorithm is in the format of 5(6) then it is expanded to 5*(6)
+		}else if (algorithm[i] == '(' && i > 0 && isdigit(algorithm[i - 1])) {
+
+			result.push_back('*');
+			result.push_back(algorithm[i]);
+		// if the algorithm is in the format of (6)5 then it is expanded to (6)*5
+		} else if (algorithm[i] == ')' && i + 1 != length && isdigit(algorithm[i + 1])) {
+
+			result.push_back(algorithm[i]);
+			result.push_back('*');
 		} else
 			result.push_back(algorithm[i]);
 	}
 
-	values = new double[valuesQueue.size()];
-
 	// Enter the numbers from valuesQueue into values
 	for (int i = 0; !valuesQueue.empty(); i++) {
 
-		values[i] = valuesQueue.front();
+		values.push_back(valuesQueue.front());
 		valuesQueue.pop();
 	}
 
@@ -292,16 +305,23 @@ char ReversePolishNotation::nextVariable(int &numVariablesUsed) {
 	return result;
 }
 
-double ReversePolishNotation::getNumber(char *algorithm, int length, int start, int &end) {
+double ReversePolishNotation::getNumber(const char *algorithm, int length, int start, int &end) {
 
 	double result;
-	string number = "-";
+	string number = "";
+	int pos = start;
+
+	// Skip the negative sign to avoid checking if the sign is relative to this number or just a minus sign
+	if (algorithm[start] == '-') {
+
+		number.push_back('-');
+		pos++;
+	}
 
 	// Avoid having to increment with every iteration to prevent it from not being set if the loop runs till equal to length
 	end = length - 1;
 
-	// Skip the negative sign to avoid checking if the sign is relative to this number or just a minus sign
-	for (int i = start + 1; i < length; i++) {
+	for (int i = pos; i < length; i++) {
 
 		// Check if current char is a number or a decimal point
 		if (isdigit(algorithm[i]) || algorithm[i] == '.')
@@ -319,10 +339,26 @@ double ReversePolishNotation::getNumber(char *algorithm, int length, int start, 
 	return result;
 }
 
-// TODO: Document the function
 bool ReversePolishNotation::isOperator(char value) {
 
-	//TODO: Stub
+	bool result = false;
+
+	// TODO: Add support for bool operators
+
+	switch (value) {
+
+		case '(':
+		case ')':
+		case '^':
+		case '*':
+		case '/':
+		case '+':
+		case '-':
+
+			result = true;
+	};
+
+	return result;
 }
 
 bool ReversePolishNotation::isLowerPrecedence(char firstOperator, char secondOperator) {

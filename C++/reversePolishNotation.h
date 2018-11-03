@@ -37,12 +37,14 @@
 #include <cctype>
 #include <stack>
 #include <queue>
+#include <vector>
 #include <cmath>
 #include <stdexcept>
 
 using std::string;
 using std::stack;
 using std::queue;
+using std::vector;
 using std::invalid_argument;
 using std::pow;
 using std::isalpha;
@@ -64,10 +66,11 @@ public:
 			Strips values from the algorithm and replaces them with letters
 			
 		Params:
-			algorithm - type char *, the data the number is to be extracted from.
+			algorithm - type const char *, the data the number is to be
+				extracted from.
 			length - type int, the length of the param algorithm.
-			values - type double [], output array containing all values corresponding
-				to the letters in param algorithm.
+			values - type vector<double> &, output vector containing all values
+				corresponding to the letters in param algorithm.
 			
 		Returns:
 			type string, the algorithm with all values replaced with letters
@@ -75,7 +78,7 @@ public:
 		Throws:
 			Throws exception if the algorithm is invalid.
 	******************************************************************************/
-	string stripValuesFromAlgorithm(char *algorithm, int length, double values[]);
+	string stripValuesFromAlgorithm(const char *algorithm, int length, vector<double> &values);
 
 	/******************************************************************************
 		Function Name: convertInfixToPostFix
@@ -85,9 +88,9 @@ public:
 				post-fix notation.
 
 		Params:
-			algorithm - type char *, the list of operands and operators sorted
-				in in-fix notation. All numbers are expected to have been replaced
-				with letters. Case matters so 'A' is not equal to 'a.'
+			algorithm - type const char *, the list of operands and operators
+				sorted in postfix notation. All bool's are expected to have been
+				replaced with letters. Case matters so 'A' is not equal to 'a.'
 				Example input: (A+B)*C.
 			length - type int, the length of the param algorithm.
 
@@ -106,9 +109,9 @@ public:
 			Calculates the result of the algorithm used with the values.
 
 		Params:
-			algorithm - type char *, the list of operands and operators sorted
-				in postfix notation. All numbers are expected to have been replaced
-				with letters. Case matters so 'A' is not equal to 'a.'
+			algorithm - type const char *, the list of operands and operators
+				sorted in postfix notation. All bool's are expected to have been
+				replaced with letters. Case matters so 'A' is not equal to 'a.'
 				Example input: AB+c*.
 			length - type int, the length of the param algorithm.
 			values - type double [], array containing all values corresponding
@@ -129,9 +132,9 @@ public:
 			Calculates the result of the algorithm used with the values.
 
 		Params:
-			algorithm - type char *, the list of operands and operators sorted
-				in postfix notation. All bool's are expected to have been replaced
-				with letters. Case matters so 'A' is not equal to 'a.'
+			algorithm - type const char *, the list of operands and operators
+				sorted in postfix notation. All bool's are expected to have been
+				replaced with letters. Case matters so 'A' is not equal to 'a.'
 				Example input: AB=c|.
 			length - type int, the length of the param algorithm.
 			values - type bool [], array containing all values corresponding
@@ -187,7 +190,7 @@ private:
 		Returns:
 			type double, the value after it has been extracted
 	******************************************************************************/
-	double getNumber(char *algorithm, int length, int start, int &end);
+	double getNumber(const char *algorithm, int length, int start, int &end);
 
 	/******************************************************************************
 		Function Name: isOperator
@@ -200,6 +203,10 @@ private:
 
 		Returns:
 			type bool, true if it is an operator, otherwise false.
+
+		Note:
+			Does not support bool operators
+			TODO: Add support for bool operators
 	******************************************************************************/
 	bool isOperator(char value);
 
