@@ -25,6 +25,59 @@
 
 #include "reversePolishNotation.h"
 
+string ReversePolishNotation::stripValuesFromAlgorithm(char *algorithm, int length, double values[]) {
+
+	if (algorithm == nullptr)
+		throw invalid_argument("Algorithm is null");
+
+	queue<double> valuesQueue;
+	int numVariablesUsed = 0;
+	string result = "";
+
+	for (int i = 0; i < length; i++) {
+
+		// Skip whitespace
+		if (isblank(algorithm[i]))
+			continue;
+
+		// Check whether a minus sign is being used to subtract or to make the number negative
+		if (algorithm[i] == '-' && (i - 1 < 0 || (isOperator(algorithm[i - 1] && algorithm[i - 1] != ')')))) {
+
+			if (i == length)
+				throw invalid_argument("Algorithm is invalid");
+
+			if (algorithm[i + 1] == '(') {
+
+				// Multiply result of calculations in parenthesis by -1 to substitute for making the number negative directly
+				result.push_back(nextVariable(numVariablesUsed));
+				valuesQueue.push(-1);
+				result.push_back('*');
+			} else {
+
+				int endPos;
+
+				// Replace the number in the resulting algorithm with a variable
+				result.push_back(nextVariable(numVariablesUsed));
+				valuesQueue.push(getNumber(algorithm, length, i, endPos));
+
+				i = endPos;
+			}
+		} else
+			result.push_back(algorithm[i]);
+	}
+
+	values = new double[valuesQueue.size()];
+
+	// Enter the numbers from valuesQueue into values
+	for (int i = 0; !valuesQueue.empty(); i++) {
+
+		values[i] = valuesQueue.front();
+		valuesQueue.pop();
+	}
+
+	return result;
+}
+
 string ReversePolishNotation::convertInfixToPostFix(const char *algorithm, int length) {
 
 	if (algorithm == nullptr)
@@ -62,7 +115,7 @@ string ReversePolishNotation::convertInfixToPostFix(const char *algorithm, int l
 				}
 			} else {
 
-				if(algorithm[i] != ')')
+				if (algorithm[i] != ')')
 					throw invalid_argument("Too many closing parenthesis");
 
 				if (algorithm[i] != '(') {
@@ -79,7 +132,7 @@ string ReversePolishNotation::convertInfixToPostFix(const char *algorithm, int l
 	while (!operatorStack.empty()) {
 
 		// Allow input to leave off the closing parenthesis at the end
-		if(operatorStack.top() != '(')
+		if (operatorStack.top() != '(')
 			postFixString += operatorStack.top();
 
 		operatorStack.pop();
@@ -88,12 +141,12 @@ string ReversePolishNotation::convertInfixToPostFix(const char *algorithm, int l
 	return postFixString;
 }
 
-double ReversePolishNotation::calcResult(const char *algorithm, int length, double variables[]) {
+double ReversePolishNotation::calcResult(const char *algorithm, int length, double values[]) {
 
 	if (algorithm == nullptr)
 		throw invalid_argument("Algorithm is null");
 
-	if (variables == nullptr)
+	if (values == nullptr)
 		throw invalid_argument("Variables is invalid");
 
 	stack<double> operandStack;
@@ -145,9 +198,9 @@ double ReversePolishNotation::calcResult(const char *algorithm, int length, doub
 
 				// Convert letter to the number it represents and add it to the operand stack
 				if (algorithm[i] >= 'a' && algorithm[i] <= 'z')
-					operandStack.push(variables[algorithm[i] - 'a']);
+					operandStack.push(values[algorithm[i] - 'a']);
 				else if (algorithm[i] >= 'A' && algorithm[i] <= 'Z')
-					operandStack.push(variables[algorithm[i] - 'A' + 26]);
+					operandStack.push(values[algorithm[i] - 'A' + 26]);
 		};
 	}
 
@@ -160,12 +213,12 @@ double ReversePolishNotation::calcResult(const char *algorithm, int length, doub
 	return result;
 }
 
-bool ReversePolishNotation::calcResult(const char *algorithm, int length, bool variables[]) {
+bool ReversePolishNotation::calcResult(const char *algorithm, int length, bool values[]) {
 
 	if (algorithm == nullptr)
 		throw invalid_argument("Algorithm is null");
 
-	if (variables == nullptr)
+	if (values == nullptr)
 		throw invalid_argument("Variables is invalid");
 
 	stack<bool> operandStack;
@@ -208,9 +261,9 @@ bool ReversePolishNotation::calcResult(const char *algorithm, int length, bool v
 
 				// Convert letter to the boolean it represents and add it to the operand stack
 				if (algorithm[i] >= 'a' && algorithm[i] <= 'z')
-					operandStack.push(variables[algorithm[i] - 'a']);
+					operandStack.push(values[algorithm[i] - 'a']);
 				else if (algorithm[i] >= 'A' && algorithm[i] <= 'Z')
-					operandStack.push(variables[algorithm[i] - 'A' + 26]);
+					operandStack.push(values[algorithm[i] - 'A' + 26]);
 		};
 	}
 
@@ -221,6 +274,55 @@ bool ReversePolishNotation::calcResult(const char *algorithm, int length, bool v
 		throw invalid_argument("Algorithm is invalid");
 
 	return result;
+}
+
+char ReversePolishNotation::nextVariable(int &numVariablesUsed) {
+
+	char result;
+
+	if ('a' + numVariablesUsed <= 'z')
+		result = 'a' + numVariablesUsed;
+	else if ('A' + numVariablesUsed - 26 <= 'Z')
+		result = 'A' + numVariablesUsed - 26;
+	else
+		throw invalid_argument("Algorithm is too long");
+
+	numVariablesUsed++;
+
+	return result;
+}
+
+double ReversePolishNotation::getNumber(char *algorithm, int length, int start, int &end) {
+
+	double result;
+	string number = "-";
+
+	// Avoid having to increment with every iteration to prevent it from not being set if the loop runs till equal to length
+	end = length - 1;
+
+	// Skip the negative sign to avoid checking if the sign is relative to this number or just a minus sign
+	for (int i = start + 1; i < length; i++) {
+
+		// Check if current char is a number or a decimal point
+		if (isdigit(algorithm[i]) || algorithm[i] == '.')
+			number.push_back(algorithm[i]);
+		else {
+
+			end = i - 1;
+			break;
+		}
+	}
+
+	// Convert to double
+	result = stod(number);
+
+	return result;
+}
+
+// TODO: Document the function
+bool ReversePolishNotation::isOperator(char value) {
+
+	//TODO: Stub
 }
 
 bool ReversePolishNotation::isLowerPrecedence(char firstOperator, char secondOperator) {
@@ -276,24 +378,24 @@ ReversePolishNotation::precedenceLevel ReversePolishNotation::getPrecedenceLevel
 	return result;
 }
 
-void ReversePolishNotation::getOperandsFromStack(stack<double> operandStack, double &num1, double &num2) {
+void ReversePolishNotation::getOperandsFromStack(stack<double> operandStack, double &value1, double &value2) {
 
 	if (operandStack.size() < 2)
 		throw invalid_argument("Algorithm is invalid");
 
-	num2 = operandStack.top();
+	value2 = operandStack.top();
 	operandStack.pop();
-	num1 = operandStack.top();
+	value1 = operandStack.top();
 	operandStack.pop();
 }
 
-void ReversePolishNotation::getOperandsFromStack(stack<bool> operandStack, bool &bool1, bool &bool2) {
+void ReversePolishNotation::getOperandsFromStack(stack<bool> operandStack, bool &value1, bool &value2) {
 
 	if (operandStack.size() < 2)
 		throw invalid_argument("Algorithm is invalid");
 
-	bool2 = operandStack.top();
+	value2 = operandStack.top();
 	operandStack.pop();
-	bool1 = operandStack.top();
+	value1 = operandStack.top();
 	operandStack.pop();
 }
