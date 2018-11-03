@@ -123,7 +123,7 @@ public:
 		Throws:
 			Throws exception if the algorithm is unsolvable.
 	******************************************************************************/
-	double calcResult(const char *algorithm, int length, double values[]);
+	double calcResult(const char *algorithm, int length, vector<double> &values);
 
 	/******************************************************************************
 		Function Name: calcResult
@@ -151,7 +151,7 @@ public:
 				equivalent to the '==' operator. However, '==' is the equivalent
 				of typing '====' which would have a different result than expected
 	******************************************************************************/
-	bool calcResult(const char *algorithm, int length, bool values[]);
+	bool calcResult(const char *algorithm, int length, vector<bool> &values);
 
 private:
 
@@ -255,7 +255,7 @@ private:
 		Throws:
 			Throws exception if the there are less than 2 operands on the stack.
 	******************************************************************************/
-	void getOperandsFromStack(stack<double> operandStack, double &value1, double &value2);
+	void getOperandsFromStack(stack<double> &operandStack, double &value1, double &value2);
 
 	/******************************************************************************
 		Function Name: getOperandsFromStack
@@ -272,5 +272,5 @@ private:
 		Throws:
 			Throws exception if the there are less than 2 operands on the stack.
 	******************************************************************************/
-	void getOperandsFromStack(stack<bool> operandStack, bool &value1, bool &value2);
+	void getOperandsFromStack(stack<bool> &operandStack, bool &value1, bool &value2);
 };
