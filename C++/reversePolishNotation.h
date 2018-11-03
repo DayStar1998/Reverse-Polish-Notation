@@ -247,7 +247,7 @@ private:
 			Pops the top two int's off the top of the stack.
 
 		Params:
-			operandStack - type stack<bool>, is a stack containing all unprocessed
+			operandStack - type stack<bool> &, is a stack containing all unprocessed
 				operands.
 			value1 - type int &, output to get the first int in the equation.
 			value2 - type int &, output to get the second int in the equation.
@@ -264,7 +264,7 @@ private:
 			Pops the top two bool's off the top of the stack.
 
 		Params:
-			operandStack - type stack<bool>, is a stack containing all unprocessed
+			operandStack - type stack<bool> &, is a stack containing all unprocessed
 				operands.
 			value1 - type bool &, output to get the first bool in the equation.
 			value2 - type bool &, output to get the second bool in the equation.
