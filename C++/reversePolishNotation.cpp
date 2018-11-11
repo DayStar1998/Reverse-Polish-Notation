@@ -24,10 +24,10 @@
 
 	Outline:
 		Public Functions:
-			evaluateAlgorithm
+			evaluateEquation
 
 		Private Functions
-			stripValuesFromAlgorithm
+			stripValuesFromEquation
 			convertInfixToPostFix
 			calcResult
 			calcResult
@@ -42,90 +42,84 @@
 
 #include "reversePolishNotation.h"
 
-double ReversePolishNotation::evaluateAlgorithm(const char *algorithm, int length) {
+double ReversePolishNotation::evaluateEquation(const char *equation, int length) {
 
 	vector<double> values;
 	double result;
 
-	string editedAlgorithm = stripValuesFromAlgorithm(algorithm, length, values);
+	string editedEquation = stripValuesFromEquation(equation, length, values);
 
-	editedAlgorithm = convertInfixToPostFix(editedAlgorithm.c_str(), editedAlgorithm.size());
+	editedEquation = convertInfixToPostFix(editedEquation.c_str(), editedEquation.size());
 
-	result = calcResult(editedAlgorithm.c_str(), editedAlgorithm.size(), values);
+	result = calcResult(editedEquation.c_str(), editedEquation.size(), values);
 
 	return result;
 }
 
-string ReversePolishNotation::stripValuesFromAlgorithm(const char *algorithm, int length, vector<double> &values) {
+string ReversePolishNotation::stripValuesFromEquation(const char *equation, int length, vector<double> &values) {
 
-	if (algorithm == nullptr)
-		throw invalid_argument("Algorithm is null");
+	if (equation == nullptr)
+		throw invalid_argument("Equation is null");
 
-	queue<double> valuesQueue;
-	int numVariablesUsed = 0;
 	string result = "";
 	int endPos;
+
+	// Counter value to show next available argument
+	int nextArgument = 0;
 
 	for (int i = 0; i < length; i++) {
 
 		// Skip whitespace
-		if (isblank(algorithm[i]))
+		if (isblank(equation[i]))
 			continue;
 
 		// Check whether a minus sign is being used to subtract or to make the number negative
-		if (algorithm[i] == '-' && (i - 1 < 0 || (isOperator(algorithm[i - 1]) && algorithm[i - 1] != ')'))) {
+		if (equation[i] == '-' && (i == 0 || (isOperator(equation[i - 1]) && equation[i - 1] != ')'))) {
 
 			if (i + 1 == length)
-				throw invalid_argument("Algorithm is invalid");
+				throw invalid_argument("Equation is invalid");
 
-			if (algorithm[i + 1] == '(') {
+			if (equation[i + 1] == '(') {
 
-				// Multiply result of calculations in parenthesis by -1 to substitute for making the number negative directly
-				result.push_back(nextVariable(numVariablesUsed));
-				valuesQueue.push(-1);
+				// Multiply result of calculations in parenthesis by -1 to substitute for making the result negative directly
+				result.push_back(DEFAULT_NEGATIVE_ONE_VALUE);
 				result.push_back('*');
 			} else {
 
-				// Replace the number in the resulting algorithm with a variable
-				result.push_back(nextVariable(numVariablesUsed));
-				valuesQueue.push(getNumber(algorithm, length, i, endPos));
+				// Replace the number in the resulting equation with an argument
+				result.append(DEFAULT_ARG_PREFIX + to_string(nextArgument++));
+				values.push_back(getNumber(equation, length, i, endPos));
 
 				i = endPos;
 			}
-		} else if (isdigit(algorithm[i]) || algorithm[i] == '.') {
+		} else if (isdigit(equation[i]) || equation[i] == '.') {
 
-			result.push_back(nextVariable(numVariablesUsed));
-			valuesQueue.push(getNumber(algorithm, length, i, endPos));
+			// Replace the number in the resulting equation with an argument
+			result.append(DEFAULT_ARG_PREFIX + to_string(nextArgument++));
+			values.push_back(getNumber(equation, length, i, endPos));
 
 			i = endPos;
-		// if the algorithm is in the format of 5(6) then it is expanded to 5*(6)
-		}else if (algorithm[i] == '(' && i > 0 && isdigit(algorithm[i - 1])) {
+		// if the equation is in the format of a(b) then it is expanded to a*(b)
+		} else if (equation[i] == '(' && i > 0 && isdigit(equation[i - 1])) {
 
 			result.push_back('*');
-			result.push_back(algorithm[i]);
-		// if the algorithm is in the format of (6)5 then it is expanded to (6)*5
-		} else if (algorithm[i] == ')' && i + 1 != length && isdigit(algorithm[i + 1])) {
+			result.push_back(equation[i]);
+		// if the equation is in the format of (a)b then it is expanded to (a)*b
+		} else if (equation[i] == ')' && i + 1 != length && isdigit(equation[i + 1])) {
 
-			result.push_back(algorithm[i]);
+			result.push_back(equation[i]);
 			result.push_back('*');
 		} else
-			result.push_back(algorithm[i]);
-	}
-
-	// Enter the numbers from valuesQueue into values
-	for (int i = 0; !valuesQueue.empty(); i++) {
-
-		values.push_back(valuesQueue.front());
-		valuesQueue.pop();
+			result.push_back(equation[i]);
 	}
 
 	return result;
 }
 
-string ReversePolishNotation::convertInfixToPostFix(const char *algorithm, int length) {
+string ReversePolishNotation::convertInfixToPostFix(const char *equation, int length) {
 
-	if (algorithm == nullptr)
-		throw invalid_argument("Algorithm is null");
+	if (equation == nullptr)
+		throw invalid_argument("Equation is null");
 
 	stack<char> operatorStack;
 	string postFixString;
@@ -133,17 +127,20 @@ string ReversePolishNotation::convertInfixToPostFix(const char *algorithm, int l
 	for (int i = 0; i < length; i++) {
 
 		// Variables are pushed to the post-fix string
-		if (isalpha(algorithm[i]))
-			postFixString += algorithm[i];
-		else {
+		if (!isOperator(equation[i])) {
+
+			postFixString += equation[i];
+		} else {
 
 			if (operatorStack.size() == 0) {
 
-				operatorStack.push(algorithm[i]);
-				//IF the current operator has lower precedence than the operator on top of the operator stack
-			} else if (isLowerPrecedence(operatorStack.top(), algorithm[i])) {
+				operatorStack.push(equation[i]);
+			//IF the current operator has lower precedence than the operator on top of the operator stack
+			} else if (isLowerPrecedence(operatorStack.top(), equation[i])) {
 
-				if (algorithm[i] == ')') {
+				// IF the current operator is a ')' then pop operators off the stack into the post-fix string
+				//		until the matching '(' is found
+				if (equation[i] == ')') {
 
 					while (operatorStack.top() != '(') {
 
@@ -158,11 +155,12 @@ string ReversePolishNotation::convertInfixToPostFix(const char *algorithm, int l
 					operatorStack.pop();
 				} else {
 
-					operatorStack.push(algorithm[i]);
+					operatorStack.push(equation[i]);
 				}
 			} else {
 
-				if (algorithm[i] != '(') {
+				// '(' always has lowest precedence, but should not be removed until the matching ')' is found
+				if (equation[i] != '(') {
 
 					if (operatorStack.empty())
 						throw invalid_argument("Too many closing parenthesis");
@@ -171,7 +169,7 @@ string ReversePolishNotation::convertInfixToPostFix(const char *algorithm, int l
 					operatorStack.pop();
 				}
 
-				operatorStack.push(algorithm[i]);
+				operatorStack.push(equation[i]);
 			}
 		}
 	}
@@ -188,10 +186,10 @@ string ReversePolishNotation::convertInfixToPostFix(const char *algorithm, int l
 	return postFixString;
 }
 
-double ReversePolishNotation::calcResult(const char *algorithm, int length, vector<double> &values) {
+double ReversePolishNotation::calcResult(const char *equation, int length, vector<double> &values) {
 
-	if (algorithm == nullptr)
-		throw invalid_argument("Algorithm is null");
+	if (equation == nullptr)
+		throw invalid_argument("Equation is null");
 
 	stack<double> operandStack;
 	double result;
@@ -199,7 +197,7 @@ double ReversePolishNotation::calcResult(const char *algorithm, int length, vect
 
 	for (int i = 0; i < length; i++) {
 
-		switch (algorithm[i]) {
+		switch (equation[i]) {
 
 			case '+':
 
@@ -209,7 +207,7 @@ double ReversePolishNotation::calcResult(const char *algorithm, int length, vect
 				break;
 			case '-':
 
-				// Subtracts second operands from the first
+				// Subtracts second operand from the first
 				getOperandsFromStack(operandStack, num1, num2);
 				operandStack.push(num1 - num2);
 				break;
@@ -240,11 +238,20 @@ double ReversePolishNotation::calcResult(const char *algorithm, int length, vect
 				break;
 			default:
 
-				// Convert letter to the number it represents and add it to the operand stack
-				if (algorithm[i] >= 'a' && algorithm[i] <= 'z')
-					operandStack.push(values[algorithm[i] - 'a']);
-				else if (algorithm[i] >= 'A' && algorithm[i] <= 'Z')
-					operandStack.push(values[algorithm[i] - 'A' + 26]);
+				if (equation[i] == DEFAULT_NEGATIVE_ONE_VALUE) {
+
+					operandStack.push(-1);
+				} else if (equation[i] == DEFAULT_ARG_PREFIX) {
+
+					int argumentNum = (int)getNumber(equation, length, i + 1, i);
+					operandStack.push(values[argumentNum]);
+				} else throw invalid_argument("Equation is invalid");
+				//// Convert letter to the number it represents and add it to the operand stack
+				//if (equation[i] >= (double)'a' && equation[i] <= (double)'z')
+				//	operandStack.push(values[equation[i] - 'a']);
+				//else if (equation[i] >= (double)'A' && equation[i] <= (double)'Z')
+				//	operandStack.push(values[equation[i] - 'A' + 26]);
+				//else throw invalid_argument("Equation is too long");
 		};
 	}
 
@@ -252,15 +259,15 @@ double ReversePolishNotation::calcResult(const char *algorithm, int length, vect
 	operandStack.pop();
 
 	if (!operandStack.empty())
-		throw invalid_argument("Algorithm is invalid");
+		throw invalid_argument("Equation is invalid");
 
 	return result;
 }
 
-bool ReversePolishNotation::calcResult(const char *algorithm, int length, vector<bool> &values) {
+bool ReversePolishNotation::calcResult(const char *equation, int length, vector<bool> &values) {
 
-	if (algorithm == nullptr)
-		throw invalid_argument("Algorithm is null");
+	if (equation == nullptr)
+		throw invalid_argument("Equation is null");
 
 	stack<bool> operandStack;
 	bool result;
@@ -268,7 +275,7 @@ bool ReversePolishNotation::calcResult(const char *algorithm, int length, vector
 
 	for (int i = 0; i < length; i++) {
 
-		switch (algorithm[i]) {
+		switch (equation[i]) {
 
 			case '!':
 
@@ -300,11 +307,16 @@ bool ReversePolishNotation::calcResult(const char *algorithm, int length, vector
 				break;
 			default:
 
-				// Convert letter to the boolean it represents and add it to the operand stack
-				if (algorithm[i] >= 'a' && algorithm[i] <= 'z')
-					operandStack.push(values[algorithm[i] - 'a']);
-				else if (algorithm[i] >= 'A' && algorithm[i] <= 'Z')
-					operandStack.push(values[algorithm[i] - 'A' + 26]);
+				if (equation[i] == DEFAULT_ARG_PREFIX) {
+
+					int argumentNum = (int)getNumber(equation, length, i + 1, i);
+					operandStack.push(values[argumentNum]);
+				}
+				// Convert argument to the boolean it represents and add it to the operand stack
+		/*		if (equation[i] >= 'a' && equation[i] <= 'z')
+					operandStack.push(values[equation[i] - 'a']);
+				else if (equation[i] >= 'A' && equation[i] <= 'Z')
+					operandStack.push(values[equation[i] - 'A' + 26]);*/
 		};
 	}
 
@@ -312,48 +324,48 @@ bool ReversePolishNotation::calcResult(const char *algorithm, int length, vector
 	operandStack.pop();
 
 	if (!operandStack.empty())
-		throw invalid_argument("Algorithm is invalid");
+		throw invalid_argument("Equation is invalid");
 
 	return result;
 }
 
-char ReversePolishNotation::nextVariable(int &numVariablesUsed) {
+char ReversePolishNotation::nextVariable(int &nextArgument) {
 
 	char result;
 
-	if ('a' + numVariablesUsed <= 'z')
-		result = 'a' + numVariablesUsed;
-	else if ('A' + numVariablesUsed - 26 <= 'Z')
-		result = 'A' + numVariablesUsed - 26;
+	if ('a' + nextArgument <= 'z')
+		result = 'a' + nextArgument;
+	else if ('A' + nextArgument - 26 <= 'Z')
+		result = 'A' + nextArgument - 26;
 	else
-		throw invalid_argument("Algorithm is too long");
+		throw invalid_argument("Equation is too long");
 
-	numVariablesUsed++;
+	nextArgument++;
 
 	return result;
 }
 
-double ReversePolishNotation::getNumber(const char *algorithm, int length, int start, int &end) {
+double ReversePolishNotation::getNumber(const char *equation, int length, int start, int &end) {
 
 	double result;
 	string number = "";
 	int pos = start;
 
 	// Skip the negative sign to avoid checking if the sign is relative to this number or just a minus sign
-	if (algorithm[start] == '-') {
+	if (equation[start] == '-') {
 
 		number.push_back('-');
 		pos++;
 	}
 
-	// Avoid having to increment with every iteration to prevent it from not being set if the loop runs till equal to length
+	// Avoid having to increment with every iteration to prevent it from not being set if the loop runs until equal to length
 	end = length - 1;
 
 	for (int i = pos; i < length; i++) {
 
 		// Check if current char is a number or a decimal point
-		if (isdigit(algorithm[i]) || algorithm[i] == '.')
-			number.push_back(algorithm[i]);
+		if (isdigit(equation[i]) || equation[i] == '.')
+			number.push_back(equation[i]);
 		else {
 
 			end = i - 1;
@@ -445,7 +457,7 @@ ReversePolishNotation::precedenceLevel ReversePolishNotation::getPrecedenceLevel
 void ReversePolishNotation::getOperandsFromStack(stack<double> &operandStack, double &value1, double &value2) {
 
 	if (operandStack.size() < 2)
-		throw invalid_argument("Algorithm is invalid");
+		throw invalid_argument("Equation is invalid");
 
 	value2 = operandStack.top();
 	operandStack.pop();
@@ -456,7 +468,7 @@ void ReversePolishNotation::getOperandsFromStack(stack<double> &operandStack, do
 void ReversePolishNotation::getOperandsFromStack(stack<bool> &operandStack, bool &value1, bool &value2) {
 
 	if (operandStack.size() < 2)
-		throw invalid_argument("Algorithm is invalid");
+		throw invalid_argument("Equation is invalid");
 
 	value2 = operandStack.top();
 	operandStack.pop();

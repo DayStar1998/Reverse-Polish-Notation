@@ -22,15 +22,15 @@
 	Class Name: ReversePolishNotation
 
 	Description:
-		Converts a mathematical algorithm from in-fix notation to post-fix
+		Converts a mathematical equation from in-fix notation to post-fix
 		notation then solves for the answer.
 
 	Outline:
 		Public Functions:
-			evaluateAlgorithm
+			evaluateequation
 
 		Private Functions
-			stripValuesFromAlgorithm
+			stripValuesFromequation
 			convertInfixToPostFix
 			calcResult
 			calcResult
@@ -59,6 +59,7 @@ using std::queue;
 using std::vector;
 using std::invalid_argument;
 using std::pow;
+using std::to_string;
 using std::isalpha;
 using std::isdigit;
 using std::isblank;
@@ -69,118 +70,123 @@ class ReversePolishNotation {
 private:
 
 	enum precedenceLevel { OPENING_PARENTHESIS, ADD_SUB, MUL_DIV_MOD, EXP, CLOSING_PARENTHESIS };
+
+	// Generic replacement prefix for values in equation
+	const char DEFAULT_ARG_PREFIX = '`';
+	// Default slot for inserted -1 values
+	const char DEFAULT_NEGATIVE_ONE_VALUE = '~';
 public:
 
 	/******************************************************************************
-		Function Name: evaluateAlgorithm
+		Function Name: evaluateEquation
 		
 		Des:
-			Evaluates the algorithm to find the answer
+			Evaluates the equation to find the answer
 			
 		Params:
-			algorithm - type const char *, the algorithm to be evaluated
-			length - type int, the length of the param algorithm.
+			equation - type const char *, the equation to be evaluated
+			length - type int, the length of the param equation.
 			
 		Returns:
-			type double, the answer to the algorithm
+			type double, the answer to the equation
 	******************************************************************************/
-	double evaluateAlgorithm(const char *algorithm, int length);
+	double evaluateEquation(const char *equation, int length);
 
 private:
 
 	/******************************************************************************
-		Function Name: stripValuesFromAlgorithm
+		Function Name: stripValuesFromEquation
 		
 		Des:
-			Strips values from the algorithm and replaces them with letters
+			Strips values from the equation and replaces them with letters
 			
 		Params:
-			algorithm - type const char *, the data the number is to be
+			equation - type const char *, the data the number is to be
 				extracted from.
-			length - type int, the length of the param algorithm.
+			length - type int, the length of the param equation.
 			values - type vector<double> &, output vector containing all values
-				corresponding to the letters in param algorithm.
+				corresponding to the letters in param equation.
 			
 		Returns:
-			type string, the algorithm with all values replaced with letters
+			type string, the equation with all values replaced with letters
 
 		Throws:
-			Throws exception if the algorithm is invalid.
+			Throws exception if the equation is invalid.
 	******************************************************************************/
-	string stripValuesFromAlgorithm(const char *algorithm, int length, vector<double> &values);
+	string stripValuesFromEquation(const char *equation, int length, vector<double> &values);
 
 	/******************************************************************************
 		Function Name: convertInfixToPostFix
 
 		Des:
-			Takes an algorithm that uses in-fix notation and converts it to
+			Takes an equation that uses in-fix notation and converts it to
 				post-fix notation.
 
 		Params:
-			algorithm - type const char *, the list of operands and operators
+			equation - type const char *, the list of operands and operators
 				sorted in postfix notation. All bool's are expected to have been
 				replaced with letters. Case matters so 'A' is not equal to 'a.'
 				Example input: (A+B)*C.
-			length - type int, the length of the param algorithm.
+			length - type int, the length of the param equation.
 
 		Returns:
-			type string, the in-fix algorithm converted to post-fix.
+			type string, the in-fix equation converted to post-fix.
 
 		Throws:
-			Throws exception if the algorithm is invalid.
+			Throws exception if the equation is invalid.
 	******************************************************************************/
-	string convertInfixToPostFix(const char *algorithm, int length);
+	string convertInfixToPostFix(const char *equation, int length);
 
 	/******************************************************************************
 		Function Name: calcResult
 
 		Des:
-			Calculates the result of the algorithm used with the values.
+			Calculates the result of the equation used with the values.
 
 		Params:
-			algorithm - type const char *, the list of operands and operators
+			equation - type const char *, the list of operands and operators
 				sorted in postfix notation. All bool's are expected to have been
 				replaced with letters. Case matters so 'A' is not equal to 'a.'
 				Example input: AB+c*.
-			length - type int, the length of the param algorithm.
+			length - type int, the length of the param equation.
 			values - type double [], array containing all values corresponding
-				to the letters in param algorithm.
+				to the letters in param equation.
 
 		Returns:
-			type double, result of the algorithm.
+			type double, result of the equation.
 
 		Throws:
-			Throws exception if the algorithm is unsolvable.
+			Throws exception if the equation is unsolvable.
 	******************************************************************************/
-	double calcResult(const char *algorithm, int length, vector<double> &values);
+	double calcResult(const char *equation, int length, vector<double> &values);
 
 	/******************************************************************************
 		Function Name: calcResult
 
 		Des:
-			Calculates the result of the algorithm used with the values.
+			Calculates the result of the equation used with the values.
 
 		Params:
-			algorithm - type const char *, the list of operands and operators
+			equation - type const char *, the list of operands and operators
 				sorted in postfix notation. All bool's are expected to have been
 				replaced with letters. Case matters so 'A' is not equal to 'a.'
 				Example input: AB=c|.
-			length - type int, the length of the param algorithm.
+			length - type int, the length of the param equation.
 			values - type bool [], array containing all values corresponding
-				to the letters in param algorithm.
+				to the letters in param equation.
 
 		Returns:
-			type bool, result of the algorithm.
+			type bool, result of the equation.
 
 		Throws:
-			Throws exception if the algorithm is unsolvable.
+			Throws exception if the equation is unsolvable.
 
 		Note:
 			Warning: Each operator is assumed to be a separate comparison. '=' is
 				equivalent to the '==' operator. However, '==' is the equivalent
 				of typing '====' which would have a different result than expected
 	******************************************************************************/
-	bool calcResult(const char *algorithm, int length, vector<bool> &values);
+	bool calcResult(const char *equation, int length, vector<bool> &values);
 
 	/******************************************************************************
 		Function Name: nextVariable
@@ -198,7 +204,7 @@ private:
 		Throws:
 			Throws exception if all variables have been used
 	******************************************************************************/
-	char nextVariable(int &numVariablesUsed);
+	char nextVariable(int &nextArgument);
 
 	/******************************************************************************
 		Function Name: getNumber
@@ -208,16 +214,16 @@ private:
 				location.
 			
 		Params:
-			algorithm - type char *, the data the number is to be extracted from.
-			length - type int, the length of the param algorithm.
-			start - type int, starting location in param algorithm
+			equation - type char *, the data the number is to be extracted from.
+			length - type int, the length of the param equation.
+			start - type int, starting location in param equation
 			end - type int &, output to return the location of the last char of
 				the number
 			
 		Returns:
 			type double, the value after it has been extracted
 	******************************************************************************/
-	double getNumber(const char *algorithm, int length, int start, int &end);
+	double getNumber(const char *equation, int length, int start, int &end);
 
 	/******************************************************************************
 		Function Name: isOperator
