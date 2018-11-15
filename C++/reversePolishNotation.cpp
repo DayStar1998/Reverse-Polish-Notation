@@ -32,7 +32,6 @@
 			calcResult
 			calcResult
 			nextVariable
-			getNumber
 			isOperator
 			isLowerPrecedence
 			getPrecedenceLevel
@@ -341,40 +340,6 @@ char ReversePolishNotation::nextVariable(int &nextArgument) {
 		throw invalid_argument("Equation is too long");
 
 	nextArgument++;
-
-	return result;
-}
-
-double ReversePolishNotation::getNumber(const char *equation, int length, int start, int &end) {
-
-	double result;
-	string number = "";
-	int pos = start;
-
-	// Skip the negative sign to avoid checking if the sign is relative to this number or just a minus sign
-	if (equation[start] == '-') {
-
-		number.push_back('-');
-		pos++;
-	}
-
-	// Avoid having to increment with every iteration to prevent it from not being set if the loop runs until equal to length
-	end = length - 1;
-
-	for (int i = pos; i < length; i++) {
-
-		// Check if current char is a number or a decimal point
-		if (isdigit(equation[i]) || equation[i] == '.')
-			number.push_back(equation[i]);
-		else {
-
-			end = i - 1;
-			break;
-		}
-	}
-
-	// Convert to double
-	result = stod(number);
 
 	return result;
 }

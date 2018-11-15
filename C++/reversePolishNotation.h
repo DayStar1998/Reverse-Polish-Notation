@@ -27,7 +27,7 @@
 
 	Outline:
 		Public Functions:
-			evaluateequation
+			evaluateEquation
 
 		Private Functions
 			stripValuesFromequation
@@ -35,7 +35,6 @@
 			calcResult
 			calcResult
 			nextVariable
-			getNumber
 			isOperator
 			isLowerPrecedence
 			getPrecedenceLevel
@@ -52,6 +51,8 @@
 #include <vector>
 #include <cmath>
 #include <stdexcept>
+
+#include "stringUtils.h"
 
 using std::string;
 using std::stack;
@@ -205,25 +206,6 @@ private:
 			Throws exception if all variables have been used
 	******************************************************************************/
 	char nextVariable(int &nextArgument);
-
-	/******************************************************************************
-		Function Name: getNumber
-		
-		Des:
-			Extract a numerical value from the string starting from the specified
-				location.
-			
-		Params:
-			equation - type char *, the data the number is to be extracted from.
-			length - type int, the length of the param equation.
-			start - type int, starting location in param equation
-			end - type int &, output to return the location of the last char of
-				the number
-			
-		Returns:
-			type double, the value after it has been extracted
-	******************************************************************************/
-	double getNumber(const char *equation, int length, int start, int &end);
 
 	/******************************************************************************
 		Function Name: isOperator
