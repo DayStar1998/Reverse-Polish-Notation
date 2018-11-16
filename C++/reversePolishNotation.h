@@ -93,8 +93,6 @@ public:
 	******************************************************************************/
 	double evaluateEquation(const char *equation, int length);
 
-private:
-
 	/******************************************************************************
 		Function Name: stripValuesFromEquation
 		
@@ -160,6 +158,8 @@ private:
 			Throws exception if the equation is unsolvable.
 	******************************************************************************/
 	double calcResult(const char *equation, int length, vector<double> &values);
+
+private:
 
 	/******************************************************************************
 		Function Name: calcResult

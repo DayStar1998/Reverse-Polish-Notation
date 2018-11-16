@@ -43,6 +43,7 @@
 
 double ReversePolishNotation::evaluateEquation(const char *equation, int length) {
 
+	// Recreated each time to avoid old invalid data being left from previous invalid equations
 	vector<double> values;
 	double result;
 
