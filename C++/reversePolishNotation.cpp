@@ -222,12 +222,14 @@ namespace day {
 				case '/':
 
 					// Divides second operand from the first
+					// Handling divide by 0 exception is out of scope
 					getOperandsFromStack(operandStack, num1, num2);
 					operandStack.push(num1 / num2);
 					break;
 				case '%':
 
 					// Modulates first operand by the second
+					// Handling divide by 0 exception is out of scope
 					// WARNING: Conversion to integer causes decimal data to be lost
 					getOperandsFromStack(operandStack, num1, num2);
 					operandStack.push((int)num1 % (int)num2);
