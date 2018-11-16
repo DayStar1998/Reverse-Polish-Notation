@@ -20,17 +20,13 @@
 
 	Author: Matthew Day
 
-	Class Name: StringUtils
-
 	Description:
 		A set of operations that can be performed on a string
 ******************************************************************************/
 
 #pragma once
 
-class StringUtils {
-
-public:
+namespace day {
 
 	/******************************************************************************
 		Function Name: getNumber

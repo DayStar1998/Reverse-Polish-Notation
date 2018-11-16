@@ -66,226 +66,229 @@ using std::isdigit;
 using std::isblank;
 using std::stod;
 
-class ReversePolishNotation {
+namespace day {
 
-private:
+	class ReversePolishNotation {
 
-	enum precedenceLevel { OPENING_PARENTHESIS, ADD_SUB, MUL_DIV_MOD, EXP, CLOSING_PARENTHESIS };
+	private:
 
-	// Generic replacement prefix for values in equation
-	const char DEFAULT_ARG_PREFIX = '`';
-	// Default slot for inserted -1 values
-	const char DEFAULT_NEGATIVE_ONE_VALUE = '~';
-public:
+		enum precedenceLevel { OPENING_PARENTHESIS, ADD_SUB, MUL_DIV_MOD, EXP, CLOSING_PARENTHESIS };
 
-	/******************************************************************************
-		Function Name: evaluateEquation
-		
-		Des:
-			Evaluates the equation to find the answer
-			
-		Params:
-			equation - type const char *, the equation to be evaluated
-			length - type int, the length of the param equation.
-			
-		Returns:
-			type double, the answer to the equation
-	******************************************************************************/
-	double evaluateEquation(const char *equation, int length);
+		// Generic replacement prefix for values in equation
+		const char DEFAULT_ARG_PREFIX = '`';
+		// Default slot for inserted -1 values
+		const char DEFAULT_NEGATIVE_ONE_VALUE = '~';
+	public:
 
-	/******************************************************************************
-		Function Name: stripValuesFromEquation
-		
-		Des:
-			Strips values from the equation and replaces them with letters
-			
-		Params:
-			equation - type const char *, the data the number is to be
-				extracted from.
-			length - type int, the length of the param equation.
-			values - type vector<double> &, output vector containing all values
-				corresponding to the letters in param equation.
-			
-		Returns:
-			type string, the equation with all values replaced with letters
+		/******************************************************************************
+			Function Name: evaluateEquation
 
-		Throws:
-			Throws exception if the equation is invalid.
-	******************************************************************************/
-	string stripValuesFromEquation(const char *equation, int length, vector<double> &values);
+			Des:
+				Evaluates the equation to find the answer
 
-	/******************************************************************************
-		Function Name: convertInfixToPostFix
+			Params:
+				equation - type const char *, the equation to be evaluated
+				length - type int, the length of the param equation.
 
-		Des:
-			Takes an equation that uses in-fix notation and converts it to
-				post-fix notation.
+			Returns:
+				type double, the answer to the equation
+		******************************************************************************/
+		double evaluateEquation(const char *equation, int length);
 
-		Params:
-			equation - type const char *, the list of operands and operators
-				sorted in postfix notation. All bool's are expected to have been
-				replaced with letters. Case matters so 'A' is not equal to 'a.'
-				Example input: (A+B)*C.
-			length - type int, the length of the param equation.
+		/******************************************************************************
+			Function Name: stripValuesFromEquation
 
-		Returns:
-			type string, the in-fix equation converted to post-fix.
+			Des:
+				Strips values from the equation and replaces them with letters
 
-		Throws:
-			Throws exception if the equation is invalid.
-	******************************************************************************/
-	string convertInfixToPostFix(const char *equation, int length);
+			Params:
+				equation - type const char *, the data the number is to be
+					extracted from.
+				length - type int, the length of the param equation.
+				values - type vector<double> &, output vector containing all values
+					corresponding to the letters in param equation.
 
-	/******************************************************************************
-		Function Name: calcResult
+			Returns:
+				type string, the equation with all values replaced with letters
 
-		Des:
-			Calculates the result of the equation used with the values.
+			Throws:
+				Throws exception if the equation is invalid.
+		******************************************************************************/
+		string stripValuesFromEquation(const char *equation, int length, vector<double> &values);
 
-		Params:
-			equation - type const char *, the list of operands and operators
-				sorted in postfix notation. All bool's are expected to have been
-				replaced with letters. Case matters so 'A' is not equal to 'a.'
-				Example input: AB+c*.
-			length - type int, the length of the param equation.
-			values - type double [], array containing all values corresponding
-				to the letters in param equation.
+		/******************************************************************************
+			Function Name: convertInfixToPostFix
 
-		Returns:
-			type double, result of the equation.
+			Des:
+				Takes an equation that uses in-fix notation and converts it to
+					post-fix notation.
 
-		Throws:
-			Throws exception if the equation is unsolvable.
-	******************************************************************************/
-	double calcResult(const char *equation, int length, vector<double> &values);
+			Params:
+				equation - type const char *, the list of operands and operators
+					sorted in postfix notation. All bool's are expected to have been
+					replaced with letters. Case matters so 'A' is not equal to 'a.'
+					Example input: (A+B)*C.
+				length - type int, the length of the param equation.
 
-private:
+			Returns:
+				type string, the in-fix equation converted to post-fix.
 
-	/******************************************************************************
-		Function Name: calcResult
+			Throws:
+				Throws exception if the equation is invalid.
+		******************************************************************************/
+		string convertInfixToPostFix(const char *equation, int length);
 
-		Des:
-			Calculates the result of the equation used with the values.
+		/******************************************************************************
+			Function Name: calcResult
 
-		Params:
-			equation - type const char *, the list of operands and operators
-				sorted in postfix notation. All bool's are expected to have been
-				replaced with letters. Case matters so 'A' is not equal to 'a.'
-				Example input: AB=c|.
-			length - type int, the length of the param equation.
-			values - type bool [], array containing all values corresponding
-				to the letters in param equation.
+			Des:
+				Calculates the result of the equation used with the values.
 
-		Returns:
-			type bool, result of the equation.
+			Params:
+				equation - type const char *, the list of operands and operators
+					sorted in postfix notation. All bool's are expected to have been
+					replaced with letters. Case matters so 'A' is not equal to 'a.'
+					Example input: AB+c*.
+				length - type int, the length of the param equation.
+				values - type double [], array containing all values corresponding
+					to the letters in param equation.
 
-		Throws:
-			Throws exception if the equation is unsolvable.
+			Returns:
+				type double, result of the equation.
 
-		Note:
-			Warning: Each operator is assumed to be a separate comparison. '=' is
-				equivalent to the '==' operator. However, '==' is the equivalent
-				of typing '====' which would have a different result than expected
-	******************************************************************************/
-	bool calcResult(const char *equation, int length, vector<bool> &values);
+			Throws:
+				Throws exception if the equation is unsolvable.
+		******************************************************************************/
+		double calcResult(const char *equation, int length, vector<double> &values);
 
-	/******************************************************************************
-		Function Name: nextVariable
-		
-		Des:
-			Get the next available variable
-			
-		Params:
-			numVariablesUsed - type int &, modified input current total number of variables
-				used, output to show the new total number of variables used
-			
-		Returns:
-			type char, the next available variable
+	private:
 
-		Throws:
-			Throws exception if all variables have been used
-	******************************************************************************/
-	char nextVariable(int &nextArgument);
+		/******************************************************************************
+			Function Name: calcResult
 
-	/******************************************************************************
-		Function Name: isOperator
+			Des:
+				Calculates the result of the equation used with the values.
 
-		Des:
-			Checks if the value is an operator.
+			Params:
+				equation - type const char *, the list of operands and operators
+					sorted in postfix notation. All bool's are expected to have been
+					replaced with letters. Case matters so 'A' is not equal to 'a.'
+					Example input: AB=c|.
+				length - type int, the length of the param equation.
+				values - type bool [], array containing all values corresponding
+					to the letters in param equation.
 
-		Params:
-			value - type char, the value to be checked.
+			Returns:
+				type bool, result of the equation.
 
-		Returns:
-			type bool, true if it is an operator, otherwise false.
+			Throws:
+				Throws exception if the equation is unsolvable.
 
-		Note:
-			Does not support bool operators
-			TODO: Add support for bool operators
-	******************************************************************************/
-	bool isOperator(char value);
+			Note:
+				Warning: Each operator is assumed to be a separate comparison. '=' is
+					equivalent to the '==' operator. However, '==' is the equivalent
+					of typing '====' which would have a different result than expected
+		******************************************************************************/
+		bool calcResult(const char *equation, int length, vector<bool> &values);
 
-	/******************************************************************************
-		Function Name: isLowerPrecedence
+		/******************************************************************************
+			Function Name: nextVariable
 
-		Des:
-			Checks if the first operator has lower precedence than the second operator.
+			Des:
+				Get the next available variable
 
-		Params:
-			firstOperator - type char, the first operator.
-			secondOperator - type char, the second operator.
+			Params:
+				numVariablesUsed - type int &, modified input current total number of variables
+					used, output to show the new total number of variables used
 
-		Returns:
-			type bool, is the first operater lower precedence than the second one, otherwise false.
-	******************************************************************************/
-	bool isLowerPrecedence(char firstOperator, char secondOperator);
+			Returns:
+				type char, the next available variable
 
-	/******************************************************************************
-		Function Name: getPrecedenceLevel
+			Throws:
+				Throws exception if all variables have been used
+		******************************************************************************/
+		char nextVariable(int &nextArgument);
 
-		Des:
-			Finds the precedence level of the operator.
+		/******************************************************************************
+			Function Name: isOperator
 
-		Params:
-			curOperator - type char, the operator to be checked.
+			Des:
+				Checks if the value is an operator.
 
-		Returns:
-			type ReversePolishNotation::precedenceLevel, the level of precedence
-				that the operator has.
-	******************************************************************************/
-	precedenceLevel getPrecedenceLevel(char curOperator);
+			Params:
+				value - type char, the value to be checked.
 
-	/******************************************************************************
-		Function Name: getOperandsFromStack
+			Returns:
+				type bool, true if it is an operator, otherwise false.
 
-		Des:
-			Pops the top two int's off the top of the stack.
+			Note:
+				Does not support bool operators
+				TODO: Add support for bool operators
+		******************************************************************************/
+		bool isOperator(char value);
 
-		Params:
-			operandStack - type stack<bool> &, is a stack containing all unprocessed
-				operands.
-			value1 - type int &, output to get the first int in the equation.
-			value2 - type int &, output to get the second int in the equation.
+		/******************************************************************************
+			Function Name: isLowerPrecedence
 
-		Throws:
-			Throws exception if the there are less than 2 operands on the stack.
-	******************************************************************************/
-	void getOperandsFromStack(stack<double> &operandStack, double &value1, double &value2);
+			Des:
+				Checks if the first operator has lower precedence than the second operator.
 
-	/******************************************************************************
-		Function Name: getOperandsFromStack
+			Params:
+				firstOperator - type char, the first operator.
+				secondOperator - type char, the second operator.
 
-		Des:
-			Pops the top two bool's off the top of the stack.
+			Returns:
+				type bool, is the first operater lower precedence than the second one, otherwise false.
+		******************************************************************************/
+		bool isLowerPrecedence(char firstOperator, char secondOperator);
 
-		Params:
-			operandStack - type stack<bool> &, is a stack containing all unprocessed
-				operands.
-			value1 - type bool &, output to get the first bool in the equation.
-			value2 - type bool &, output to get the second bool in the equation.
+		/******************************************************************************
+			Function Name: getPrecedenceLevel
 
-		Throws:
-			Throws exception if the there are less than 2 operands on the stack.
-	******************************************************************************/
-	void getOperandsFromStack(stack<bool> &operandStack, bool &value1, bool &value2);
-};
+			Des:
+				Finds the precedence level of the operator.
+
+			Params:
+				curOperator - type char, the operator to be checked.
+
+			Returns:
+				type ReversePolishNotation::precedenceLevel, the level of precedence
+					that the operator has.
+		******************************************************************************/
+		precedenceLevel getPrecedenceLevel(char curOperator);
+
+		/******************************************************************************
+			Function Name: getOperandsFromStack
+
+			Des:
+				Pops the top two int's off the top of the stack.
+
+			Params:
+				operandStack - type stack<bool> &, is a stack containing all unprocessed
+					operands.
+				value1 - type int &, output to get the first int in the equation.
+				value2 - type int &, output to get the second int in the equation.
+
+			Throws:
+				Throws exception if the there are less than 2 operands on the stack.
+		******************************************************************************/
+		void getOperandsFromStack(stack<double> &operandStack, double &value1, double &value2);
+
+		/******************************************************************************
+			Function Name: getOperandsFromStack
+
+			Des:
+				Pops the top two bool's off the top of the stack.
+
+			Params:
+				operandStack - type stack<bool> &, is a stack containing all unprocessed
+					operands.
+				value1 - type bool &, output to get the first bool in the equation.
+				value2 - type bool &, output to get the second bool in the equation.
+
+			Throws:
+				Throws exception if the there are less than 2 operands on the stack.
+		******************************************************************************/
+		void getOperandsFromStack(stack<bool> &operandStack, bool &value1, bool &value2);
+	};
+}
