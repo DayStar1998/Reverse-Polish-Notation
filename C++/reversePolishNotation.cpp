@@ -21,22 +21,6 @@
 
 	Description:
 		Implementation file for reversePolishNotation.h
-
-	Outline:
-		Public Functions:
-			evaluateEquation
-
-		Private Functions
-			stripValuesFromEquation
-			convertInfixToPostFix
-			calcResult
-			calcResult
-			nextVariable
-			isOperator
-			isLowerPrecedence
-			getPrecedenceLevel
-			getOperandsFromStack
-			getOperandsFromStack
 ******************************************************************************/
 
 #include "reversePolishNotation.h"

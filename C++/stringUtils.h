@@ -31,6 +31,7 @@
 
 using std::string;
 using std::isdigit;
+using std::isalnum;
 using std::stod;
 
 namespace day {
@@ -53,4 +54,23 @@ namespace day {
 			type double, the value after it has been extracted
 	******************************************************************************/
 	double getNumber(const char *data, int length, int start, int &end);
+
+	/******************************************************************************
+		Function Name: getVar
+
+		Des:
+			Extract a variable made up of alphabetical and numerical characters
+				from a string starting from the specified location.
+
+		Params:
+			data - type char *, the data the number is to be extracted from.
+			length - type int, the length of the param data.
+			start - type int, starting location in param data
+			end - type int &, output to return the location of the last char of
+				the number
+
+		Returns:
+			type double, the value after it has been extracted
+	******************************************************************************/
+	string getVar(const char *data, int length, int start, int &end);
 };

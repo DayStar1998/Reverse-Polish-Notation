@@ -24,22 +24,6 @@
 	Description:
 		Converts a mathematical equation from in-fix notation to post-fix
 		notation then solves for the answer.
-
-	Outline:
-		Public Functions:
-			evaluateEquation
-
-		Private Functions
-			stripValuesFromequation
-			convertInfixToPostFix
-			calcResult
-			calcResult
-			nextVariable
-			isOperator
-			isLowerPrecedence
-			getPrecedenceLevel
-			getOperandsFromStack
-			getOperandsFromStack
 ******************************************************************************/
 
 #pragma once

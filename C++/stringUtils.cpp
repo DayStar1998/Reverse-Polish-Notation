@@ -60,4 +60,27 @@ namespace day {
 
 		return result;
 	}
+
+	string getVar(const char *data, int length, int start, int &end) {
+
+		string result;
+		int pos = start;
+
+		// Avoid having to increment with every iteration to prevent it from not being set if the loop runs until equal to length
+		end = length - 1;
+
+		for (int i = pos; i < length; i++) {
+
+			// Check if current char is a alphabetical character or number
+			if (isalnum(data[i]))
+				result.push_back(data[i]);
+			else {
+
+				end = i - 1;
+				break;
+			}
+		}
+
+		return result;
+	}
 }
