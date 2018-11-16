@@ -26,6 +26,13 @@
 
 #pragma once
 
+#include <string>
+#include <cctype>
+
+using std::string;
+using std::isdigit;
+using std::stod;
+
 namespace day {
 
 	/******************************************************************************

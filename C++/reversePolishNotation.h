@@ -56,15 +56,12 @@
 
 using std::string;
 using std::stack;
-using std::queue;
 using std::vector;
 using std::invalid_argument;
 using std::pow;
 using std::to_string;
 using std::isalpha;
-using std::isdigit;
 using std::isblank;
-using std::stod;
 
 namespace day {
 
