@@ -145,34 +145,6 @@ namespace day {
 	private:
 
 		/******************************************************************************
-			Function Name: calcResult
-
-			Des:
-				Calculates the result of the equation used with the values.
-
-			Params:
-				equation - type const char *, the list of operands and operators
-					sorted in postfix notation. All bool's are expected to have been
-					replaced with letters. Case matters so 'A' is not equal to 'a.'
-					Example input: AB=c|.
-				length - type int, the length of the param equation.
-				values - type bool [], array containing all values corresponding
-					to the letters in param equation.
-
-			Returns:
-				type bool, result of the equation.
-
-			Throws:
-				Throws exception if the equation is unsolvable.
-
-			Note:
-				Warning: Each operator is assumed to be a separate comparison. '=' is
-					equivalent to the '==' operator. However, '==' is the equivalent
-					of typing '====' which would have a different result than expected
-		******************************************************************************/
-		bool calcResult(const char *equation, int length, vector<bool> &values);
-
-		/******************************************************************************
 			Function Name: nextVariable
 
 			Des:

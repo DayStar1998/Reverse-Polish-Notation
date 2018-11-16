@@ -224,50 +224,9 @@ namespace day {
 					getOperandsFromStack(operandStack, num1, num2);
 					operandStack.push(pow(num1, num2));
 					break;
-				default:
-
-					if (equation[i] == DEFAULT_NEGATIVE_ONE_VALUE) {
-
-						operandStack.push(-1);
-					} else if (equation[i] == DEFAULT_ARG_PREFIX) {
-
-						int argumentNum = (int)getNumber(equation, length, i + 1, i);
-						operandStack.push(values[argumentNum]);
-					} else throw invalid_argument("Equation is invalid");
-					//// Convert letter to the number it represents and add it to the operand stack
-					//if (equation[i] >= (double)'a' && equation[i] <= (double)'z')
-					//	operandStack.push(values[equation[i] - 'a']);
-					//else if (equation[i] >= (double)'A' && equation[i] <= (double)'Z')
-					//	operandStack.push(values[equation[i] - 'A' + 26]);
-					//else throw invalid_argument("Equation is too long");
-			};
-		}
-
-		result = operandStack.top();
-		operandStack.pop();
-
-		if (!operandStack.empty())
-			throw invalid_argument("Equation is invalid");
-
-		return result;
-	}
-
-	bool ReversePolishNotation::calcResult(const char *equation, int length, vector<bool> &values) {
-
-		if (equation == nullptr)
-			throw invalid_argument("Equation is null");
-
-		stack<bool> operandStack;
-		bool result;
-		bool bool1, bool2;
-
-		for (int i = 0; i < length; i++) {
-
-			switch (equation[i]) {
-
 				case '!':
-
-					// Get boolean off top of the stack and NOT it
+					// TODO Fix booleans
+				// Get boolean off top of the stack and NOT it
 					bool1 = operandStack.top();
 					operandStack.pop();
 					operandStack.push(!bool1);
@@ -295,16 +254,20 @@ namespace day {
 					break;
 				default:
 
-					if (equation[i] == DEFAULT_ARG_PREFIX) {
+					if (equation[i] == DEFAULT_NEGATIVE_ONE_VALUE) {
+
+						operandStack.push(-1);
+					} else if (equation[i] == DEFAULT_ARG_PREFIX) {
 
 						int argumentNum = (int)getNumber(equation, length, i + 1, i);
 						operandStack.push(values[argumentNum]);
-					}
-					// Convert argument to the boolean it represents and add it to the operand stack
-			/*		if (equation[i] >= 'a' && equation[i] <= 'z')
-						operandStack.push(values[equation[i] - 'a']);
-					else if (equation[i] >= 'A' && equation[i] <= 'Z')
-						operandStack.push(values[equation[i] - 'A' + 26]);*/
+					} else throw invalid_argument("Equation is invalid");
+					//// Convert letter to the number it represents and add it to the operand stack
+					//if (equation[i] >= (double)'a' && equation[i] <= (double)'z')
+					//	operandStack.push(values[equation[i] - 'a']);
+					//else if (equation[i] >= (double)'A' && equation[i] <= (double)'Z')
+					//	operandStack.push(values[equation[i] - 'A' + 26]);
+					//else throw invalid_argument("Equation is too long");
 			};
 		}
 
