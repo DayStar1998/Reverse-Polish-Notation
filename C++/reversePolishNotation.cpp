@@ -381,15 +381,4 @@ namespace day {
 		value1 = operandStack.top();
 		operandStack.pop();
 	}
-
-	void ReversePolishNotation::getOperandsFromStack(stack<bool> &operandStack, bool &value1, bool &value2) {
-
-		if (operandStack.size() < 2)
-			throw invalid_argument("Equation is invalid");
-
-		value2 = operandStack.top();
-		operandStack.pop();
-		value1 = operandStack.top();
-		operandStack.pop();
-	}
 }
