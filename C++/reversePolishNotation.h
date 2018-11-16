@@ -31,16 +31,18 @@
 #include <string>
 #include <cctype>
 #include <stack>
-#include <queue>
-#include <vector>
+#include <map>
+//#include <vector>
 #include <cmath>
 #include <stdexcept>
 
 #include "stringUtils.h"
+#include "primitives.h"
 
 using std::string;
 using std::stack;
-using std::vector;
+using std::map;
+//using std::vector;
 using std::invalid_argument;
 using std::pow;
 using std::to_string;
@@ -86,16 +88,20 @@ namespace day {
 				equation - type const char *, the data the number is to be
 					extracted from.
 				length - type int, the length of the param equation.
-				values - type vector<double> &, output vector containing all values
-					corresponding to the letters in param equation.
+				values - type map<string, Primitive>, output map containing all
+					values corresponding to the variables in param equation.
 
 			Returns:
 				type string, the equation with all values replaced with letters
 
 			Throws:
 				Throws exception if the equation is invalid.
+
+			Note:
+				Named variables in the equation must begin with an alphabetical
+					character
 		******************************************************************************/
-		string stripValuesFromEquation(const char *equation, int length, vector<double> &values);
+		string stripValuesFromEquation(const char *equation, int length, map<string, Primitive&> &values);
 
 		/******************************************************************************
 			Function Name: convertInfixToPostFix
@@ -131,8 +137,8 @@ namespace day {
 					replaced with letters. Case matters so 'A' is not equal to 'a.'
 					Example input: AB+c*.
 				length - type int, the length of the param equation.
-				values - type double [], array containing all values corresponding
-					to the letters in param equation.
+				values - type map<string, Primitive>, array containing all values
+					corresponding to the variables in param equation.
 
 			Returns:
 				type double, result of the equation.
@@ -140,7 +146,7 @@ namespace day {
 			Throws:
 				Throws exception if the equation is unsolvable.
 		******************************************************************************/
-		double calcResult(const char *equation, int length, vector<double> &values);
+		double calcResult(const char *equation, int length, map<string, Primitive&> &values);
 
 	private:
 
@@ -225,6 +231,6 @@ namespace day {
 			Throws:
 				Throws exception if the there are less than 2 operands on the stack.
 		******************************************************************************/
-		void getOperandsFromStack(stack<double> &operandStack, double &value1, double &value2);
+		void getOperandsFromStack(stack<Primitive*> &operandStack, Primitive *value1, Primitive *value2);
 	};
 }

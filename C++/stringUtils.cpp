@@ -27,9 +27,9 @@
 
 namespace day {
 
-	double getNumber(const char *data, int length, int start, int &end) {
+	Primitive* getNumber(const char *data, int length, int start, int &end) {
 
-		double result;
+		Primitive *result = nullptr;
 		string number = "";
 		int pos = start;
 
@@ -43,20 +43,29 @@ namespace day {
 		// Avoid having to increment with every iteration to prevent it from not being set if the loop runs until equal to length
 		end = length - 1;
 
+		bool hasDecimal = false;
+
 		for (int i = pos; i < length; i++) {
 
 			// Check if current char is a number or a decimal point
-			if (isdigit(data[i]) || data[i] == '.')
+			if (isdigit(data[i]))
 				number.push_back(data[i]);
-			else {
+			else if (data[i] == '.') {
+
+				hasDecimal = true;
+				number.push_back(data[i]);
+			} else {
 
 				end = i - 1;
 				break;
 			}
 		}
 
-		// Convert to double
-		result = stod(number);
+		// Convert to Double or Integer
+		if (hasDecimal)
+			result = new Double(stod(number));
+		else
+			result = new Integer(stoi(number));
 
 		return result;
 	}

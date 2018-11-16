@@ -30,7 +30,7 @@ namespace day {
 	double ReversePolishNotation::evaluateEquation(const char *equation, int length) {
 
 		// Recreated each time to avoid old invalid data being left from previous invalid equations
-		vector<double> values;
+		map<string, Primitive&> values;
 		double result;
 
 		string editedEquation = stripValuesFromEquation(equation, length, values);
@@ -42,7 +42,7 @@ namespace day {
 		return result;
 	}
 
-	string ReversePolishNotation::stripValuesFromEquation(const char *equation, int length, vector<double> &values) {
+	string ReversePolishNotation::stripValuesFromEquation(const char *equation, int length, map<string, Primitive&> &values) {
 
 		if (equation == nullptr)
 			throw invalid_argument("Equation is null");
@@ -59,6 +59,7 @@ namespace day {
 			if (isblank(equation[i]))
 				continue;
 
+			// TODO: Fix to work when whitespace is before the minus sign
 			// Check whether a minus sign is being used to subtract or to make the number negative
 			if (equation[i] == '-' && (i == 0 || (isOperator(equation[i - 1]) && equation[i - 1] != ')'))) {
 
@@ -70,11 +71,29 @@ namespace day {
 					// Multiply result of calculations in parenthesis by -1 to substitute for making the result negative directly
 					result.push_back(DEFAULT_NEGATIVE_ONE_VALUE);
 					result.push_back('*');
-				} else {
+				} else if(isdigit(equation[i + 1])){
 
 					// Replace the number in the resulting equation with an argument
-					result.append(DEFAULT_ARG_PREFIX + to_string(nextArgument++));
-					values.push_back(getNumber(equation, length, i, endPos));
+					string key = to_string(nextArgument++);
+					result.append(DEFAULT_ARG_PREFIX + key);
+					values.emplace(key, getNumber(equation, length, i, endPos));
+
+					i = endPos;
+				} else {
+
+					// Multiply variable by -1 to substitute for making it negative directly
+					result.push_back(DEFAULT_NEGATIVE_ONE_VALUE);
+					result.push_back('*');
+
+					// Get the variable from the string
+					string variable = getVar(equation, length, i + 1, endPos);
+
+					// Insert prefix before the variable and skip the minus sign in the resulting equation
+					result.append(DEFAULT_ARG_PREFIX + variable);
+
+					// If the variable doesn't exist then a null value is set for it and it is assumed the variable will be initialized outside of scope
+					if(!values.count(variable))
+						values.emplace(variable, nullptr);
 
 					i = endPos;
 				}
@@ -82,7 +101,20 @@ namespace day {
 
 				// Replace the number in the resulting equation with an argument
 				result.append(DEFAULT_ARG_PREFIX + to_string(nextArgument++));
-				values.push_back(getNumber(equation, length, i, endPos));
+				values.emplace(getNumber(equation, length, i, endPos));
+
+				i = endPos;
+			} else if (isalpha(equation[i])) {
+
+				// Get the variable from the string
+				string variable = getVar(equation, length, i, endPos);
+
+				// Insert prefix before the variable and skip the minus sign in the resulting equation
+				result.append(DEFAULT_ARG_PREFIX + variable);
+
+				// If the variable doesn't exist then a null value is set for it and it is assumed the variable will be initialized outside of scope
+				if (!values.count(variable))
+					values.emplace(variable, nullptr);
 
 				i = endPos;
 			// if the equation is in the format of a(b) then it is expanded to a*(b)
@@ -172,14 +204,14 @@ namespace day {
 		return postFixString;
 	}
 
-	double ReversePolishNotation::calcResult(const char *equation, int length, vector<double> &values) {
+	double ReversePolishNotation::calcResult(const char *equation, int length, map<string, Primitive&> &values) {
 
 		if (equation == nullptr)
 			throw invalid_argument("Equation is null");
 
-		stack<double> operandStack;
-		double result;
-		double num1, num2;
+		stack<Primitive*> operandStack;
+		Primitive *result;
+		Primitive *num1, *num2;
 
 		for (int i = 0; i < length; i++) {
 
@@ -220,6 +252,7 @@ namespace day {
 					break;
 				case '^':
 
+					// TODO: exclusive OR
 					// Sets first operand to the power of the second
 					getOperandsFromStack(operandStack, num1, num2);
 					operandStack.push(pow(num1, num2));
@@ -259,8 +292,8 @@ namespace day {
 						operandStack.push(-1);
 					} else if (equation[i] == DEFAULT_ARG_PREFIX) {
 
-						int argumentNum = (int)getNumber(equation, length, i + 1, i);
-						operandStack.push(values[argumentNum]);
+						string argument = getVar(equation, length, i + 1, i);
+						operandStack.push(values[argument]);
 					} else throw invalid_argument("Equation is invalid");
 					//// Convert letter to the number it represents and add it to the operand stack
 					//if (equation[i] >= (double)'a' && equation[i] <= (double)'z')
@@ -371,7 +404,7 @@ namespace day {
 		return result;
 	}
 
-	void ReversePolishNotation::getOperandsFromStack(stack<double> &operandStack, double &value1, double &value2) {
+	void ReversePolishNotation::getOperandsFromStack(stack<Primitive*> &operandStack, Primitive *value1, Primitive *value2) {
 
 		if (operandStack.size() < 2)
 			throw invalid_argument("Equation is invalid");
