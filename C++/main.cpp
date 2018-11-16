@@ -21,14 +21,21 @@ int main() {
 		vector<double> values;
 		double result;
 
-		string editedEquation = rpn.stripValuesFromEquation(equation.c_str(), equation.length(), values);
-		cout << editedEquation << endl;
+		// Surrounded with try-catch to prevent testing from crashing the program while still outputting thrown exceptions
+		try {
 
-		editedEquation = rpn.convertInfixToPostFix(editedEquation.c_str(), editedEquation.size());
-		cout << editedEquation << endl;
+			string editedEquation = rpn.stripValuesFromEquation(equation.c_str(), equation.length(), values);
+			cout << editedEquation << endl;
 
-		result = rpn.calcResult(editedEquation.c_str(), editedEquation.size(), values);
-		cout << result << endl;
+			editedEquation = rpn.convertInfixToPostFix(editedEquation.c_str(), editedEquation.size());
+			cout << editedEquation << endl;
+
+			result = rpn.calcResult(editedEquation.c_str(), editedEquation.size(), values);
+			cout << result << endl;
+		} catch (exception &e) {
+
+			cerr << e.what() << endl;
+		}
 
 		// Get input
 		getline(cin, equation);
