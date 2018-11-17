@@ -27,9 +27,45 @@
 
 namespace day {
 
+	// Assignment
+	Character& Character::operator=(Primitive &primitive) {
+
+		switch (primitive.getType()) {
+
+			case CHAR:
+
+				this->setChar(primitive.getChar());
+				break;
+			case SHORT:
+
+				this->setChar(primitive.getShort());
+				break;
+			case INTEGER:
+
+				this->setChar(primitive.getInt());
+				break;
+			case LONG:
+
+				this->setChar(primitive.getLong());
+				break;
+			case FLOAT:
+
+				this->setChar(primitive.getFloat());
+				break;
+			case DOUBLE:
+
+				this->setChar(primitive.getDouble());
+				break;
+			default:
+
+				throw new exception("Unsupported operation");
+		};
+
+		return *this;
+	}
 
 	// Addition
-	Character& Character::operator+(Primitive &primitive) {
+	Character Character::operator+(Primitive &primitive) {
 
 		Character result;
 
@@ -68,7 +104,7 @@ namespace day {
 	}
 
 	// Subtraction
-	Character& Character::operator-(Primitive &primitive) {
+	Character Character::operator-(Primitive &primitive) {
 
 		Character result;
 
@@ -107,7 +143,7 @@ namespace day {
 	}
 
 	// Multiplication
-	Character& Character::operator*(Primitive &primitive) {
+	Character Character::operator*(Primitive &primitive) {
 
 		Character result;
 
@@ -146,7 +182,7 @@ namespace day {
 	}
 
 	// Division
-	Character& Character::operator/(Primitive &primitive) {
+	Character Character::operator/(Primitive &primitive) {
 
 		Character result;
 
@@ -185,7 +221,7 @@ namespace day {
 	}
 
 	// Modulation
-	Character& Character::operator%(Primitive &primitive) {
+	Character Character::operator%(Primitive &primitive) {
 
 		Character result;
 
@@ -257,70 +293,8 @@ namespace day {
 		return result;
 	}
 
-	// Left shift
-	Character& Character::operator<<(Primitive &primitive) {
-
-		Character result;
-
-		switch (primitive.getType()) {
-
-			case CHAR:
-
-				result.setChar(this->getChar() << primitive.getChar());
-				break;
-			case SHORT:
-
-				result.setChar(this->getChar() << primitive.getShort());
-				break;
-			case INTEGER:
-
-				result.setChar(this->getChar() << primitive.getInt());
-				break;
-			case LONG:
-
-				result.setChar(this->getChar() << primitive.getLong());
-				break;
-			default:
-
-				throw new exception("Unsupported operation");
-		};
-
-		return result;
-	}
-
-	// Right shift
-	Character& Character::operator>>(Primitive &primitive) {
-
-		Character result;
-
-		switch (primitive.getType()) {
-
-			case CHAR:
-
-				result.setChar(this->getChar() >> primitive.getChar());
-				break;
-			case SHORT:
-
-				result.setChar(this->getChar() >> primitive.getShort());
-				break;
-			case INTEGER:
-
-				result.setChar(this->getChar() >> primitive.getInt());
-				break;
-			case LONG:
-
-				result.setChar(this->getChar() >> primitive.getLong());
-				break;
-			default:
-
-				throw new exception("Unsupported operation");
-		};
-
-		return result;
-	}
-
 	// Bitwise OR
-	Character& Character::operator|(Primitive &primitive) {
+	Character Character::operator|(Primitive &primitive) {
 
 		Character result;
 
@@ -351,7 +325,7 @@ namespace day {
 	}
 
 	// Bitwise AND
-	Character& Character::operator&(Primitive &primitive) {
+	Character Character::operator&(Primitive &primitive) {
 
 		Character result;
 
@@ -382,7 +356,7 @@ namespace day {
 	}
 
 	// Bitwise NOT
-	Character& Character::operator~() {
+	Character Character::operator~() {
 
 		Character result;
 
@@ -392,7 +366,7 @@ namespace day {
 	}
 
 	// Bitwise XOR
-	Character& Character::operator^(Primitive &primitive) {
+	Character Character::operator^(Primitive &primitive) {
 
 		Character result;
 
@@ -413,6 +387,68 @@ namespace day {
 			case LONG:
 
 				result.setChar(this->getChar() ^ primitive.getLong());
+				break;
+			default:
+
+				throw new exception("Unsupported operation");
+		};
+
+		return result;
+	}
+
+	// Left shift
+	Character Character::operator<<(Primitive &primitive) {
+
+		Character result;
+
+		switch (primitive.getType()) {
+
+			case CHAR:
+
+				result.setChar(this->getChar() << primitive.getChar());
+				break;
+			case SHORT:
+
+				result.setChar(this->getChar() << primitive.getShort());
+				break;
+			case INTEGER:
+
+				result.setChar(this->getChar() << primitive.getInt());
+				break;
+			case LONG:
+
+				result.setChar(this->getChar() << primitive.getLong());
+				break;
+			default:
+
+				throw new exception("Unsupported operation");
+		};
+
+		return result;
+	}
+
+	// Right shift
+	Character Character::operator>>(Primitive &primitive) {
+
+		Character result;
+
+		switch (primitive.getType()) {
+
+			case CHAR:
+
+				result.setChar(this->getChar() >> primitive.getChar());
+				break;
+			case SHORT:
+
+				result.setChar(this->getChar() >> primitive.getShort());
+				break;
+			case INTEGER:
+
+				result.setChar(this->getChar() >> primitive.getInt());
+				break;
+			case LONG:
+
+				result.setChar(this->getChar() >> primitive.getLong());
 				break;
 			default:
 
@@ -667,5 +703,92 @@ namespace day {
 
 		return result;
 	}
-}
 
+	// Addition assignment
+	Character& Character::operator+=(Primitive &primitive) {
+
+		*this = (Primitive)(*this + primitive);
+
+		return *this;
+	}
+
+	// Subtraction assignment
+	Character& Character::operator-=(Primitive &primitive) {
+
+		*this = (Primitive)(*this - primitive);
+
+		return *this;
+	}
+
+	// Multiplication assignment
+	Character& Character::operator*=(Primitive &primitive) {
+
+		*this = (Primitive)(*this * primitive);
+
+		return *this;
+	}
+
+	// Division assignment
+	Character& Character::operator/=(Primitive &primitive) {
+
+		*this = (Primitive)(*this / primitive);
+
+		return *this;
+	}
+
+	// Modulation assignment
+	Character& Character::operator%=(Primitive &primitive) {
+
+		*this = (Primitive)(*this % primitive);
+
+		return *this;
+	}
+
+	// Addition assignment
+	Character& Character::operator+=(Primitive &primitive) {
+
+		*this = (Primitive)(*this + primitive);
+
+		return *this;
+	}
+
+	// Bitwise AND assignment
+	Character& Character::operator&=(Primitive &primitive) {
+
+		*this = (Primitive)(*this & primitive);
+
+		return *this;
+	}
+
+	// Bitwise OR assignment
+	Character& Character::operator|=(Primitive &primitive) {
+
+		*this = (Primitive)(*this | primitive);
+
+		return *this;
+	}
+
+	// Bitwise XOR assignment
+	Character& Character::operator^=(Primitive &primitive) {
+
+		*this = (Primitive)(*this ^ primitive);
+
+		return *this;
+	}
+
+	// Shift left assignment
+	Character& Character::operator<<=(Primitive &primitive) {
+
+		*this = (Primitive)(*this << primitive);
+
+		return *this;
+	}
+
+	// Shift right assignment
+	Character& Character::operator>>=(Primitive &primitive) {
+
+		*this = (Primitive)(*this >> primitive);
+
+		return *this;
+	}
+}
