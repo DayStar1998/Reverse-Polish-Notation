@@ -96,9 +96,9 @@ namespace day {
 				Override logical NOT operator
 
 			Returns:
-				type unique_ptr<Primitive>, the resulting value
+				type Primitive, the resulting value
 		******************************************************************************/
-		unique_ptr<Primitive> operator!() override;
+		Primitive operator!() override;
 
 		/******************************************************************************
 			Function Name: operator&&
@@ -110,9 +110,9 @@ namespace day {
 				primitive - type Primitive &, the value to be compared to
 
 			Returns:
-				type unique_ptr<Primitive>, the resulting value
+				type Primitive, the resulting value
 		******************************************************************************/
-		unique_ptr<Primitive> operator&&(Primitive &primitive) override;
+		Primitive operator&&(Primitive &primitive) override;
 
 		/******************************************************************************
 			Function Name: operator||
@@ -124,8 +124,8 @@ namespace day {
 				primitive - type Primitive &, the value to be compared to
 
 			Returns:
-				type unique_ptr<Primitive>, the resulting value
+				type Primitive, the resulting value
 		******************************************************************************/
-		unique_ptr<Primitive> operator||(Primitive &primitive) override;
+		Primitive operator||(Primitive &primitive) override;
 	};
 }

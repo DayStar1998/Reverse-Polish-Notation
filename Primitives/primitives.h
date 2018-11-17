@@ -34,8 +34,6 @@
 using std::exception;
 using std::string;
 using std::to_string;
-using std::unique_ptr;
-using std::make_unique;
 
 namespace day {
 
@@ -116,9 +114,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be added to
 
 			Returns:
-				type unique_ptr<Primitive>, the resulting value
+				type Primitive, the resulting value
 		******************************************************************************/
-		virtual unique_ptr<Primitive> operator+(Primitive &primitive);
+		virtual Primitive operator+(Primitive &primitive);
 
 		/******************************************************************************
 			Function Name: operator-
@@ -130,9 +128,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be subtracted by
 
 			Returns:
-				type unique_ptr<Primitive>, the resulting value
+				type Primitive, the resulting value
 		******************************************************************************/
-		virtual unique_ptr<Primitive> operator-(Primitive &primitive);
+		virtual Primitive operator-(Primitive &primitive);
 
 		/******************************************************************************
 			Function Name: operator*
@@ -144,9 +142,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be multiplied by
 
 			Returns:
-				type unique_ptr<Primitive>, the resulting value
+				type Primitive, the resulting value
 		******************************************************************************/
-		virtual unique_ptr<Primitive> operator*(Primitive &primitive);
+		virtual Primitive operator*(Primitive &primitive);
 
 		/******************************************************************************
 			Function Name: operator/
@@ -158,9 +156,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be divided by
 
 			Returns:
-				type unique_ptr<Primitive>, the resulting value
+				type Primitive, the resulting value
 		******************************************************************************/
-		virtual unique_ptr<Primitive> operator/(Primitive &primitive);
+		virtual Primitive operator/(Primitive &primitive);
 
 		/******************************************************************************
 			Function Name: operator%
@@ -172,9 +170,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be modulated by
 
 			Returns:
-				type unique_ptr<Primitive>, the resulting value
+				type Primitive, the resulting value
 		******************************************************************************/
-		virtual unique_ptr<Primitive> operator%(Primitive &primitive);
+		virtual Primitive operator%(Primitive &primitive);
 
 		/******************************************************************************
 			Function Name: operator++
@@ -194,9 +192,9 @@ namespace day {
 				Override postfix increment operator
 
 			Returns:
-				type unique_ptr<Primitive>, the resulting value
+				type Primitive, the resulting value
 		******************************************************************************/
-		virtual unique_ptr<Primitive> operator++(int);
+		virtual Primitive operator++(int);
 
 		/******************************************************************************
 			Function Name: operator--
@@ -216,9 +214,9 @@ namespace day {
 				Override postfix decrement operator
 
 			Returns:
-				type unique_ptr<Primitive>, the resulting value
+				type Primitive, the resulting value
 		******************************************************************************/
-		virtual unique_ptr<Primitive> operator--(int);
+		virtual Primitive operator--(int);
 
 		/******************************************************************************
 			Bitwise operators
@@ -234,9 +232,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be bitwise OR'd by
 
 			Returns:
-				type unique_ptr<Primitive>, the resulting value
+				type Primitive, the resulting value
 		******************************************************************************/
-		virtual unique_ptr<Primitive> operator|(Primitive &primitive);
+		virtual Primitive operator|(Primitive &primitive);
 
 		/******************************************************************************
 			Function Name: operator&
@@ -248,9 +246,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be bitwise AND'd by
 
 			Returns:
-				type unique_ptr<Primitive>, the resulting value
+				type Primitive, the resulting value
 		******************************************************************************/
-		virtual unique_ptr<Primitive> operator&(Primitive &primitive);
+		virtual Primitive operator&(Primitive &primitive);
 
 		/******************************************************************************
 			Function Name: operator~
@@ -259,9 +257,9 @@ namespace day {
 				Override bitwise NOT operator
 
 			Returns:
-				type unique_ptr<Primitive>, the resulting value
+				type Primitive, the resulting value
 		******************************************************************************/
-		virtual unique_ptr<Primitive> operator~();
+		virtual Primitive operator~();
 
 		/******************************************************************************
 			Function Name: operator^
@@ -273,9 +271,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be bitwise XOR'd by
 
 			Returns:
-				type unique_ptr<Primitive>, the resulting value
+				type Primitive, the resulting value
 		******************************************************************************/
-		virtual unique_ptr<Primitive> operator^(Primitive &primitive);
+		virtual Primitive operator^(Primitive &primitive);
 
 		/******************************************************************************
 			Function Name: operator<<
@@ -287,9 +285,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be shifted by
 
 			Returns:
-				type unique_ptr<Primitive>, the resulting value
+				type Primitive, the resulting value
 		******************************************************************************/
-		virtual unique_ptr<Primitive> operator<<(Primitive &primitive);
+		virtual Primitive operator<<(Primitive &primitive);
 
 		/******************************************************************************
 			Function Name: operator>>
@@ -301,9 +299,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be shifted by
 
 			Returns:
-				type unique_ptr<Primitive>, the resulting value
+				type Primitive, the resulting value
 		******************************************************************************/
-		virtual unique_ptr<Primitive> operator>>(Primitive &primitive);
+		virtual Primitive operator>>(Primitive &primitive);
 
 		/******************************************************************************
 			Comparison operators
@@ -548,9 +546,9 @@ namespace day {
 				Override logical NOT operator
 
 			Returns:
-				type unique_ptr<Primitive>, the resulting value
+				type Primitive, the resulting value
 		******************************************************************************/
-		virtual unique_ptr<Primitive> operator!();
+		virtual Primitive operator!();
 
 		/******************************************************************************
 			Function Name: operator&&
@@ -562,9 +560,9 @@ namespace day {
 				primitive - type Primitive &, the value to be compared to
 
 			Returns:
-				type unique_ptr<Primitive>, the resulting value
+				type Primitive, the resulting value
 		******************************************************************************/
-		virtual unique_ptr<Primitive> operator&&(Primitive &primitive);
+		virtual Primitive operator&&(Primitive &primitive);
 
 		/******************************************************************************
 			Function Name: operator||
@@ -576,8 +574,8 @@ namespace day {
 				primitive - type Primitive &, the value to be compared to
 
 			Returns:
-				type unique_ptr<Primitive>, the resulting value
+				type Primitive, the resulting value
 		******************************************************************************/
-		virtual unique_ptr<Primitive> operator||(Primitive &primitive);
+		virtual Primitive operator||(Primitive &primitive);
 	};
 }
