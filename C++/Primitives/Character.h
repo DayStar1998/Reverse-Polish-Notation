@@ -252,5 +252,93 @@ namespace day {
 				type Character &, the resulting value
 		******************************************************************************/
 		Character& operator^(Primitive &primitive);
+
+		/******************************************************************************
+			Comparison operators
+		******************************************************************************/
+
+		/******************************************************************************
+			Function Name: operator==
+
+			Des:
+				Override equals operator
+
+			Params:
+				primitive - type Primitive &, the primitive type to be compared to
+
+			Returns:
+				type bool, the resulting value
+		******************************************************************************/
+		bool operator==(Primitive &primitive);
+
+		/******************************************************************************
+			Function Name: operator!=
+
+			Des:
+				Override not equal operator
+
+			Params:
+				primitive - type Primitive &, the primitive type to be compared to
+
+			Returns:
+				type bool, the resulting value
+		******************************************************************************/
+		bool operator!=(Primitive &primitive);
+
+		/******************************************************************************
+			Function Name: operator>
+
+			Des:
+				Override greater than operator
+
+			Params:
+				primitive - type Primitive &, the primitive type to be compared to
+
+			Returns:
+				type bool, the resulting value
+		******************************************************************************/
+		bool operator>(Primitive &primitive);
+
+		/******************************************************************************
+			Function Name: operator<
+
+			Des:
+				Override less than operator
+
+			Params:
+				primitive - type Primitive &, the primitive type to be compared to
+
+			Returns:
+				type bool, the resulting value
+		******************************************************************************/
+		bool operator<(Primitive &primitive);
+
+		/******************************************************************************
+			Function Name: operator>=
+
+			Des:
+				Override greater than or equal to operator
+
+			Params:
+				primitive - type Primitive &, the primitive type to be compared to
+
+			Returns:
+				type bool, the resulting value
+		******************************************************************************/
+		bool operator>=(Primitive &primitive);
+
+		/******************************************************************************
+			Function Name: operator<=
+
+			Des:
+				Override less than or equal to operator
+
+			Params:
+				primitive - type Primitive &, the primitive type to be compared to
+
+			Returns:
+				type bool, the resulting value
+		******************************************************************************/
+		bool operator<=(Primitive &primitive);
 	};
 }

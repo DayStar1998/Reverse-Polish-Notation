@@ -421,5 +421,251 @@ namespace day {
 
 		return result;
 	}
+
+	// Equals
+	bool Character::operator==(Primitive &primitive) {
+
+		bool result;
+
+		switch (primitive.getType()) {
+
+			case CHAR:
+
+				result = this->getChar() == primitive.getChar();
+				break;
+			case SHORT:
+
+				result = this->getChar() == primitive.getShort();
+				break;
+			case INTEGER:
+
+				result = this->getChar() == primitive.getInt();
+				break;
+			case LONG:
+
+				result = this->getChar() == primitive.getLong();
+				break;
+			case FLOAT:
+
+				// TODO: Test if this is possible with the issues caused by it's precision
+				result = this->getChar() == primitive.getFloat();
+				break;
+			case DOUBLE:
+
+				// TODO: Test if this is possible with the issues caused by it's precision
+				result = this->getChar() == primitive.getDouble();
+				break;
+			default:
+
+				throw new exception("Unsupported operation");
+		};
+
+		return result;
+	}
+
+	// Not equal
+	bool Character::operator!=(Primitive &primitive) {
+
+		bool result;
+
+		switch (primitive.getType()) {
+
+			case CHAR:
+
+				result = this->getChar() != primitive.getChar();
+				break;
+			case SHORT:
+
+				result = this->getChar() != primitive.getShort();
+				break;
+			case INTEGER:
+
+				result = this->getChar() != primitive.getInt();
+				break;
+			case LONG:
+
+				result = this->getChar() != primitive.getLong();
+				break;
+			case FLOAT:
+
+				// TODO: Test if this is possible with the issues caused by it's precision
+				result = this->getChar() != primitive.getFloat();
+				break;
+			case DOUBLE:
+
+				// TODO: Test if this is possible with the issues caused by it's precision
+				result = this->getChar() != primitive.getDouble();
+				break;
+			default:
+
+				throw new exception("Unsupported operation");
+		};
+
+		return result;
+	}
+
+	// Greater than
+	bool Character::operator>(Primitive &primitive) {
+
+		bool result;
+
+		switch (primitive.getType()) {
+
+			case CHAR:
+
+				result = this->getChar() > primitive.getChar();
+				break;
+			case SHORT:
+
+				result = this->getChar() > primitive.getShort();
+				break;
+			case INTEGER:
+
+				result = this->getChar() > primitive.getInt();
+				break;
+			case LONG:
+
+				result = this->getChar() > primitive.getLong();
+				break;
+			case FLOAT:
+
+				// TODO: Test if this is possible with the issues caused by it's precision
+				result = this->getChar() > primitive.getFloat();
+				break;
+			case DOUBLE:
+
+				// TODO: Test if this is possible with the issues caused by it's precision
+				result = this->getChar() > primitive.getDouble();
+				break;
+			default:
+
+				throw new exception("Unsupported operation");
+		};
+
+		return result;
+	}
+
+	// Less than
+	bool Character::operator<(Primitive &primitive) {
+
+		bool result;
+
+		switch (primitive.getType()) {
+
+			case CHAR:
+
+				result = this->getChar() < primitive.getChar();
+				break;
+			case SHORT:
+
+				result = this->getChar() < primitive.getShort();
+				break;
+			case INTEGER:
+
+				result = this->getChar() < primitive.getInt();
+				break;
+			case LONG:
+
+				result = this->getChar() < primitive.getLong();
+				break;
+			case FLOAT:
+
+				// TODO: Test if this is possible with the issues caused by it's precision
+				result = this->getChar() < primitive.getFloat();
+				break;
+			case DOUBLE:
+
+				// TODO: Test if this is possible with the issues caused by it's precision
+				result = this->getChar() < primitive.getDouble();
+				break;
+			default:
+
+				throw new exception("Unsupported operation");
+		};
+
+		return result;
+	}
+
+	// Greater than or equal to
+	bool Character::operator>=(Primitive &primitive) {
+
+		bool result;
+
+		switch (primitive.getType()) {
+
+			case CHAR:
+
+				result = this->getChar() >= primitive.getChar();
+				break;
+			case SHORT:
+
+				result = this->getChar() >= primitive.getShort();
+				break;
+			case INTEGER:
+
+				result = this->getChar() >= primitive.getInt();
+				break;
+			case LONG:
+
+				result = this->getChar() >= primitive.getLong();
+				break;
+			case FLOAT:
+
+				// TODO: Test if this is possible with the issues caused by it's precision
+				result = this->getChar() >= primitive.getFloat();
+				break;
+			case DOUBLE:
+
+				// TODO: Test if this is possible with the issues caused by it's precision
+				result = this->getChar() >= primitive.getDouble();
+				break;
+			default:
+
+				throw new exception("Unsupported operation");
+		};
+
+		return result;
+	}
+
+	// Less than or equal to
+	bool Character::operator<=(Primitive &primitive) {
+
+		bool result;
+
+		switch (primitive.getType()) {
+
+			case CHAR:
+
+				result = this->getChar() <= primitive.getChar();
+				break;
+			case SHORT:
+
+				result = this->getChar() <= primitive.getShort();
+				break;
+			case INTEGER:
+
+				result = this->getChar() <= primitive.getInt();
+				break;
+			case LONG:
+
+				result = this->getChar() <= primitive.getLong();
+				break;
+			case FLOAT:
+
+				// TODO: Test if this is possible with the issues caused by it's precision
+				result = this->getChar() <= primitive.getFloat();
+				break;
+			case DOUBLE:
+
+				// TODO: Test if this is possible with the issues caused by it's precision
+				result = this->getChar() <= primitive.getDouble();
+				break;
+			default:
+
+				throw new exception("Unsupported operation");
+		};
+
+		return result;
+	}
 }
 
