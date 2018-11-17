@@ -70,35 +70,35 @@ namespace day {
 	}
 
 	// Addition
-	unique_ptr<Primitive> Float::operator+(Primitive &primitive) {
+	Primitive Float::operator+(Primitive &primitive) {
 
-		unique_ptr<Float> result = make_unique<Float>();
+		Float result;
 
 		switch (primitive.getType()) {
 
 			case CHAR:
 
-				result->setFloat(this->getFloat() + primitive.getChar());
+				result.setFloat(this->getFloat() + primitive.getChar());
 				break;
 			case SHORT:
 
-				result->setFloat(this->getFloat() + primitive.getShort());
+				result.setFloat(this->getFloat() + primitive.getShort());
 				break;
 			case INTEGER:
 
-				result->setFloat(this->getFloat() + primitive.getInt());
+				result.setFloat(this->getFloat() + primitive.getInt());
 				break;
 			case LONG:
 
-				result->setFloat(this->getFloat() + primitive.getLong());
+				result.setFloat(this->getFloat() + primitive.getLong());
 				break;
 			case FLOAT:
 
-				result->setFloat(this->getFloat() + primitive.getFloat());
+				result.setFloat(this->getFloat() + primitive.getFloat());
 				break;
 			case DOUBLE:
 
-				result->setFloat(this->getFloat() + primitive.getDouble());
+				result.setFloat(this->getFloat() + primitive.getDouble());
 				break;
 			default:
 
@@ -109,35 +109,35 @@ namespace day {
 	}
 
 	// Subtraction
-	unique_ptr<Primitive> Float::operator-(Primitive &primitive) {
+	Primitive Float::operator-(Primitive &primitive) {
 
-		unique_ptr<Float> result = make_unique<Float>();
+		Float result;
 
 		switch (primitive.getType()) {
 
 			case CHAR:
 
-				result->setFloat(this->getFloat() - primitive.getChar());
+				result.setFloat(this->getFloat() - primitive.getChar());
 				break;
 			case SHORT:
 
-				result->setFloat(this->getFloat() - primitive.getShort());
+				result.setFloat(this->getFloat() - primitive.getShort());
 				break;
 			case INTEGER:
 
-				result->setFloat(this->getFloat() - primitive.getInt());
+				result.setFloat(this->getFloat() - primitive.getInt());
 				break;
 			case LONG:
 
-				result->setFloat(this->getFloat() - primitive.getLong());
+				result.setFloat(this->getFloat() - primitive.getLong());
 				break;
 			case FLOAT:
 
-				result->setFloat(this->getFloat() - primitive.getFloat());
+				result.setFloat(this->getFloat() - primitive.getFloat());
 				break;
 			case DOUBLE:
 
-				result->setFloat(this->getFloat() - primitive.getDouble());
+				result.setFloat(this->getFloat() - primitive.getDouble());
 				break;
 			default:
 
@@ -148,35 +148,35 @@ namespace day {
 	}
 
 	// Multiplication
-	unique_ptr<Primitive> Float::operator*(Primitive &primitive) {
+	Primitive Float::operator*(Primitive &primitive) {
 
-		unique_ptr<Float> result = make_unique<Float>();
+		Float result;
 
 		switch (primitive.getType()) {
 
 			case CHAR:
 
-				result->setFloat(this->getFloat() * primitive.getChar());
+				result.setFloat(this->getFloat() * primitive.getChar());
 				break;
 			case SHORT:
 
-				result->setFloat(this->getFloat() * primitive.getShort());
+				result.setFloat(this->getFloat() * primitive.getShort());
 				break;
 			case INTEGER:
 
-				result->setFloat(this->getFloat() * primitive.getInt());
+				result.setFloat(this->getFloat() * primitive.getInt());
 				break;
 			case LONG:
 
-				result->setFloat(this->getFloat() * primitive.getLong());
+				result.setFloat(this->getFloat() * primitive.getLong());
 				break;
 			case FLOAT:
 
-				result->setFloat(this->getFloat() * primitive.getFloat());
+				result.setFloat(this->getFloat() * primitive.getFloat());
 				break;
 			case DOUBLE:
 
-				result->setFloat(this->getFloat() * primitive.getDouble());
+				result.setFloat(this->getFloat() * primitive.getDouble());
 				break;
 			default:
 
@@ -187,35 +187,35 @@ namespace day {
 	}
 
 	// Division
-	unique_ptr<Primitive> Float::operator/(Primitive &primitive) {
+	Primitive Float::operator/(Primitive &primitive) {
 
-		unique_ptr<Float> result = make_unique<Float>();
+		Float result;
 
 		switch (primitive.getType()) {
 
 			case CHAR:
 
-				result->setFloat(this->getFloat() / primitive.getChar());
+				result.setFloat(this->getFloat() / primitive.getChar());
 				break;
 			case SHORT:
 
-				result->setFloat(this->getFloat() / primitive.getShort());
+				result.setFloat(this->getFloat() / primitive.getShort());
 				break;
 			case INTEGER:
 
-				result->setFloat(this->getFloat() / primitive.getInt());
+				result.setFloat(this->getFloat() / primitive.getInt());
 				break;
 			case LONG:
 
-				result->setFloat(this->getFloat() / primitive.getLong());
+				result.setFloat(this->getFloat() / primitive.getLong());
 				break;
 			case FLOAT:
 
-				result->setFloat(this->getFloat() / primitive.getFloat());
+				result.setFloat(this->getFloat() / primitive.getFloat());
 				break;
 			case DOUBLE:
 
-				result->setFloat(this->getFloat() / primitive.getDouble());
+				result.setFloat(this->getFloat() / primitive.getDouble());
 				break;
 			default:
 
@@ -234,9 +234,9 @@ namespace day {
 	}
 
 	// Postfix incrementation
-	unique_ptr<Primitive> Float::operator++(int) {
+	Primitive Float::operator++(int) {
 
-		unique_ptr<Float> result = make_unique<Float>(this->getFloat());
+		Float result(this->getFloat());
 		++*this;
 
 		return result;
@@ -251,9 +251,9 @@ namespace day {
 	}
 
 	// Postfix decrementation
-	unique_ptr<Primitive> Float::operator--(int) {
+	Primitive Float::operator--(int) {
 
-		unique_ptr<Float> result = make_unique<Float>(this->getFloat());
+		Float result(this->getFloat());
 		--*this;
 
 		return result;

@@ -37,27 +37,27 @@ namespace day {
 		throw new exception("Unsupported operation");
 	}
 
-	unique_ptr<Primitive> Primitive::Primitive::operator+(Primitive &primitive) {
+	Primitive Primitive::Primitive::operator+(Primitive &primitive) {
 
 		throw new exception("Unsupported operation");
 	}
 
-	unique_ptr<Primitive> Primitive::operator-(Primitive &primitive) {
+	Primitive Primitive::operator-(Primitive &primitive) {
 
 		throw new exception("Unsupported operation");
 	}
 
-	unique_ptr<Primitive> Primitive::operator*(Primitive &primitive) {
+	Primitive Primitive::operator*(Primitive &primitive) {
 
 		throw new exception("Unsupported operation");
 	}
 
-	unique_ptr<Primitive> Primitive::operator/(Primitive &primitive) {
+	Primitive Primitive::operator/(Primitive &primitive) {
 
 		throw new exception("Unsupported operation");
 	}
 
-	unique_ptr<Primitive> Primitive::operator%(Primitive &primitive) {
+	Primitive Primitive::operator%(Primitive &primitive) {
 
 		throw new exception("Unsupported operation");
 	}
@@ -67,7 +67,7 @@ namespace day {
 		throw new exception("Unsupported operation");
 	}
 
-	unique_ptr<Primitive> Primitive::operator++(int) {
+	Primitive Primitive::operator++(int) {
 
 		throw new exception("Unsupported operation");
 	}
@@ -77,37 +77,37 @@ namespace day {
 		throw new exception("Unsupported operation");
 	}
 
-	unique_ptr<Primitive> Primitive::operator--(int) {
+	Primitive Primitive::operator--(int) {
 
 		throw new exception("Unsupported operation");
 	}
 
-	unique_ptr<Primitive> Primitive::operator|(Primitive &primitive) {
+	Primitive Primitive::operator|(Primitive &primitive) {
 
 		throw new exception("Unsupported operation");
 	}
 
-	unique_ptr<Primitive> Primitive::operator&(Primitive &primitive) {
+	Primitive Primitive::operator&(Primitive &primitive) {
 
 		throw new exception("Unsupported operation");
 	}
 
-	unique_ptr<Primitive> Primitive::operator~() {
+	Primitive Primitive::operator~() {
 
 		throw new exception("Unsupported operation");
 	}
 
-	unique_ptr<Primitive> Primitive::operator^(Primitive &primitive) {
+	Primitive Primitive::operator^(Primitive &primitive) {
 
 		throw new exception("Unsupported operation");
 	}
 
-	unique_ptr<Primitive> Primitive::operator<<(Primitive &primitive) {
+	Primitive Primitive::operator<<(Primitive &primitive) {
 
 		throw new exception("Unsupported operation");
 	}
 
-	unique_ptr<Primitive> Primitive::operator>>(Primitive &primitive) {
+	Primitive Primitive::operator>>(Primitive &primitive) {
 
 		throw new exception("Unsupported operation");
 	}
@@ -222,17 +222,17 @@ namespace day {
 		return *this;
 	}
 
-	unique_ptr<Primitive> Primitive::operator!() {
+	Primitive Primitive::operator!() {
 
 		throw new exception("Unsupported operation");
 	}
 
-	unique_ptr<Primitive> Primitive::operator&&(Primitive &primitive) {
+	Primitive Primitive::operator&&(Primitive &primitive) {
 
 		throw new exception("Unsupported operation");
 	}
 
-	unique_ptr<Primitive> Primitive::operator||(Primitive &primitive) {
+	Primitive Primitive::operator||(Primitive &primitive) {
 
 		throw new exception("Unsupported operation");
 	}

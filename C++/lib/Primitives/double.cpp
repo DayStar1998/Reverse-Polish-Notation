@@ -70,35 +70,35 @@ namespace day {
 	}
 
 	// Addition
-	unique_ptr<Primitive> Double::operator+(Primitive &primitive) {
+	Primitive Double::operator+(Primitive &primitive) {
 
-		unique_ptr<Double> result = make_unique<Double>();
+		Double result;
 
 		switch (primitive.getType()) {
 
 			case CHAR:
 
-				result->setDouble(this->getDouble() + primitive.getChar());
+				result.setDouble(this->getDouble() + primitive.getChar());
 				break;
 			case SHORT:
 
-				result->setDouble(this->getDouble() + primitive.getShort());
+				result.setDouble(this->getDouble() + primitive.getShort());
 				break;
 			case INTEGER:
 
-				result->setDouble(this->getDouble() + primitive.getInt());
+				result.setDouble(this->getDouble() + primitive.getInt());
 				break;
 			case LONG:
 
-				result->setDouble(this->getDouble() + primitive.getLong());
+				result.setDouble(this->getDouble() + primitive.getLong());
 				break;
 			case FLOAT:
 
-				result->setDouble(this->getDouble() + primitive.getFloat());
+				result.setDouble(this->getDouble() + primitive.getFloat());
 				break;
 			case DOUBLE:
 
-				result->setDouble(this->getDouble() + primitive.getDouble());
+				result.setDouble(this->getDouble() + primitive.getDouble());
 				break;
 			default:
 
@@ -109,35 +109,35 @@ namespace day {
 	}
 
 	// Subtraction
-	unique_ptr<Primitive> Double::operator-(Primitive &primitive) {
+	Primitive Double::operator-(Primitive &primitive) {
 
-		unique_ptr<Double> result = make_unique<Double>();
+		Double result;
 
 		switch (primitive.getType()) {
 
 			case CHAR:
 
-				result->setDouble(this->getDouble() - primitive.getChar());
+				result.setDouble(this->getDouble() - primitive.getChar());
 				break;
 			case SHORT:
 
-				result->setDouble(this->getDouble() - primitive.getShort());
+				result.setDouble(this->getDouble() - primitive.getShort());
 				break;
 			case INTEGER:
 
-				result->setDouble(this->getDouble() - primitive.getInt());
+				result.setDouble(this->getDouble() - primitive.getInt());
 				break;
 			case LONG:
 
-				result->setDouble(this->getDouble() - primitive.getLong());
+				result.setDouble(this->getDouble() - primitive.getLong());
 				break;
 			case FLOAT:
 
-				result->setDouble(this->getDouble() - primitive.getFloat());
+				result.setDouble(this->getDouble() - primitive.getFloat());
 				break;
 			case DOUBLE:
 
-				result->setDouble(this->getDouble() - primitive.getDouble());
+				result.setDouble(this->getDouble() - primitive.getDouble());
 				break;
 			default:
 
@@ -148,35 +148,35 @@ namespace day {
 	}
 
 	// Multiplication
-	unique_ptr<Primitive> Double::operator*(Primitive &primitive) {
+	Primitive Double::operator*(Primitive &primitive) {
 
-		unique_ptr<Double> result = make_unique<Double>();
+		Double result;
 
 		switch (primitive.getType()) {
 
 			case CHAR:
 
-				result->setDouble(this->getDouble() * primitive.getChar());
+				result.setDouble(this->getDouble() * primitive.getChar());
 				break;
 			case SHORT:
 
-				result->setDouble(this->getDouble() * primitive.getShort());
+				result.setDouble(this->getDouble() * primitive.getShort());
 				break;
 			case INTEGER:
 
-				result->setDouble(this->getDouble() * primitive.getInt());
+				result.setDouble(this->getDouble() * primitive.getInt());
 				break;
 			case LONG:
 
-				result->setDouble(this->getDouble() * primitive.getLong());
+				result.setDouble(this->getDouble() * primitive.getLong());
 				break;
 			case FLOAT:
 
-				result->setDouble(this->getDouble() * primitive.getFloat());
+				result.setDouble(this->getDouble() * primitive.getFloat());
 				break;
 			case DOUBLE:
 
-				result->setDouble(this->getDouble() * primitive.getDouble());
+				result.setDouble(this->getDouble() * primitive.getDouble());
 				break;
 			default:
 
@@ -187,35 +187,35 @@ namespace day {
 	}
 
 	// Division
-	unique_ptr<Primitive> Double::operator/(Primitive &primitive) {
+	Primitive Double::operator/(Primitive &primitive) {
 
-		unique_ptr<Double> result = make_unique<Double>();
+		Double result;
 
 		switch (primitive.getType()) {
 
 			case CHAR:
 
-				result->setDouble(this->getDouble() / primitive.getChar());
+				result.setDouble(this->getDouble() / primitive.getChar());
 				break;
 			case SHORT:
 
-				result->setDouble(this->getDouble() / primitive.getShort());
+				result.setDouble(this->getDouble() / primitive.getShort());
 				break;
 			case INTEGER:
 
-				result->setDouble(this->getDouble() / primitive.getInt());
+				result.setDouble(this->getDouble() / primitive.getInt());
 				break;
 			case LONG:
 
-				result->setDouble(this->getDouble() / primitive.getLong());
+				result.setDouble(this->getDouble() / primitive.getLong());
 				break;
 			case FLOAT:
 
-				result->setDouble(this->getDouble() / primitive.getFloat());
+				result.setDouble(this->getDouble() / primitive.getFloat());
 				break;
 			case DOUBLE:
 
-				result->setDouble(this->getDouble() / primitive.getDouble());
+				result.setDouble(this->getDouble() / primitive.getDouble());
 				break;
 			default:
 
@@ -234,9 +234,9 @@ namespace day {
 	}
 
 	// Postfix incrementation
-	unique_ptr<Primitive> Double::operator++(int) {
+	Primitive Double::operator++(int) {
 
-		unique_ptr<Double> result = make_unique<Double>(this->getDouble());
+		Double result(this->getDouble());
 		++*this;
 
 		return result;
@@ -251,9 +251,9 @@ namespace day {
 	}
 
 	// Postfix decrementation
-	unique_ptr<Primitive> Double::operator--(int) {
+	Primitive Double::operator--(int) {
 
-		unique_ptr<Double> result = make_unique<Double>(this->getDouble());
+		Double result(this->getDouble());
 		--*this;
 
 		return result;

@@ -70,35 +70,35 @@ namespace day {
 	}
 
 	// Addition
-	unique_ptr<Primitive> Integer::operator+(Primitive &primitive) {
+	Primitive Integer::operator+(Primitive &primitive) {
 
-		unique_ptr<Integer> result = make_unique<Integer>();
+		Integer result;
 
 		switch (primitive.getType()) {
 
 			case CHAR:
 
-				result->setInt(this->getInt() + primitive.getChar());
+				result.setInt(this->getInt() + primitive.getChar());
 				break;
 			case SHORT:
 
-				result->setInt(this->getInt() + primitive.getShort());
+				result.setInt(this->getInt() + primitive.getShort());
 				break;
 			case INTEGER:
 
-				result->setInt(this->getInt() + primitive.getInt());
+				result.setInt(this->getInt() + primitive.getInt());
 				break;
 			case LONG:
 
-				result->setInt(this->getInt() + primitive.getLong());
+				result.setInt(this->getInt() + primitive.getLong());
 				break;
 			case FLOAT:
 
-				result->setInt(this->getInt() + primitive.getFloat());
+				result.setInt(this->getInt() + primitive.getFloat());
 				break;
 			case DOUBLE:
 
-				result->setInt(this->getInt() + primitive.getDouble());
+				result.setInt(this->getInt() + primitive.getDouble());
 				break;
 			default:
 
@@ -109,35 +109,35 @@ namespace day {
 	}
 
 	// Subtraction
-	unique_ptr<Primitive> Integer::operator-(Primitive &primitive) {
+	Primitive Integer::operator-(Primitive &primitive) {
 
-		unique_ptr<Integer> result = make_unique<Integer>();
+		Integer result;
 
 		switch (primitive.getType()) {
 
 			case CHAR:
 
-				result->setInt(this->getInt() - primitive.getChar());
+				result.setInt(this->getInt() - primitive.getChar());
 				break;
 			case SHORT:
 
-				result->setInt(this->getInt() - primitive.getShort());
+				result.setInt(this->getInt() - primitive.getShort());
 				break;
 			case INTEGER:
 
-				result->setInt(this->getInt() - primitive.getInt());
+				result.setInt(this->getInt() - primitive.getInt());
 				break;
 			case LONG:
 
-				result->setInt(this->getInt() - primitive.getLong());
+				result.setInt(this->getInt() - primitive.getLong());
 				break;
 			case FLOAT:
 
-				result->setInt(this->getInt() - primitive.getFloat());
+				result.setInt(this->getInt() - primitive.getFloat());
 				break;
 			case DOUBLE:
 
-				result->setInt(this->getInt() - primitive.getDouble());
+				result.setInt(this->getInt() - primitive.getDouble());
 				break;
 			default:
 
@@ -148,35 +148,35 @@ namespace day {
 	}
 
 	// Multiplication
-	unique_ptr<Primitive> Integer::operator*(Primitive &primitive) {
+	Primitive Integer::operator*(Primitive &primitive) {
 
-		unique_ptr<Integer> result = make_unique<Integer>();
+		Integer result;
 
 		switch (primitive.getType()) {
 
 			case CHAR:
 
-				result->setInt(this->getInt() * primitive.getChar());
+				result.setInt(this->getInt() * primitive.getChar());
 				break;
 			case SHORT:
 
-				result->setInt(this->getInt() * primitive.getShort());
+				result.setInt(this->getInt() * primitive.getShort());
 				break;
 			case INTEGER:
 
-				result->setInt(this->getInt() * primitive.getInt());
+				result.setInt(this->getInt() * primitive.getInt());
 				break;
 			case LONG:
 
-				result->setInt(this->getInt() * primitive.getLong());
+				result.setInt(this->getInt() * primitive.getLong());
 				break;
 			case FLOAT:
 
-				result->setInt(this->getInt() * primitive.getFloat());
+				result.setInt(this->getInt() * primitive.getFloat());
 				break;
 			case DOUBLE:
 
-				result->setInt(this->getInt() * primitive.getDouble());
+				result.setInt(this->getInt() * primitive.getDouble());
 				break;
 			default:
 
@@ -187,35 +187,35 @@ namespace day {
 	}
 
 	// Division
-	unique_ptr<Primitive> Integer::operator/(Primitive &primitive) {
+	Primitive Integer::operator/(Primitive &primitive) {
 
-		unique_ptr<Integer> result = make_unique<Integer>();
+		Integer result;
 
 		switch (primitive.getType()) {
 
 			case CHAR:
 
-				result->setInt(this->getInt() / primitive.getChar());
+				result.setInt(this->getInt() / primitive.getChar());
 				break;
 			case SHORT:
 
-				result->setInt(this->getInt() / primitive.getShort());
+				result.setInt(this->getInt() / primitive.getShort());
 				break;
 			case INTEGER:
 
-				result->setInt(this->getInt() / primitive.getInt());
+				result.setInt(this->getInt() / primitive.getInt());
 				break;
 			case LONG:
 
-				result->setInt(this->getInt() / primitive.getLong());
+				result.setInt(this->getInt() / primitive.getLong());
 				break;
 			case FLOAT:
 
-				result->setInt(this->getInt() / primitive.getFloat());
+				result.setInt(this->getInt() / primitive.getFloat());
 				break;
 			case DOUBLE:
 
-				result->setInt(this->getInt() / primitive.getDouble());
+				result.setInt(this->getInt() / primitive.getDouble());
 				break;
 			default:
 
@@ -226,35 +226,35 @@ namespace day {
 	}
 
 	// Modulation
-	unique_ptr<Primitive> Integer::operator%(Primitive &primitive) {
+	Primitive Integer::operator%(Primitive &primitive) {
 
-		unique_ptr<Integer> result = make_unique<Integer>();
+		Integer result;
 
 		switch (primitive.getType()) {
 
 			case CHAR:
 
-				result->setInt(this->getInt() % primitive.getChar());
+				result.setInt(this->getInt() % primitive.getChar());
 				break;
 			case SHORT:
 
-				result->setInt(this->getInt() % primitive.getShort());
+				result.setInt(this->getInt() % primitive.getShort());
 				break;
 			case INTEGER:
 
-				result->setInt(this->getInt() % primitive.getInt());
+				result.setInt(this->getInt() % primitive.getInt());
 				break;
 			case LONG:
 
-				result->setInt(this->getInt() % primitive.getLong());
+				result.setInt(this->getInt() % primitive.getLong());
 				break;
 			case FLOAT:
 				// TODO: Decide whether on not to remove this
-				result->setInt(this->getInt() % (int)primitive.getFloat());
+				result.setInt(this->getInt() % (int)primitive.getFloat());
 				break;
 			case DOUBLE:
 
-				result->setInt(this->getInt() % (int)primitive.getDouble());
+				result.setInt(this->getInt() % (int)primitive.getDouble());
 				break;
 			default:
 
@@ -273,9 +273,9 @@ namespace day {
 	}
 
 	// Postfix incrementation
-	unique_ptr<Primitive> Integer::operator++(int) {
+	Primitive Integer::operator++(int) {
 
-		unique_ptr<Integer> result = make_unique<Integer>(this->getInt());
+		Integer result(this->getInt());
 		++*this;
 
 		return result;
@@ -290,36 +290,36 @@ namespace day {
 	}
 
 	// Postfix decrementation
-	unique_ptr<Primitive> Integer::operator--(int) {
+	Primitive Integer::operator--(int) {
 
-		unique_ptr<Integer> result = make_unique<Integer>(this->getInt());
+		Integer result(this->getInt());
 		--*this;
 
 		return result;
 	}
 
 	// Bitwise OR
-	unique_ptr<Primitive> Integer::operator|(Primitive &primitive) {
+	Primitive Integer::operator|(Primitive &primitive) {
 
-		unique_ptr<Integer> result = make_unique<Integer>();
+		Integer result;
 
 		switch (primitive.getType()) {
 
 			case CHAR:
 
-				result->setInt(this->getInt() | primitive.getChar());
+				result.setInt(this->getInt() | primitive.getChar());
 				break;
 			case SHORT:
 
-				result->setInt(this->getInt() | primitive.getShort());
+				result.setInt(this->getInt() | primitive.getShort());
 				break;
 			case INTEGER:
 
-				result->setInt(this->getInt() | primitive.getInt());
+				result.setInt(this->getInt() | primitive.getInt());
 				break;
 			case LONG:
 
-				result->setInt(this->getInt() | primitive.getLong());
+				result.setInt(this->getInt() | primitive.getLong());
 				break;
 			default:
 
@@ -330,27 +330,27 @@ namespace day {
 	}
 
 	// Bitwise AND
-	unique_ptr<Primitive> Integer::operator&(Primitive &primitive) {
+	Primitive Integer::operator&(Primitive &primitive) {
 
-		unique_ptr<Integer> result = make_unique<Integer>();
+		Integer result;
 
 		switch (primitive.getType()) {
 
 			case CHAR:
 
-				result->setInt(this->getInt() & primitive.getChar());
+				result.setInt(this->getInt() & primitive.getChar());
 				break;
 			case SHORT:
 
-				result->setInt(this->getInt() & primitive.getShort());
+				result.setInt(this->getInt() & primitive.getShort());
 				break;
 			case INTEGER:
 
-				result->setInt(this->getInt() & primitive.getInt());
+				result.setInt(this->getInt() & primitive.getInt());
 				break;
 			case LONG:
 
-				result->setInt(this->getInt() & primitive.getLong());
+				result.setInt(this->getInt() & primitive.getLong());
 				break;
 			default:
 
@@ -361,37 +361,37 @@ namespace day {
 	}
 
 	// Bitwise NOT
-	unique_ptr<Primitive> Integer::operator~() {
+	Primitive Integer::operator~() {
 
-		unique_ptr<Integer> result = make_unique<Integer>();
+		Integer result;
 
-		result->setInt(~this->getInt());
+		result.setInt(~this->getInt());
 
 		return result;
 	}
 
 	// Bitwise XOR
-	unique_ptr<Primitive> Integer::operator^(Primitive &primitive) {
+	Primitive Integer::operator^(Primitive &primitive) {
 
-		unique_ptr<Integer> result = make_unique<Integer>();
+		Integer result;
 
 		switch (primitive.getType()) {
 
 			case CHAR:
 
-				result->setInt(this->getInt() ^ primitive.getChar());
+				result.setInt(this->getInt() ^ primitive.getChar());
 				break;
 			case SHORT:
 
-				result->setInt(this->getInt() ^ primitive.getShort());
+				result.setInt(this->getInt() ^ primitive.getShort());
 				break;
 			case INTEGER:
 
-				result->setInt(this->getInt() ^ primitive.getInt());
+				result.setInt(this->getInt() ^ primitive.getInt());
 				break;
 			case LONG:
 
-				result->setInt(this->getInt() ^ primitive.getLong());
+				result.setInt(this->getInt() ^ primitive.getLong());
 				break;
 			default:
 
@@ -402,27 +402,27 @@ namespace day {
 	}
 
 	// Left shift
-	unique_ptr<Primitive> Integer::operator<<(Primitive &primitive) {
+	Primitive Integer::operator<<(Primitive &primitive) {
 
-		unique_ptr<Integer> result = make_unique<Integer>();
+		Integer result;
 
 		switch (primitive.getType()) {
 
 			case CHAR:
 
-				result->setInt(this->getInt() << primitive.getChar());
+				result.setInt(this->getInt() << primitive.getChar());
 				break;
 			case SHORT:
 
-				result->setInt(this->getInt() << primitive.getShort());
+				result.setInt(this->getInt() << primitive.getShort());
 				break;
 			case INTEGER:
 
-				result->setInt(this->getInt() << primitive.getInt());
+				result.setInt(this->getInt() << primitive.getInt());
 				break;
 			case LONG:
 
-				result->setInt(this->getInt() << primitive.getLong());
+				result.setInt(this->getInt() << primitive.getLong());
 				break;
 			default:
 
@@ -433,27 +433,27 @@ namespace day {
 	}
 
 	// Right shift
-	unique_ptr<Primitive> Integer::operator>>(Primitive &primitive) {
+	Primitive Integer::operator>>(Primitive &primitive) {
 
-		unique_ptr<Integer> result = make_unique<Integer>();
+		Integer result;
 
 		switch (primitive.getType()) {
 
 			case CHAR:
 
-				result->setInt(this->getInt() >> primitive.getChar());
+				result.setInt(this->getInt() >> primitive.getChar());
 				break;
 			case SHORT:
 
-				result->setInt(this->getInt() >> primitive.getShort());
+				result.setInt(this->getInt() >> primitive.getShort());
 				break;
 			case INTEGER:
 
-				result->setInt(this->getInt() >> primitive.getInt());
+				result.setInt(this->getInt() >> primitive.getInt());
 				break;
 			case LONG:
 
-				result->setInt(this->getInt() >> primitive.getLong());
+				result.setInt(this->getInt() >> primitive.getLong());
 				break;
 			default:
 
