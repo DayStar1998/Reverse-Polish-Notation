@@ -70,35 +70,35 @@ namespace day {
 	}
 
 	// Addition
-	Float Float::operator+(Primitive &primitive) {
+	unique_ptr<Primitive> Float::operator+(Primitive &primitive) {
 
-		Float result;
+		unique_ptr<Float> result = make_unique<Float>();
 
 		switch (primitive.getType()) {
 
 			case CHAR:
 
-				result.setFloat(this->getFloat() + primitive.getChar());
+				result->setFloat(this->getFloat() + primitive.getChar());
 				break;
 			case SHORT:
 
-				result.setFloat(this->getFloat() + primitive.getShort());
+				result->setFloat(this->getFloat() + primitive.getShort());
 				break;
 			case INTEGER:
 
-				result.setFloat(this->getFloat() + primitive.getInt());
+				result->setFloat(this->getFloat() + primitive.getInt());
 				break;
 			case LONG:
 
-				result.setFloat(this->getFloat() + primitive.getLong());
+				result->setFloat(this->getFloat() + primitive.getLong());
 				break;
 			case FLOAT:
 
-				result.setFloat(this->getFloat() + primitive.getFloat());
+				result->setFloat(this->getFloat() + primitive.getFloat());
 				break;
 			case DOUBLE:
 
-				result.setFloat(this->getFloat() + primitive.getDouble());
+				result->setFloat(this->getFloat() + primitive.getDouble());
 				break;
 			default:
 
@@ -109,35 +109,35 @@ namespace day {
 	}
 
 	// Subtraction
-	Float Float::operator-(Primitive &primitive) {
+	unique_ptr<Primitive> Float::operator-(Primitive &primitive) {
 
-		Float result;
+		unique_ptr<Float> result = make_unique<Float>();
 
 		switch (primitive.getType()) {
 
 			case CHAR:
 
-				result.setFloat(this->getFloat() - primitive.getChar());
+				result->setFloat(this->getFloat() - primitive.getChar());
 				break;
 			case SHORT:
 
-				result.setFloat(this->getFloat() - primitive.getShort());
+				result->setFloat(this->getFloat() - primitive.getShort());
 				break;
 			case INTEGER:
 
-				result.setFloat(this->getFloat() - primitive.getInt());
+				result->setFloat(this->getFloat() - primitive.getInt());
 				break;
 			case LONG:
 
-				result.setFloat(this->getFloat() - primitive.getLong());
+				result->setFloat(this->getFloat() - primitive.getLong());
 				break;
 			case FLOAT:
 
-				result.setFloat(this->getFloat() - primitive.getFloat());
+				result->setFloat(this->getFloat() - primitive.getFloat());
 				break;
 			case DOUBLE:
 
-				result.setFloat(this->getFloat() - primitive.getDouble());
+				result->setFloat(this->getFloat() - primitive.getDouble());
 				break;
 			default:
 
@@ -148,35 +148,35 @@ namespace day {
 	}
 
 	// Multiplication
-	Float Float::operator*(Primitive &primitive) {
+	unique_ptr<Primitive> Float::operator*(Primitive &primitive) {
 
-		Float result;
+		unique_ptr<Float> result = make_unique<Float>();
 
 		switch (primitive.getType()) {
 
 			case CHAR:
 
-				result.setFloat(this->getFloat() * primitive.getChar());
+				result->setFloat(this->getFloat() * primitive.getChar());
 				break;
 			case SHORT:
 
-				result.setFloat(this->getFloat() * primitive.getShort());
+				result->setFloat(this->getFloat() * primitive.getShort());
 				break;
 			case INTEGER:
 
-				result.setFloat(this->getFloat() * primitive.getInt());
+				result->setFloat(this->getFloat() * primitive.getInt());
 				break;
 			case LONG:
 
-				result.setFloat(this->getFloat() * primitive.getLong());
+				result->setFloat(this->getFloat() * primitive.getLong());
 				break;
 			case FLOAT:
 
-				result.setFloat(this->getFloat() * primitive.getFloat());
+				result->setFloat(this->getFloat() * primitive.getFloat());
 				break;
 			case DOUBLE:
 
-				result.setFloat(this->getFloat() * primitive.getDouble());
+				result->setFloat(this->getFloat() * primitive.getDouble());
 				break;
 			default:
 
@@ -187,35 +187,35 @@ namespace day {
 	}
 
 	// Division
-	Float Float::operator/(Primitive &primitive) {
+	unique_ptr<Primitive> Float::operator/(Primitive &primitive) {
 
-		Float result;
+		unique_ptr<Float> result = make_unique<Float>();
 
 		switch (primitive.getType()) {
 
 			case CHAR:
 
-				result.setFloat(this->getFloat() / primitive.getChar());
+				result->setFloat(this->getFloat() / primitive.getChar());
 				break;
 			case SHORT:
 
-				result.setFloat(this->getFloat() / primitive.getShort());
+				result->setFloat(this->getFloat() / primitive.getShort());
 				break;
 			case INTEGER:
 
-				result.setFloat(this->getFloat() / primitive.getInt());
+				result->setFloat(this->getFloat() / primitive.getInt());
 				break;
 			case LONG:
 
-				result.setFloat(this->getFloat() / primitive.getLong());
+				result->setFloat(this->getFloat() / primitive.getLong());
 				break;
 			case FLOAT:
 
-				result.setFloat(this->getFloat() / primitive.getFloat());
+				result->setFloat(this->getFloat() / primitive.getFloat());
 				break;
 			case DOUBLE:
 
-				result.setFloat(this->getFloat() / primitive.getDouble());
+				result->setFloat(this->getFloat() / primitive.getDouble());
 				break;
 			default:
 
@@ -234,9 +234,9 @@ namespace day {
 	}
 
 	// Postfix incrementation
-	Float Float::operator++(int) {
+	unique_ptr<Primitive> Float::operator++(int) {
 
-		Float result = *this;
+		unique_ptr<Float> result = make_unique<Float>(this->getFloat());
 		++*this;
 
 		return result;
@@ -251,9 +251,9 @@ namespace day {
 	}
 
 	// Postfix decrementation
-	Float Float::operator--(int) {
+	unique_ptr<Primitive> Float::operator--(int) {
 
-		Float result = *this;
+		unique_ptr<Float> result = make_unique<Float>(this->getFloat());
 		--*this;
 
 		return result;
@@ -503,45 +503,5 @@ namespace day {
 		};
 
 		return result;
-	}
-
-	// Addition assignment
-	Float& Float::operator+=(Primitive &primitive) {
-
-		*this = (Primitive&)(*this + primitive);
-
-		return *this;
-	}
-
-	// Subtraction assignment
-	Float& Float::operator-=(Primitive &primitive) {
-
-		*this = (Primitive&)(*this - primitive);
-
-		return *this;
-	}
-
-	// Multiplication assignment
-	Float& Float::operator*=(Primitive &primitive) {
-
-		*this = (Primitive&)(*this * primitive);
-
-		return *this;
-	}
-
-	// Division assignment
-	Float& Float::operator/=(Primitive &primitive) {
-
-		*this = (Primitive&)(*this / primitive);
-
-		return *this;
-	}
-
-	// Addition assignment
-	Float& Float::operator+=(Primitive &primitive) {
-
-		*this = (Primitive&)(*this + primitive);
-
-		return *this;
 	}
 }

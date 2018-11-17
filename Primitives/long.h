@@ -29,8 +29,6 @@
 
 #include "primitives.h"
 
-using std::to_string;
-
 namespace day {
 
 	class Long : public Primitive {
@@ -38,14 +36,12 @@ namespace day {
 	private:
 
 		long data;
-
-		Long() : Primitive(Type::LONG), data(0) {}
 	public:
 
 		/******************************************************************************
 		Constructor
 		******************************************************************************/
-		Long(long data) : Primitive(Type::LONG), data(data) {}
+		Long(long data = 0) : Primitive(Type::LONG), data(data) {}
 
 		/******************************************************************************
 			Function Name: toString
@@ -87,7 +83,7 @@ namespace day {
 			Returns:
 				type Long &, the resulting value
 		******************************************************************************/
-		Long& operator=(Primitive &primitive);
+		Long& operator=(Primitive &primitive) override;
 
 		/******************************************************************************
 			Function Name: operator+
@@ -99,9 +95,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be added to
 
 			Returns:
-				type Long, the resulting value
+				type unique_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		Long operator+(Primitive &primitive);
+		unique_ptr<Primitive> operator+(Primitive &primitive) override;
 
 		/******************************************************************************
 			Function Name: operator-
@@ -113,9 +109,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be subtracted by
 
 			Returns:
-				type Long, the resulting value
+				type unique_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		Long operator-(Primitive &primitive);
+		unique_ptr<Primitive> operator-(Primitive &primitive) override;
 
 		/******************************************************************************
 			Function Name: operator*
@@ -127,9 +123,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be multiplied by
 
 			Returns:
-				type Long &, the resulting value
+				type unique_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		Long operator*(Primitive &primitive);
+		unique_ptr<Primitive> operator*(Primitive &primitive) override;
 
 		/******************************************************************************
 			Function Name: operator/
@@ -141,9 +137,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be divided by
 
 			Returns:
-				type Long, the resulting value
+				type unique_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		Long operator/(Primitive &primitive);
+		unique_ptr<Primitive> operator/(Primitive &primitive) override;
 
 		/******************************************************************************
 			Function Name: operator%
@@ -155,9 +151,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be modulated by
 
 			Returns:
-				type Long, the resulting value
+				type unique_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		Long operator%(Primitive &primitive);
+		unique_ptr<Primitive> operator%(Primitive &primitive) override;
 
 		/******************************************************************************
 			Function Name: operator++
@@ -168,7 +164,7 @@ namespace day {
 			Returns:
 				type Long &, the resulting value
 		******************************************************************************/
-		Long& operator++();
+		Long& operator++() override;
 
 		/******************************************************************************
 			Function Name: operator++
@@ -177,9 +173,9 @@ namespace day {
 				Override postfix increment operator
 
 			Returns:
-				type Long, the resulting value
+				type unique_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		Long operator++(int);
+		unique_ptr<Primitive> operator++(int) override;
 
 		/******************************************************************************
 			Function Name: operator--
@@ -190,7 +186,7 @@ namespace day {
 			Returns:
 				type Long &, the resulting value
 		******************************************************************************/
-		Long& operator--();
+		Long& operator--() override;
 
 		/******************************************************************************
 			Function Name: operator--
@@ -199,9 +195,9 @@ namespace day {
 				Override postfix decrement operator
 
 			Returns:
-				type Long, the resulting value
+				type unique_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		Long operator--(int);
+		unique_ptr<Primitive> operator--(int) override;
 
 		/******************************************************************************
 			Bitwise operators
@@ -217,9 +213,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be bitwise OR'd by
 
 			Returns:
-				type Long, the resulting value
+				type unique_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		Long operator|(Primitive &primitive);
+		unique_ptr<Primitive> operator|(Primitive &primitive) override;
 
 		/******************************************************************************
 			Function Name: operator&
@@ -231,9 +227,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be bitwise AND'd by
 
 			Returns:
-				type Long, the resulting value
+				type unique_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		Long operator&(Primitive &primitive);
+		unique_ptr<Primitive> operator&(Primitive &primitive) override;
 
 		/******************************************************************************
 			Function Name: operator~
@@ -242,9 +238,9 @@ namespace day {
 				Override bitwise NOT operator
 
 			Returns:
-				type Long, the resulting value
+				type unique_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		Long operator~();
+		unique_ptr<Primitive> operator~() override;
 
 		/******************************************************************************
 			Function Name: operator^
@@ -256,9 +252,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be bitwise XOR'd by
 
 			Returns:
-				type Long, the resulting value
+				type unique_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		Long operator^(Primitive &primitive);
+		unique_ptr<Primitive> operator^(Primitive &primitive) override;
 
 		/******************************************************************************
 			Function Name: operator<<
@@ -270,9 +266,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be shifted by
 
 			Returns:
-				type Long, the resulting value
+				type unique_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		Long operator<<(Primitive &primitive);
+		unique_ptr<Primitive> operator<<(Primitive &primitive) override;
 
 		/******************************************************************************
 			Function Name: operator>>
@@ -284,9 +280,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be shifted by
 
 			Returns:
-				type Long, the resulting value
+				type unique_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		Long operator>>(Primitive &primitive);
+		unique_ptr<Primitive> operator>>(Primitive &primitive) override;
 
 		/******************************************************************************
 			Comparison operators
@@ -304,7 +300,7 @@ namespace day {
 			Returns:
 				type bool, the resulting value
 		******************************************************************************/
-		bool operator==(Primitive &primitive);
+		bool operator==(Primitive &primitive) override;
 
 		/******************************************************************************
 			Function Name: operator!=
@@ -318,7 +314,7 @@ namespace day {
 			Returns:
 				type bool, the resulting value
 		******************************************************************************/
-		bool operator!=(Primitive &primitive);
+		bool operator!=(Primitive &primitive) override;
 
 		/******************************************************************************
 			Function Name: operator>
@@ -332,7 +328,7 @@ namespace day {
 			Returns:
 				type bool, the resulting value
 		******************************************************************************/
-		bool operator>(Primitive &primitive);
+		bool operator>(Primitive &primitive) override;
 
 		/******************************************************************************
 			Function Name: operator<
@@ -346,7 +342,7 @@ namespace day {
 			Returns:
 				type bool, the resulting value
 		******************************************************************************/
-		bool operator<(Primitive &primitive);
+		bool operator<(Primitive &primitive) override;
 
 		/******************************************************************************
 			Function Name: operator>=
@@ -360,7 +356,7 @@ namespace day {
 			Returns:
 				type bool, the resulting value
 		******************************************************************************/
-		bool operator>=(Primitive &primitive);
+		bool operator>=(Primitive &primitive) override;
 
 		/******************************************************************************
 			Function Name: operator<=
@@ -374,7 +370,7 @@ namespace day {
 			Returns:
 				type bool, the resulting value
 		******************************************************************************/
-		bool operator<=(Primitive &primitive);
+		bool operator<=(Primitive &primitive) override;
 
 		/******************************************************************************
 			Compound assignment operators
@@ -392,7 +388,7 @@ namespace day {
 			Returns:
 				type Long &, the resulting value
 		******************************************************************************/
-		Long& operator+=(Primitive &primitive);
+		Long& operator+=(Primitive &primitive) override;
 
 		/******************************************************************************
 			Function Name: operator-=
@@ -406,7 +402,7 @@ namespace day {
 			Returns:
 				type Long &, the resulting value
 		******************************************************************************/
-		Long& operator-=(Primitive &primitive);
+		Long& operator-=(Primitive &primitive) override;
 
 		/******************************************************************************
 			Function Name: operator*=
@@ -420,7 +416,7 @@ namespace day {
 			Returns:
 				type Long &, the resulting value
 		******************************************************************************/
-		Long& operator*=(Primitive &primitive);
+		Long& operator*=(Primitive &primitive) override;
 
 		/******************************************************************************
 			Function Name: operator/=
@@ -434,7 +430,7 @@ namespace day {
 			Returns:
 				type Long &, the resulting value
 		******************************************************************************/
-		Long& operator/=(Primitive &primitive);
+		Long& operator/=(Primitive &primitive) override;
 
 		/******************************************************************************
 			Function Name: operator%=
@@ -448,7 +444,7 @@ namespace day {
 			Returns:
 				type Long &, the resulting value
 		******************************************************************************/
-		Long& operator%=(Primitive &primitive);
+		Long& operator%=(Primitive &primitive) override;
 
 		/******************************************************************************
 			Function Name: operator&=
@@ -462,7 +458,7 @@ namespace day {
 			Returns:
 				type Long &, the resulting value
 		******************************************************************************/
-		Long& operator&=(Primitive &primitive);
+		Long& operator&=(Primitive &primitive) override;
 
 		/******************************************************************************
 			Function Name: operator|=
@@ -476,7 +472,7 @@ namespace day {
 			Returns:
 				type Long &, the resulting value
 		******************************************************************************/
-		Long& operator|=(Primitive &primitive);
+		Long& operator|=(Primitive &primitive) override;
 
 		/******************************************************************************
 			Function Name: operator^=
@@ -490,7 +486,7 @@ namespace day {
 			Returns:
 				type Long &, the resulting value
 		******************************************************************************/
-		Long& operator^=(Primitive &primitive);
+		Long& operator^=(Primitive &primitive) override;
 
 		/******************************************************************************
 			Function Name: operator<<=
@@ -504,7 +500,7 @@ namespace day {
 			Returns:
 				type Long &, the resulting value
 		******************************************************************************/
-		Long& operator<<=(Primitive &primitive);
+		Long& operator<<=(Primitive &primitive) override;
 
 		/******************************************************************************
 			Function Name: operator>>=
@@ -518,6 +514,6 @@ namespace day {
 			Returns:
 				type Long &, the resulting value
 		******************************************************************************/
-		Long& operator>>=(Primitive &primitive);
+		Long& operator>>=(Primitive &primitive) override;
 	};
 }

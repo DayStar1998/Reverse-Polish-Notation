@@ -44,20 +44,20 @@ namespace day {
 	}
 
 	// Logical NOT
-	Boolean Boolean::operator!() {
+	unique_ptr<Primitive> Boolean::operator!() {
 
-		Boolean result(!this->getBool());
+		unique_ptr<Boolean> result = make_unique<Boolean>(!this->getBool());
 
 		return result;
 	}
 
 	// Logical AND
-	Boolean Boolean::operator&&(Primitive &primitive) {
+	unique_ptr<Primitive> Boolean::operator&&(Primitive &primitive) {
 
-		Boolean result;
+		unique_ptr<Boolean> result = make_unique<Boolean>();
 
 		if (primitive.getType() == BOOLEAN)
-			result.setBool(this->getBool() && primitive.getBool());
+			result->setBool(this->getBool() && primitive.getBool());
 		else
 			throw new exception("Unsupported operation");
 
@@ -65,12 +65,12 @@ namespace day {
 	}
 
 	// Logical OR
-	Boolean Boolean::operator||(Primitive &primitive) {
+	unique_ptr<Primitive> Boolean::operator||(Primitive &primitive) {
 
-		Boolean result;
+		unique_ptr<Boolean> result = make_unique<Boolean>();
 
 		if (primitive.getType() == BOOLEAN)
-			result.setBool(this->getBool() || primitive.getBool());
+			result->setBool(this->getBool() || primitive.getBool());
 		else
 			throw new exception("Unsupported operation");
 
