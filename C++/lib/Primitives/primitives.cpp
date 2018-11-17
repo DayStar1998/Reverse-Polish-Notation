@@ -31,4 +31,209 @@ namespace day {
 
 		return Primitive::TYPE;
 	}
+
+	Primitive& Primitive::operator=(Primitive &primitive) {
+
+		throw new exception("Unsupported operation");
+	}
+
+	unique_ptr<Primitive> Primitive::Primitive::operator+(Primitive &primitive) {
+
+		throw new exception("Unsupported operation");
+	}
+
+	unique_ptr<Primitive> Primitive::operator-(Primitive &primitive) {
+
+		throw new exception("Unsupported operation");
+	}
+
+	unique_ptr<Primitive> Primitive::operator*(Primitive &primitive) {
+
+		throw new exception("Unsupported operation");
+	}
+
+	unique_ptr<Primitive> Primitive::operator/(Primitive &primitive) {
+
+		throw new exception("Unsupported operation");
+	}
+
+	unique_ptr<Primitive> Primitive::operator%(Primitive &primitive) {
+
+		throw new exception("Unsupported operation");
+	}
+
+	Primitive& Primitive::operator++() {
+
+		throw new exception("Unsupported operation");
+	}
+
+	unique_ptr<Primitive> Primitive::operator++(int) {
+
+		throw new exception("Unsupported operation");
+	}
+
+	Primitive& Primitive::operator--() {
+
+		throw new exception("Unsupported operation");
+	}
+
+	unique_ptr<Primitive> Primitive::operator--(int) {
+
+		throw new exception("Unsupported operation");
+	}
+
+	unique_ptr<Primitive> Primitive::operator|(Primitive &primitive) {
+
+		throw new exception("Unsupported operation");
+	}
+
+	unique_ptr<Primitive> Primitive::operator&(Primitive &primitive) {
+
+		throw new exception("Unsupported operation");
+	}
+
+	unique_ptr<Primitive> Primitive::operator~() {
+
+		throw new exception("Unsupported operation");
+	}
+
+	unique_ptr<Primitive> Primitive::operator^(Primitive &primitive) {
+
+		throw new exception("Unsupported operation");
+	}
+
+	unique_ptr<Primitive> Primitive::operator<<(Primitive &primitive) {
+
+		throw new exception("Unsupported operation");
+	}
+
+	unique_ptr<Primitive> Primitive::operator>>(Primitive &primitive) {
+
+		throw new exception("Unsupported operation");
+	}
+
+	bool Primitive::operator==(Primitive &primitive) {
+
+		throw new exception("Unsupported operation");
+	}
+
+	bool Primitive::operator!=(Primitive &primitive) {
+
+		throw new exception("Unsupported operation");
+	}
+
+	bool Primitive::operator>(Primitive &primitive) {
+
+		throw new exception("Unsupported operation");
+	}
+
+	bool Primitive::operator<(Primitive &primitive) {
+
+		throw new exception("Unsupported operation");
+	}
+
+	bool Primitive::operator>=(Primitive &primitive) {
+
+		throw new exception("Unsupported operation");
+	}
+
+	bool Primitive::operator<=(Primitive &primitive) {
+
+		throw new exception("Unsupported operation");
+	}
+
+	// Addition assignment
+	Primitive& Primitive::operator+=(Primitive &primitive) {
+
+		*this = (Primitive&)(*this + primitive);
+
+		return *this;
+	}
+
+	// Subtraction assignment
+	Primitive& Primitive::operator-=(Primitive &primitive) {
+
+		*this = (Primitive&)(*this - primitive);
+
+		return *this;
+	}
+
+	// Multiplication assignment
+	Primitive& Primitive::operator*=(Primitive &primitive) {
+
+		*this = (Primitive&)(*this * primitive);
+
+		return *this;
+	}
+
+	// Division assignment
+	Primitive& Primitive::operator/=(Primitive &primitive) {
+
+		*this = (Primitive&)(*this / primitive);
+
+		return *this;
+	}
+
+	// Modulation assignment
+	Primitive& Primitive::operator%=(Primitive &primitive) {
+
+		*this = (Primitive&)(*this % primitive);
+
+		return *this;
+	}
+
+	// Bitwise AND assignment
+	Primitive& Primitive::operator&=(Primitive &primitive) {
+
+		*this = (Primitive&)(*this & primitive);
+
+		return *this;
+	}
+
+	// Bitwise OR assignment
+	Primitive& Primitive::operator|=(Primitive &primitive) {
+
+		*this = (Primitive&)(*this | primitive);
+
+		return *this;
+	}
+
+	// Bitwise XOR assignment
+	Primitive& Primitive::operator^=(Primitive &primitive) {
+
+		*this = (Primitive&)(*this ^ primitive);
+
+		return *this;
+	}
+
+	// Shift left assignment
+	Primitive& Primitive::operator<<=(Primitive &primitive) {
+
+		*this = (Primitive&)(*this << primitive);
+
+		return *this;
+	}
+
+	// Shift right assignment
+	Primitive& Primitive::operator>>=(Primitive &primitive) {
+
+		*this = (Primitive&)(*this >> primitive);
+
+		return *this;
+	}
+
+	unique_ptr<Primitive> Primitive::operator!() {
+
+		throw new exception("Unsupported operation");
+	}
+
+	unique_ptr<Primitive> Primitive::operator&&(Primitive &primitive) {
+
+		throw new exception("Unsupported operation");
+	}
+
+	unique_ptr<Primitive> Primitive::operator||(Primitive &primitive) {
+
+		throw new exception("Unsupported operation");
+	}
 }

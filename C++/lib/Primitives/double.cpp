@@ -70,35 +70,35 @@ namespace day {
 	}
 
 	// Addition
-	Double Double::operator+(Primitive &primitive) {
+	unique_ptr<Primitive> Double::operator+(Primitive &primitive) {
 
-		Double result;
+		unique_ptr<Double> result = make_unique<Double>();
 
 		switch (primitive.getType()) {
 
 			case CHAR:
 
-				result.setDouble(this->getDouble() + primitive.getChar());
+				result->setDouble(this->getDouble() + primitive.getChar());
 				break;
 			case SHORT:
 
-				result.setDouble(this->getDouble() + primitive.getShort());
+				result->setDouble(this->getDouble() + primitive.getShort());
 				break;
 			case INTEGER:
 
-				result.setDouble(this->getDouble() + primitive.getInt());
+				result->setDouble(this->getDouble() + primitive.getInt());
 				break;
 			case LONG:
 
-				result.setDouble(this->getDouble() + primitive.getLong());
+				result->setDouble(this->getDouble() + primitive.getLong());
 				break;
 			case FLOAT:
 
-				result.setDouble(this->getDouble() + primitive.getFloat());
+				result->setDouble(this->getDouble() + primitive.getFloat());
 				break;
 			case DOUBLE:
 
-				result.setDouble(this->getDouble() + primitive.getDouble());
+				result->setDouble(this->getDouble() + primitive.getDouble());
 				break;
 			default:
 
@@ -109,35 +109,35 @@ namespace day {
 	}
 
 	// Subtraction
-	Double Double::operator-(Primitive &primitive) {
+	unique_ptr<Primitive> Double::operator-(Primitive &primitive) {
 
-		Double result;
+		unique_ptr<Double> result = make_unique<Double>();
 
 		switch (primitive.getType()) {
 
 			case CHAR:
 
-				result.setDouble(this->getDouble() - primitive.getChar());
+				result->setDouble(this->getDouble() - primitive.getChar());
 				break;
 			case SHORT:
 
-				result.setDouble(this->getDouble() - primitive.getShort());
+				result->setDouble(this->getDouble() - primitive.getShort());
 				break;
 			case INTEGER:
 
-				result.setDouble(this->getDouble() - primitive.getInt());
+				result->setDouble(this->getDouble() - primitive.getInt());
 				break;
 			case LONG:
 
-				result.setDouble(this->getDouble() - primitive.getLong());
+				result->setDouble(this->getDouble() - primitive.getLong());
 				break;
 			case FLOAT:
 
-				result.setDouble(this->getDouble() - primitive.getFloat());
+				result->setDouble(this->getDouble() - primitive.getFloat());
 				break;
 			case DOUBLE:
 
-				result.setDouble(this->getDouble() - primitive.getDouble());
+				result->setDouble(this->getDouble() - primitive.getDouble());
 				break;
 			default:
 
@@ -148,35 +148,35 @@ namespace day {
 	}
 
 	// Multiplication
-	Double Double::operator*(Primitive &primitive) {
+	unique_ptr<Primitive> Double::operator*(Primitive &primitive) {
 
-		Double result;
+		unique_ptr<Double> result = make_unique<Double>();
 
 		switch (primitive.getType()) {
 
 			case CHAR:
 
-				result.setDouble(this->getDouble() * primitive.getChar());
+				result->setDouble(this->getDouble() * primitive.getChar());
 				break;
 			case SHORT:
 
-				result.setDouble(this->getDouble() * primitive.getShort());
+				result->setDouble(this->getDouble() * primitive.getShort());
 				break;
 			case INTEGER:
 
-				result.setDouble(this->getDouble() * primitive.getInt());
+				result->setDouble(this->getDouble() * primitive.getInt());
 				break;
 			case LONG:
 
-				result.setDouble(this->getDouble() * primitive.getLong());
+				result->setDouble(this->getDouble() * primitive.getLong());
 				break;
 			case FLOAT:
 
-				result.setDouble(this->getDouble() * primitive.getFloat());
+				result->setDouble(this->getDouble() * primitive.getFloat());
 				break;
 			case DOUBLE:
 
-				result.setDouble(this->getDouble() * primitive.getDouble());
+				result->setDouble(this->getDouble() * primitive.getDouble());
 				break;
 			default:
 
@@ -187,35 +187,35 @@ namespace day {
 	}
 
 	// Division
-	Double Double::operator/(Primitive &primitive) {
+	unique_ptr<Primitive> Double::operator/(Primitive &primitive) {
 
-		Double result;
+		unique_ptr<Double> result = make_unique<Double>();
 
 		switch (primitive.getType()) {
 
 			case CHAR:
 
-				result.setDouble(this->getDouble() / primitive.getChar());
+				result->setDouble(this->getDouble() / primitive.getChar());
 				break;
 			case SHORT:
 
-				result.setDouble(this->getDouble() / primitive.getShort());
+				result->setDouble(this->getDouble() / primitive.getShort());
 				break;
 			case INTEGER:
 
-				result.setDouble(this->getDouble() / primitive.getInt());
+				result->setDouble(this->getDouble() / primitive.getInt());
 				break;
 			case LONG:
 
-				result.setDouble(this->getDouble() / primitive.getLong());
+				result->setDouble(this->getDouble() / primitive.getLong());
 				break;
 			case FLOAT:
 
-				result.setDouble(this->getDouble() / primitive.getFloat());
+				result->setDouble(this->getDouble() / primitive.getFloat());
 				break;
 			case DOUBLE:
 
-				result.setDouble(this->getDouble() / primitive.getDouble());
+				result->setDouble(this->getDouble() / primitive.getDouble());
 				break;
 			default:
 
@@ -234,9 +234,9 @@ namespace day {
 	}
 
 	// Postfix incrementation
-	Double Double::operator++(int) {
+	unique_ptr<Primitive> Double::operator++(int) {
 
-		Double result = *this;
+		unique_ptr<Double> result = make_unique<Double>(this->getDouble());
 		++*this;
 
 		return result;
@@ -251,9 +251,9 @@ namespace day {
 	}
 
 	// Postfix decrementation
-	Double Double::operator--(int) {
+	unique_ptr<Primitive> Double::operator--(int) {
 
-		Double result = *this;
+		unique_ptr<Double> result = make_unique<Double>(this->getDouble());
 		--*this;
 
 		return result;
@@ -503,37 +503,5 @@ namespace day {
 		};
 
 		return result;
-	}
-
-	// Addition assignment
-	Double& Double::operator+=(Primitive &primitive) {
-
-		*this = (Primitive&)(*this + primitive);
-
-		return *this;
-	}
-
-	// Subtraction assignment
-	Double& Double::operator-=(Primitive &primitive) {
-
-		*this = (Primitive&)(*this - primitive);
-
-		return *this;
-	}
-
-	// Multiplication assignment
-	Double& Double::operator*=(Primitive &primitive) {
-
-		*this = (Primitive&)(*this * primitive);
-
-		return *this;
-	}
-
-	// Division assignment
-	Double& Double::operator/=(Primitive &primitive) {
-
-		*this = (Primitive&)(*this / primitive);
-
-		return *this;
 	}
 }

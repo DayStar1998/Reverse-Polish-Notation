@@ -33,6 +33,9 @@
 
 using std::exception;
 using std::string;
+using std::to_string;
+using std::unique_ptr;
+using std::make_unique;
 
 namespace day {
 
@@ -57,10 +60,10 @@ namespace day {
 
 		/******************************************************************************
 			Function Name: toString
-			
+
 			Des:
 				Get the value of the class as a string
-				
+
 			Returns:
 				type string, the value as a string
 		******************************************************************************/
@@ -83,5 +86,498 @@ namespace day {
 		virtual void setFloat(float data) { throw new exception("Float is not available for this type"); }
 		virtual void setDouble(double data) { throw new exception("Double is not available for this type"); }
 		virtual void setBool(bool data) { throw new exception("Bool is not available for this type"); }
+
+		/******************************************************************************
+			Arithmetic operators
+		******************************************************************************/
+
+		/******************************************************************************
+			Function Name: operator=
+
+			Des:
+				Override assignment operator
+
+			Params:
+				primitive - type Primitive &, the primitive type this is to be
+					assigned to
+
+			Returns:
+				type Primitive &, the resulting value
+		******************************************************************************/
+		virtual Primitive& operator=(Primitive &primitive);
+
+		/******************************************************************************
+			Function Name: operator+
+
+			Des:
+				Override addition operator
+
+			Params:
+				primitive - type Primitive &, the primitive type to be added to
+
+			Returns:
+				type unique_ptr<Primitive>, the resulting value
+		******************************************************************************/
+		virtual unique_ptr<Primitive> operator+(Primitive &primitive);
+
+		/******************************************************************************
+			Function Name: operator-
+
+			Des:
+				Override subtraction operator
+
+			Params:
+				primitive - type Primitive &, the primitive type to be subtracted by
+
+			Returns:
+				type unique_ptr<Primitive>, the resulting value
+		******************************************************************************/
+		virtual unique_ptr<Primitive> operator-(Primitive &primitive);
+
+		/******************************************************************************
+			Function Name: operator*
+
+			Des:
+				Override multiplication operator
+
+			Params:
+				primitive - type Primitive &, the primitive type to be multiplied by
+
+			Returns:
+				type unique_ptr<Primitive>, the resulting value
+		******************************************************************************/
+		virtual unique_ptr<Primitive> operator*(Primitive &primitive);
+
+		/******************************************************************************
+			Function Name: operator/
+
+			Des:
+				Override division operator
+
+			Params:
+				primitive - type Primitive &, the primitive type to be divided by
+
+			Returns:
+				type unique_ptr<Primitive>, the resulting value
+		******************************************************************************/
+		virtual unique_ptr<Primitive> operator/(Primitive &primitive);
+
+		/******************************************************************************
+			Function Name: operator%
+
+			Des:
+				Override modulation operator
+
+			Params:
+				primitive - type Primitive &, the primitive type to be modulated by
+
+			Returns:
+				type unique_ptr<Primitive>, the resulting value
+		******************************************************************************/
+		virtual unique_ptr<Primitive> operator%(Primitive &primitive);
+
+		/******************************************************************************
+			Function Name: operator++
+
+			Des:
+				Override prefix increment operator
+
+			Returns:
+				type Primitive &, the resulting value
+		******************************************************************************/
+		virtual Primitive& operator++();
+
+		/******************************************************************************
+			Function Name: operator++
+
+			Des:
+				Override postfix increment operator
+
+			Returns:
+				type unique_ptr<Primitive>, the resulting value
+		******************************************************************************/
+		virtual unique_ptr<Primitive> operator++(int);
+
+		/******************************************************************************
+			Function Name: operator--
+
+			Des:
+				Override prefix decrement operator
+
+			Returns:
+				type Primitive &, the resulting value
+		******************************************************************************/
+		virtual Primitive& operator--();
+
+		/******************************************************************************
+			Function Name: operator--
+
+			Des:
+				Override postfix decrement operator
+
+			Returns:
+				type unique_ptr<Primitive>, the resulting value
+		******************************************************************************/
+		virtual unique_ptr<Primitive> operator--(int);
+
+		/******************************************************************************
+			Bitwise operators
+		******************************************************************************/
+
+		/******************************************************************************
+			Function Name: operator|
+
+			Des:
+				Override bitwise OR operator
+
+			Params:
+				primitive - type Primitive &, the primitive type to be bitwise OR'd by
+
+			Returns:
+				type unique_ptr<Primitive>, the resulting value
+		******************************************************************************/
+		virtual unique_ptr<Primitive> operator|(Primitive &primitive);
+
+		/******************************************************************************
+			Function Name: operator&
+
+			Des:
+				Override bitwise AND operator
+
+			Params:
+				primitive - type Primitive &, the primitive type to be bitwise AND'd by
+
+			Returns:
+				type unique_ptr<Primitive>, the resulting value
+		******************************************************************************/
+		virtual unique_ptr<Primitive> operator&(Primitive &primitive);
+
+		/******************************************************************************
+			Function Name: operator~
+
+			Des:
+				Override bitwise NOT operator
+
+			Returns:
+				type unique_ptr<Primitive>, the resulting value
+		******************************************************************************/
+		virtual unique_ptr<Primitive> operator~();
+
+		/******************************************************************************
+			Function Name: operator^
+
+			Des:
+				Override bitwise XOR operator
+
+			Params:
+				primitive - type Primitive &, the primitive type to be bitwise XOR'd by
+
+			Returns:
+				type unique_ptr<Primitive>, the resulting value
+		******************************************************************************/
+		virtual unique_ptr<Primitive> operator^(Primitive &primitive);
+
+		/******************************************************************************
+			Function Name: operator<<
+
+			Des:
+				Override left shift operator
+
+			Params:
+				primitive - type Primitive &, the primitive type to be shifted by
+
+			Returns:
+				type unique_ptr<Primitive>, the resulting value
+		******************************************************************************/
+		virtual unique_ptr<Primitive> operator<<(Primitive &primitive);
+
+		/******************************************************************************
+			Function Name: operator>>
+
+			Des:
+				Override right shift operator
+
+			Params:
+				primitive - type Primitive &, the primitive type to be shifted by
+
+			Returns:
+				type unique_ptr<Primitive>, the resulting value
+		******************************************************************************/
+		virtual unique_ptr<Primitive> operator>>(Primitive &primitive);
+
+		/******************************************************************************
+			Comparison operators
+		******************************************************************************/
+
+		/******************************************************************************
+			Function Name: operator==
+
+			Des:
+				Override equals operator
+
+			Params:
+				primitive - type Primitive &, the primitive type to be compared to
+
+			Returns:
+				type bool, the resulting value
+		******************************************************************************/
+		virtual bool operator==(Primitive &primitive);
+
+		/******************************************************************************
+			Function Name: operator!=
+
+			Des:
+				Override not equal operator
+
+			Params:
+				primitive - type Primitive &, the primitive type to be compared to
+
+			Returns:
+				type bool, the resulting value
+		******************************************************************************/
+		virtual bool operator!=(Primitive &primitive);
+
+		/******************************************************************************
+			Function Name: operator>
+
+			Des:
+				Override greater than operator
+
+			Params:
+				primitive - type Primitive &, the primitive type to be compared to
+
+			Returns:
+				type bool, the resulting value
+		******************************************************************************/
+		virtual bool operator>(Primitive &primitive);
+
+		/******************************************************************************
+			Function Name: operator<
+
+			Des:
+				Override less than operator
+
+			Params:
+				primitive - type Primitive &, the primitive type to be compared to
+
+			Returns:
+				type bool, the resulting value
+		******************************************************************************/
+		virtual bool operator<(Primitive &primitive);
+
+		/******************************************************************************
+			Function Name: operator>=
+
+			Des:
+				Override greater than or equal to operator
+
+			Params:
+				primitive - type Primitive &, the primitive type to be compared to
+
+			Returns:
+				type bool, the resulting value
+		******************************************************************************/
+		virtual bool operator>=(Primitive &primitive);
+
+		/******************************************************************************
+			Function Name: operator<=
+
+			Des:
+				Override less than or equal to operator
+
+			Params:
+				primitive - type Primitive &, the primitive type to be compared to
+
+			Returns:
+				type bool, the resulting value
+		******************************************************************************/
+		virtual bool operator<=(Primitive &primitive);
+
+		/******************************************************************************
+			Compound assignment operators
+		******************************************************************************/
+
+		/******************************************************************************
+			Function Name: operator+=
+
+			Des:
+				Override addition assignment operator
+
+			Params:
+				primitive - type Primitive &, the primitive type to be added to
+
+			Returns:
+				type Primitive &, the resulting value
+		******************************************************************************/
+		virtual Primitive& operator+=(Primitive &primitive);
+
+		/******************************************************************************
+			Function Name: operator-=
+
+			Des:
+				Override subtraction assignment operator
+
+			Params:
+				primitive - type Primitive &, the primitive type to be subtracted by
+
+			Returns:
+				type Primitive &, the resulting value
+		******************************************************************************/
+		virtual Primitive& operator-=(Primitive &primitive);
+
+		/******************************************************************************
+			Function Name: operator*=
+
+			Des:
+				Override multiplication assignment operator
+
+			Params:
+				primitive - type Primitive &, the primitive type to be multiplied by
+
+			Returns:
+				type Primitive &, the resulting value
+		******************************************************************************/
+		virtual Primitive& operator*=(Primitive &primitive);
+
+		/******************************************************************************
+			Function Name: operator/=
+
+			Des:
+				Override division assignment operator
+
+			Params:
+				primitive - type Primitive &, the primitive type to be divided by
+
+			Returns:
+				type Primitive &, the resulting value
+		******************************************************************************/
+		virtual Primitive& operator/=(Primitive &primitive);
+
+		/******************************************************************************
+			Function Name: operator%=
+
+			Des:
+				Override modulation assignment operator
+
+			Params:
+				primitive - type Primitive &, the primitive type to be modulated by
+
+			Returns:
+				type Primitive &, the resulting value
+		******************************************************************************/
+		virtual Primitive& operator%=(Primitive &primitive);
+
+		/******************************************************************************
+			Function Name: operator&=
+
+			Des:
+				Override bitwise AND assignment operator
+
+			Params:
+				primitive - type Primitive &, the primitive type to be AND'd by
+
+			Returns:
+				type Primitive &, the resulting value
+		******************************************************************************/
+		virtual Primitive& operator&=(Primitive &primitive);
+
+		/******************************************************************************
+			Function Name: operator|=
+
+			Des:
+				Override bitwise OR assignment operator
+
+			Params:
+				primitive - type Primitive &, the primitive type to be OR'd by
+
+			Returns:
+				type Primitive &, the resulting value
+		******************************************************************************/
+		virtual Primitive& operator|=(Primitive &primitive);
+
+		/******************************************************************************
+			Function Name: operator^=
+
+			Des:
+				Override bitwise XOR assignment operator
+
+			Params:
+				primitive - type Primitive &, the primitive type to be XOR'd by
+
+			Returns:
+				type Primitive &, the resulting value
+		******************************************************************************/
+		virtual Primitive& operator^=(Primitive &primitive);
+
+		/******************************************************************************
+			Function Name: operator<<=
+
+			Des:
+				Override shift left assignment operator
+
+			Params:
+				primitive - type Primitive &, the primitive type to be shifted left by
+
+			Returns:
+				type Primitive &, the resulting value
+		******************************************************************************/
+		virtual Primitive& operator<<=(Primitive &primitive);
+
+		/******************************************************************************
+			Function Name: operator>>=
+
+			Des:
+				Override shift right assignment operator
+
+			Params:
+				primitive - type Primitive &, the primitive type to be shifted right by
+
+			Returns:
+				type Primitive &, the resulting value
+		******************************************************************************/
+		virtual Primitive& operator>>=(Primitive &primitive);
+
+		/******************************************************************************
+			Logic Operators
+		******************************************************************************/
+
+		/******************************************************************************
+			Function Name: operator!
+
+			Des:
+				Override logical NOT operator
+
+			Returns:
+				type unique_ptr<Primitive>, the resulting value
+		******************************************************************************/
+		virtual unique_ptr<Primitive> operator!();
+
+		/******************************************************************************
+			Function Name: operator&&
+
+			Des:
+				Override logical AND operator
+
+			Params:
+				primitive - type Primitive &, the value to be compared to
+
+			Returns:
+				type unique_ptr<Primitive>, the resulting value
+		******************************************************************************/
+		virtual unique_ptr<Primitive> operator&&(Primitive &primitive);
+
+		/******************************************************************************
+			Function Name: operator||
+
+			Des:
+				Override logical OR operator
+
+			Params:
+				primitive - type Primitive &, the value to be compared to
+
+			Returns:
+				type unique_ptr<Primitive>, the resulting value
+		******************************************************************************/
+		virtual unique_ptr<Primitive> operator||(Primitive &primitive);
 	};
 }

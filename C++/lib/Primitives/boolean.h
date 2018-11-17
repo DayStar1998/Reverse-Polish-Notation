@@ -29,8 +29,6 @@
 
 #include "primitives.h"
 
-using std::to_string;
-
 namespace day {
 
 	class Boolean : public Primitive {
@@ -38,14 +36,12 @@ namespace day {
 	private:
 
 		bool data;
-
-		Boolean() : Primitive(Type::BOOLEAN), data(false) {}
 	public:
 
 		/******************************************************************************
 		Constructor
 		******************************************************************************/
-		Boolean(bool data) : Primitive(Type::BOOLEAN), data(data) {}
+		Boolean(bool data = false) : Primitive(Type::BOOLEAN), data(data) {}
 
 		/******************************************************************************
 			Function Name: toString
@@ -71,7 +67,7 @@ namespace day {
 		}
 
 		/******************************************************************************
-		Logic Operators
+			Arithmetic operators
 		******************************************************************************/
 
 		/******************************************************************************
@@ -87,7 +83,11 @@ namespace day {
 			Returns:
 				type Boolean &, the resulting value
 		******************************************************************************/
-		Boolean& operator=(Primitive &primitive);
+		Boolean& operator=(Primitive &primitive) override;
+
+		/******************************************************************************
+			Logic Operators
+		******************************************************************************/
 
 		/******************************************************************************
 			Function Name: operator!
@@ -96,9 +96,9 @@ namespace day {
 				Override logical NOT operator
 
 			Returns:
-				type Boolean, the resulting value
+				type unique_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		Boolean operator!();
+		unique_ptr<Primitive> operator!() override;
 
 		/******************************************************************************
 			Function Name: operator&&
@@ -110,9 +110,9 @@ namespace day {
 				primitive - type Primitive &, the value to be compared to
 
 			Returns:
-				type Boolean, the resulting value
+				type unique_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		Boolean operator&&(Primitive &primitive);
+		unique_ptr<Primitive> operator&&(Primitive &primitive) override;
 
 		/******************************************************************************
 			Function Name: operator||
@@ -124,8 +124,8 @@ namespace day {
 				primitive - type Primitive &, the value to be compared to
 
 			Returns:
-				type Boolean, the resulting value
+				type unique_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		Boolean operator||(Primitive &primitive);
+		unique_ptr<Primitive> operator||(Primitive &primitive) override;
 	};
 }
