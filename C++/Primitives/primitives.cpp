@@ -15,52 +15,50 @@
 ******************************************************************************/
 
 /******************************************************************************
-	File Name: primitives.cpp
+	File Name: Primitive.cpp
 	
 	Author: Matthew Day
 	
 	Description:
-		Implementation file for primitives.h
+		Implementation file for Primitive.h
 ******************************************************************************/
 
 #include "primitives.h"
 
-Primitives::Type Primitives::getType() {
+namespace day {
 
-	return Primitives::TYPE;
-}
+	Primitive::Type Primitive::getType() {
 
-char Character::getChar() {
+		return Primitive::TYPE;
+	}
 
-	return data;
-}
+	char Character::getChar() {
 
-int Integer::getInt() {
+		return data;
+	}
 
-	return data;
-}
+	int Integer::getInt() {
 
-long Long::getLong() {
+		return data;
+	}
 
-	return data;
-}
+	long Long::getLong() {
 
-long long LongLong::getLongLong() {
+		return data;
+	}
 
-	return data;
-}
+	float Float::getFloat() {
 
-float Float::getFloat() {
+		return data;
+	}
 
-	return data;
-}
+	double Double::getDouble() {
 
-double Double::getDouble() {
+		return data;
+	}
 
-	return data;
-}
+	bool Boolean::getBool() {
 
-bool Boolean::getBool() {
-
-	return data;
+		return data;
+	}
 }

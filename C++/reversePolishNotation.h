@@ -37,7 +37,7 @@
 #include <stdexcept>
 
 #include "stringUtils.h"
-#include "primitives.h"
+#include "Primitives/primitives.h"
 
 using std::string;
 using std::stack;

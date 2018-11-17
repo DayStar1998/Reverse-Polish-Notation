@@ -28,7 +28,7 @@
 #include <string>
 #include <cctype>
 
-#include "primitives.h"
+#include "Primitives/primitives.h"
 
 using std::string;
 using std::isdigit;
