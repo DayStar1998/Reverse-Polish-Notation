@@ -209,7 +209,7 @@ namespace day {
 		if (equation == nullptr)
 			throw invalid_argument("Equation is null");
 
-		stack<Primitive*> operandStack;
+		stack<Primitive> operandStack;
 		Primitive *result;
 		Primitive *num1, *num2;
 
@@ -221,26 +221,26 @@ namespace day {
 
 					// Adds operands to each other
 					getOperandsFromStack(operandStack, num1, num2);
-					operandStack.push(num1 + num2);
+					operandStack.push(*num1 + *num2);
 					break;
 				case '-':
 
 					// Subtracts second operand from the first
 					getOperandsFromStack(operandStack, num1, num2);
-					operandStack.push(num1 - num2);
+					operandStack.push(*num1 - *num2);
 					break;
 				case '*':
 
 					// Multiplies operands with each other
 					getOperandsFromStack(operandStack, num1, num2);
-					operandStack.push(num1 * num2);
+					operandStack.push(*num1 * *num2);
 					break;
 				case '/':
 
 					// Divides second operand from the first
 					// Handling divide by 0 exception is out of scope
 					getOperandsFromStack(operandStack, num1, num2);
-					operandStack.push(num1 / num2);
+					operandStack.push(*num1 / *num2);
 					break;
 				case '%':
 
@@ -404,7 +404,7 @@ namespace day {
 		return result;
 	}
 
-	void ReversePolishNotation::getOperandsFromStack(stack<Primitive*> &operandStack, Primitive *value1, Primitive *value2) {
+	void ReversePolishNotation::getOperandsFromStack(stack<Primitive> &operandStack, Primitive *value1, Primitive *value2) {
 
 		if (operandStack.size() < 2)
 			throw invalid_argument("Equation is invalid");

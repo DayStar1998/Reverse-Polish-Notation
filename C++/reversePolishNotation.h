@@ -231,6 +231,6 @@ namespace day {
 			Throws:
 				Throws exception if the there are less than 2 operands on the stack.
 		******************************************************************************/
-		void getOperandsFromStack(stack<Primitive*> &operandStack, Primitive *value1, Primitive *value2);
+		void getOperandsFromStack(stack<Primitive> &operandStack, Primitive *value1, Primitive *value2);
 	};
 }
