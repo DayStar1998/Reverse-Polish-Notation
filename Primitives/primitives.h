@@ -41,18 +41,18 @@ namespace day {
 
 	public:
 
-		enum Type { CHAR, SHORT, INTEGER, LONG, FLOAT, DOUBLE, BOOLEAN };
+		enum Type { NULLPTR, CHAR, SHORT, INTEGER, LONG, FLOAT, DOUBLE, BOOLEAN };
 
 	protected:
 
 		const Type TYPE;
 
+	public:
+
 		/******************************************************************************
 		Constructor
 		******************************************************************************/
-		Primitive(Type type) : TYPE(type) {}
-
-	public:
+		Primitive(Type type = NULLPTR) : TYPE(type) {}
 
 		inline Type getType();
 
