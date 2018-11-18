@@ -38,6 +38,7 @@
 
 #include "stringUtils.h"
 #include "Primitives/primitives.h"
+#include "Primitives/double.h";
 
 using std::string;
 using std::stack;
@@ -57,7 +58,7 @@ namespace day {
 
 		enum precedenceLevel { OPENING_PARENTHESIS, ADD_SUB, MUL_DIV_MOD, EXP, CLOSING_PARENTHESIS };
 
-		// Generic replacement prefix for values in equation
+		// Generic prefix for values in equation
 		const char DEFAULT_ARG_PREFIX = '`';
 		// Default slot for inserted -1 values
 		const char DEFAULT_NEGATIVE_ONE_VALUE = '~';
@@ -76,7 +77,7 @@ namespace day {
 			Returns:
 				type double, the answer to the equation
 		******************************************************************************/
-		double evaluateEquation(const char *equation, int length);
+		Primitive evaluateEquation(const char *equation, int length);
 
 		/******************************************************************************
 			Function Name: stripValuesFromEquation
@@ -141,12 +142,12 @@ namespace day {
 					corresponding to the variables in param equation.
 
 			Returns:
-				type double, result of the equation.
+				type Primitive, result of the equation.
 
 			Throws:
 				Throws exception if the equation is unsolvable.
 		******************************************************************************/
-		double calcResult(const char *equation, int length, map<string, Primitive&> &values);
+		Primitive calcResult(const char *equation, int length, map<string, Primitive&> &values);
 
 	private:
 
@@ -197,7 +198,7 @@ namespace day {
 				secondOperator - type char, the second operator.
 
 			Returns:
-				type bool, is the first operater lower precedence than the second one, otherwise false.
+				type bool, is the first operator lower precedence than the second one, otherwise false.
 		******************************************************************************/
 		bool isLowerPrecedence(char firstOperator, char secondOperator);
 
@@ -231,6 +232,6 @@ namespace day {
 			Throws:
 				Throws exception if the there are less than 2 operands on the stack.
 		******************************************************************************/
-		void getOperandsFromStack(stack<Primitive> &operandStack, Primitive *value1, Primitive *value2);
+		void getOperandsFromStack(stack<Primitive> &operandStack, Primitive &value1, Primitive &value2);
 	};
 }
