@@ -31,6 +31,8 @@
 #include <iostream>
 #include <string>
 
+#include "Exceptions/divideByZeroException.h"
+
 using std::exception;
 using std::string;
 using std::to_string;
@@ -41,7 +43,18 @@ namespace day {
 
 	public:
 
-		enum Type { NULLPTR, CHAR, SHORT, INTEGER, LONG, FLOAT, DOUBLE, BOOLEAN };
+		// TODO: Find way to make this scale better, currently adding anything here requires updating affected overrides in EVERY child class
+		enum class Type {
+
+			VOID,
+			CHAR,
+			SHORT,
+			INTEGER,
+			LONG,
+			FLOAT,
+			DOUBLE,
+			BOOLEAN
+		};
 
 	protected:
 
@@ -52,9 +65,29 @@ namespace day {
 		/******************************************************************************
 		Constructor
 		******************************************************************************/
-		Primitive(Type type = NULLPTR) : TYPE(type) {}
+		Primitive(Type type = Type::VOID) : TYPE(type) {}
 
+		/******************************************************************************
+			Function Name: getType
+
+			Des:
+				Get the type
+
+			Returns:
+				type string, the type
+		******************************************************************************/
 		inline Type getType();
+
+		/******************************************************************************
+			Function Name: typeName
+
+			Des:
+				Get the type as a string
+
+			Returns:
+				type string, the type as a string
+		******************************************************************************/
+		string typeName();
 
 		/******************************************************************************
 			Function Name: toString
@@ -131,6 +164,20 @@ namespace day {
 				type Primitive, the resulting value
 		******************************************************************************/
 		virtual Primitive operator-(Primitive &primitive);
+
+		/******************************************************************************
+			Function Name: operator-
+
+			Des:
+				Override unary minus operator
+
+			Params:
+				primitive - type Primitive &, the primitive type to be subtracted by
+
+			Returns:
+				type Primitive, the resulting value
+		******************************************************************************/
+		virtual Primitive operator-();
 
 		/******************************************************************************
 			Function Name: operator*
@@ -317,9 +364,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be compared to
 
 			Returns:
-				type bool, the resulting value
+				type Primitive, the resulting value
 		******************************************************************************/
-		virtual bool operator==(Primitive &primitive);
+		virtual Primitive operator==(Primitive &primitive);
 
 		/******************************************************************************
 			Function Name: operator!=
@@ -331,9 +378,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be compared to
 
 			Returns:
-				type bool, the resulting value
+				type Primitive, the resulting value
 		******************************************************************************/
-		virtual bool operator!=(Primitive &primitive);
+		virtual Primitive operator!=(Primitive &primitive);
 
 		/******************************************************************************
 			Function Name: operator>
@@ -345,9 +392,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be compared to
 
 			Returns:
-				type bool, the resulting value
+				type Primitive, the resulting value
 		******************************************************************************/
-		virtual bool operator>(Primitive &primitive);
+		virtual Primitive operator>(Primitive &primitive);
 
 		/******************************************************************************
 			Function Name: operator<
@@ -359,9 +406,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be compared to
 
 			Returns:
-				type bool, the resulting value
+				type Primitive, the resulting value
 		******************************************************************************/
-		virtual bool operator<(Primitive &primitive);
+		virtual Primitive operator<(Primitive &primitive);
 
 		/******************************************************************************
 			Function Name: operator>=
@@ -373,9 +420,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be compared to
 
 			Returns:
-				type bool, the resulting value
+				type Primitive, the resulting value
 		******************************************************************************/
-		virtual bool operator>=(Primitive &primitive);
+		virtual Primitive operator>=(Primitive &primitive);
 
 		/******************************************************************************
 			Function Name: operator<=
@@ -387,9 +434,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be compared to
 
 			Returns:
-				type bool, the resulting value
+				type Primitive, the resulting value
 		******************************************************************************/
-		virtual bool operator<=(Primitive &primitive);
+		virtual Primitive operator<=(Primitive &primitive);
 
 		/******************************************************************************
 			Compound assignment operators

@@ -37,33 +37,33 @@ namespace day {
 
 		switch (primitive.getType()) {
 
-			case CHAR:
+			case Type::CHAR:
 
 				this->setInt(primitive.getChar());
 				break;
-			case SHORT:
+			case Type::SHORT:
 
 				this->setInt(primitive.getShort());
 				break;
-			case INTEGER:
+			case Type::INTEGER:
 
 				this->setInt(primitive.getInt());
 				break;
-			case LONG:
+			case Type::LONG:
 
 				this->setInt(primitive.getLong());
 				break;
-			case FLOAT:
+			case Type::FLOAT:
 
 				this->setInt(primitive.getFloat());
 				break;
-			case DOUBLE:
+			case Type::DOUBLE:
 
 				this->setInt(primitive.getDouble());
 				break;
 			default:
 
-				throw new exception("Unsupported operation");
+				Primitive::operator=(primitive);
 		};
 
 		return *this;
@@ -72,37 +72,37 @@ namespace day {
 	// Addition
 	Primitive Integer::operator+(Primitive &primitive) {
 
-		Integer result;
+		Primitive result;
 
 		switch (primitive.getType()) {
 
-			case CHAR:
+			case Type::CHAR:
 
-				result.setInt(this->getInt() + primitive.getChar());
+				result = (Primitive&)Integer(this->getInt() + primitive.getChar());
 				break;
-			case SHORT:
+			case Type::SHORT:
 
-				result.setInt(this->getInt() + primitive.getShort());
+				result = (Primitive&)Integer(this->getInt() + primitive.getShort());
 				break;
-			case INTEGER:
+			case Type::INTEGER:
 
-				result.setInt(this->getInt() + primitive.getInt());
+				result = (Primitive&)Integer(this->getInt() + primitive.getInt());
 				break;
-			case LONG:
+			case Type::LONG:
 
-				result.setInt(this->getInt() + primitive.getLong());
+				result = (Primitive&)Long(this->getInt() + primitive.getLong());
 				break;
-			case FLOAT:
+			case Type::FLOAT:
 
-				result.setInt(this->getInt() + primitive.getFloat());
+				result = (Primitive&)Float(this->getInt() + primitive.getFloat());
 				break;
-			case DOUBLE:
+			case Type::DOUBLE:
 
-				result.setInt(this->getInt() + primitive.getDouble());
+				result = (Primitive&)Double(this->getInt() + primitive.getDouble());
 				break;
 			default:
 
-				throw new exception("Unsupported operation");
+				Primitive::operator+(primitive);
 		};
 
 		return result;
@@ -111,76 +111,82 @@ namespace day {
 	// Subtraction
 	Primitive Integer::operator-(Primitive &primitive) {
 
-		Integer result;
+		Primitive result;
 
 		switch (primitive.getType()) {
 
-			case CHAR:
+			case Type::CHAR:
 
-				result.setInt(this->getInt() - primitive.getChar());
+				result = (Primitive&)Integer(this->getInt() - primitive.getChar());
 				break;
-			case SHORT:
+			case Type::SHORT:
 
-				result.setInt(this->getInt() - primitive.getShort());
+				result = (Primitive&)Integer(this->getInt() - primitive.getShort());
 				break;
-			case INTEGER:
+			case Type::INTEGER:
 
-				result.setInt(this->getInt() - primitive.getInt());
+				result = (Primitive&)Integer(this->getInt() - primitive.getInt());
 				break;
-			case LONG:
+			case Type::LONG:
 
-				result.setInt(this->getInt() - primitive.getLong());
+				result = (Primitive&)Long(this->getInt() - primitive.getLong());
 				break;
-			case FLOAT:
+			case Type::FLOAT:
 
-				result.setInt(this->getInt() - primitive.getFloat());
+				result = (Primitive&)Float(this->getInt() - primitive.getFloat());
 				break;
-			case DOUBLE:
+			case Type::DOUBLE:
 
-				result.setInt(this->getInt() - primitive.getDouble());
+				result = (Primitive&)Double(this->getInt() - primitive.getDouble());
 				break;
 			default:
 
-				throw new exception("Unsupported operation");
+				Primitive::operator-(primitive);
 		};
 
 		return result;
 	}
 
+	// Unary minus
+	Primitive Integer::operator-() {
+
+		return Integer(-data);
+	}
+
 	// Multiplication
 	Primitive Integer::operator*(Primitive &primitive) {
 
-		Integer result;
+		Primitive result;
 
 		switch (primitive.getType()) {
 
-			case CHAR:
+			case Type::CHAR:
 
-				result.setInt(this->getInt() * primitive.getChar());
+				result = (Primitive&)Integer(this->getInt() * primitive.getChar());
 				break;
-			case SHORT:
+			case Type::SHORT:
 
-				result.setInt(this->getInt() * primitive.getShort());
+				result = (Primitive&)Integer(this->getInt() * primitive.getShort());
 				break;
-			case INTEGER:
+			case Type::INTEGER:
 
-				result.setInt(this->getInt() * primitive.getInt());
+				result = (Primitive&)Integer(this->getInt() * primitive.getInt());
 				break;
-			case LONG:
+			case Type::LONG:
 
-				result.setInt(this->getInt() * primitive.getLong());
+				result = (Primitive&)Long(this->getInt() * primitive.getLong());
 				break;
-			case FLOAT:
+			case Type::FLOAT:
 
-				result.setInt(this->getInt() * primitive.getFloat());
+				result = (Primitive&)Float(this->getInt() * primitive.getFloat());
 				break;
-			case DOUBLE:
+			case Type::DOUBLE:
 
-				result.setInt(this->getInt() * primitive.getDouble());
+				result = (Primitive&)Double(this->getInt() * primitive.getDouble());
 				break;
 			default:
 
-				throw new exception("Unsupported operation");
+				Primitive::operator*(primitive);
 		};
 
 		return result;
@@ -189,37 +195,55 @@ namespace day {
 	// Division
 	Primitive Integer::operator/(Primitive &primitive) {
 
-		Integer result;
+		Primitive result;
 
 		switch (primitive.getType()) {
 
-			case CHAR:
+			case Type::CHAR:
 
-				result.setInt(this->getInt() / primitive.getChar());
+				if (primitive.getChar() == 0)
+					throw new DivideByZeroException();
+
+				result = (Primitive&)Integer(this->getInt() / primitive.getChar());
 				break;
-			case SHORT:
+			case Type::SHORT:
 
-				result.setInt(this->getInt() / primitive.getShort());
+				if (primitive.getShort() == 0)
+					throw new DivideByZeroException();
+
+				result = (Primitive&)Integer(this->getInt() / primitive.getShort());
 				break;
-			case INTEGER:
+			case Type::INTEGER:
 
-				result.setInt(this->getInt() / primitive.getInt());
+				if (primitive.getInt() == 0)
+					throw new DivideByZeroException();
+
+				result = (Primitive&)Integer(this->getInt() / primitive.getInt());
 				break;
-			case LONG:
+			case Type::LONG:
 
-				result.setInt(this->getInt() / primitive.getLong());
+				if (primitive.getLong() == 0)
+					throw new DivideByZeroException();
+
+				result = (Primitive&)Long(this->getInt() / primitive.getLong());
 				break;
-			case FLOAT:
+			case Type::FLOAT:
 
-				result.setInt(this->getInt() / primitive.getFloat());
+				if (primitive.getFloat() == 0)
+					throw new DivideByZeroException();
+
+				result = (Primitive&)Float(this->getInt() / primitive.getFloat());
 				break;
-			case DOUBLE:
+			case Type::DOUBLE:
 
-				result.setInt(this->getInt() / primitive.getDouble());
+				if (primitive.getDouble() == 0)
+					throw new DivideByZeroException();
+
+				result = (Primitive&)Double(this->getInt() / primitive.getDouble());
 				break;
 			default:
 
-				throw new exception("Unsupported operation");
+				Primitive::operator/(primitive);
 		};
 
 		return result;
@@ -228,37 +252,41 @@ namespace day {
 	// Modulation
 	Primitive Integer::operator%(Primitive &primitive) {
 
-		Integer result;
+		Primitive result;
 
 		switch (primitive.getType()) {
 
-			case CHAR:
+			case Type::CHAR:
 
-				result.setInt(this->getInt() % primitive.getChar());
-				break;
-			case SHORT:
+				if (primitive.getChar() == 0)
+					throw new DivideByZeroException();
 
-				result.setInt(this->getInt() % primitive.getShort());
+				result = (Primitive&)Integer(this->getInt() % primitive.getChar());
 				break;
-			case INTEGER:
+			case Type::SHORT:
 
-				result.setInt(this->getInt() % primitive.getInt());
-				break;
-			case LONG:
+				if (primitive.getShort() == 0)
+					throw new DivideByZeroException();
 
-				result.setInt(this->getInt() % primitive.getLong());
+				result = (Primitive&)Integer(this->getInt() % primitive.getShort());
 				break;
-			case FLOAT:
-				// TODO: Decide whether on not to remove this
-				result.setInt(this->getInt() % (int)primitive.getFloat());
-				break;
-			case DOUBLE:
+			case Type::INTEGER:
 
-				result.setInt(this->getInt() % (int)primitive.getDouble());
+				if (primitive.getInt() == 0)
+					throw new DivideByZeroException();
+
+				result = (Primitive&)Integer(this->getInt() % primitive.getInt());
+				break;
+			case Type::LONG:
+
+				if (primitive.getLong() == 0)
+					throw new DivideByZeroException();
+
+				result = (Primitive&)Long(this->getInt() % primitive.getLong());
 				break;
 			default:
 
-				throw new exception("Unsupported operation");
+				Primitive::operator%(primitive);
 		};
 
 		return result;
@@ -301,29 +329,29 @@ namespace day {
 	// Bitwise OR
 	Primitive Integer::operator|(Primitive &primitive) {
 
-		Integer result;
+		Primitive result;
 
 		switch (primitive.getType()) {
 
-			case CHAR:
+			case Type::CHAR:
 
-				result.setInt(this->getInt() | primitive.getChar());
+				result = (Primitive&)Integer(this->getInt() | primitive.getChar());
 				break;
-			case SHORT:
+			case Type::SHORT:
 
-				result.setInt(this->getInt() | primitive.getShort());
+				result = (Primitive&)Integer(this->getInt() | primitive.getShort());
 				break;
-			case INTEGER:
+			case Type::INTEGER:
 
-				result.setInt(this->getInt() | primitive.getInt());
+				result = (Primitive&)Integer(this->getInt() | primitive.getInt());
 				break;
-			case LONG:
+			case Type::LONG:
 
-				result.setInt(this->getInt() | primitive.getLong());
+				result = (Primitive&)Long(this->getInt() | primitive.getLong());
 				break;
 			default:
 
-				throw new exception("Unsupported operation");
+				Primitive::operator|(primitive);
 		};
 
 		return result;
@@ -332,29 +360,29 @@ namespace day {
 	// Bitwise AND
 	Primitive Integer::operator&(Primitive &primitive) {
 
-		Integer result;
+		Primitive result;
 
 		switch (primitive.getType()) {
 
-			case CHAR:
+			case Type::CHAR:
 
-				result.setInt(this->getInt() & primitive.getChar());
+				result = (Primitive&)Integer(this->getInt() & primitive.getChar());
 				break;
-			case SHORT:
+			case Type::SHORT:
 
-				result.setInt(this->getInt() & primitive.getShort());
+				result = (Primitive&)Integer(this->getInt() & primitive.getShort());
 				break;
-			case INTEGER:
+			case Type::INTEGER:
 
-				result.setInt(this->getInt() & primitive.getInt());
+				result = (Primitive&)Integer(this->getInt() & primitive.getInt());
 				break;
-			case LONG:
+			case Type::LONG:
 
-				result.setInt(this->getInt() & primitive.getLong());
+				result = (Primitive&)Long(this->getInt() & primitive.getLong());
 				break;
 			default:
 
-				throw new exception("Unsupported operation");
+				Primitive::operator&(primitive);
 		};
 
 		return result;
@@ -373,337 +401,337 @@ namespace day {
 	// Bitwise XOR
 	Primitive Integer::operator^(Primitive &primitive) {
 
-		Integer result;
+		Primitive result;
 
 		switch (primitive.getType()) {
 
-			case CHAR:
+			case Type::CHAR:
 
-				result.setInt(this->getInt() ^ primitive.getChar());
+				result = (Primitive&)Integer(this->getInt() ^ primitive.getChar());
 				break;
-			case SHORT:
+			case Type::SHORT:
 
-				result.setInt(this->getInt() ^ primitive.getShort());
+				result = (Primitive&)Integer(this->getInt() ^ primitive.getShort());
 				break;
-			case INTEGER:
+			case Type::INTEGER:
 
-				result.setInt(this->getInt() ^ primitive.getInt());
+				result = (Primitive&)Integer(this->getInt() ^ primitive.getInt());
 				break;
-			case LONG:
+			case Type::LONG:
 
-				result.setInt(this->getInt() ^ primitive.getLong());
+				result = (Primitive&)Long(this->getInt() ^ primitive.getLong());
 				break;
 			default:
 
-				throw new exception("Unsupported operation");
+				Primitive::operator^(primitive);
 		};
 
 		return result;
 	}
 
-	// Left shift
+	// Bitwise left shift
 	Primitive Integer::operator<<(Primitive &primitive) {
 
-		Integer result;
+		Primitive result;
 
 		switch (primitive.getType()) {
 
-			case CHAR:
+			case Type::CHAR:
 
-				result.setInt(this->getInt() << primitive.getChar());
+				result = (Primitive&)Integer(this->getInt() << primitive.getChar());
 				break;
-			case SHORT:
+			case Type::SHORT:
 
-				result.setInt(this->getInt() << primitive.getShort());
+				result = (Primitive&)Integer(this->getInt() << primitive.getShort());
 				break;
-			case INTEGER:
+			case Type::INTEGER:
 
-				result.setInt(this->getInt() << primitive.getInt());
+				result = (Primitive&)Integer(this->getInt() << primitive.getInt());
 				break;
-			case LONG:
+			case Type::LONG:
 
-				result.setInt(this->getInt() << primitive.getLong());
+				result = (Primitive&)Long(this->getInt() << primitive.getLong());
 				break;
 			default:
 
-				throw new exception("Unsupported operation");
+				Primitive::operator<<(primitive);
 		};
 
 		return result;
 	}
 
-	// Right shift
+	// Bitwise right shift
 	Primitive Integer::operator>>(Primitive &primitive) {
 
-		Integer result;
+		Primitive result;
 
 		switch (primitive.getType()) {
 
-			case CHAR:
+			case Type::CHAR:
 
-				result.setInt(this->getInt() >> primitive.getChar());
+				result = (Primitive&)Integer(this->getInt() >> primitive.getChar());
 				break;
-			case SHORT:
+			case Type::SHORT:
 
-				result.setInt(this->getInt() >> primitive.getShort());
+				result = (Primitive&)Integer(this->getInt() >> primitive.getShort());
 				break;
-			case INTEGER:
+			case Type::INTEGER:
 
-				result.setInt(this->getInt() >> primitive.getInt());
+				result = (Primitive&)Integer(this->getInt() >> primitive.getInt());
 				break;
-			case LONG:
+			case Type::LONG:
 
-				result.setInt(this->getInt() >> primitive.getLong());
+				result = (Primitive&)Long(this->getInt() >> primitive.getLong());
 				break;
 			default:
 
-				throw new exception("Unsupported operation");
+				Primitive::operator>>(primitive);
 		};
 
 		return result;
 	}
 
-	// Equals
-	bool Integer::operator==(Primitive &primitive) {
+	// Equal to
+	Primitive Integer::operator==(Primitive &primitive) {
 
-		bool result;
+		Boolean result;
 
 		switch (primitive.getType()) {
 
-			case CHAR:
+			case Type::CHAR:
 
-				result = this->getInt() == primitive.getChar();
+				result.setBool(this->getInt() == primitive.getChar());
 				break;
-			case SHORT:
+			case Type::SHORT:
 
-				result = this->getInt() == primitive.getShort();
+				result.setBool(this->getInt() == primitive.getShort());
 				break;
-			case INTEGER:
+			case Type::INTEGER:
 
-				result = this->getInt() == primitive.getInt();
+				result.setBool(this->getInt() == primitive.getInt());
 				break;
-			case LONG:
+			case Type::LONG:
 
-				result = this->getInt() == primitive.getLong();
+				result.setBool(this->getInt() == primitive.getLong());
 				break;
-			case FLOAT:
+			case Type::FLOAT:
 
 				// TODO: Test if this is possible with the issues caused by it's precision
-				result = this->getInt() == primitive.getFloat();
+				result.setBool(this->getInt() == primitive.getFloat());
 				break;
-			case DOUBLE:
+			case Type::DOUBLE:
 
 				// TODO: Test if this is possible with the issues caused by it's precision
-				result = this->getInt() == primitive.getDouble();
+				result.setBool(this->getInt() == primitive.getDouble());
 				break;
 			default:
 
-				throw new exception("Unsupported operation");
+				Primitive::operator==(primitive);
 		};
 
 		return result;
 	}
 
-	// Not equal
-	bool Integer::operator!=(Primitive &primitive) {
+	// Not equal to
+	Primitive Integer::operator!=(Primitive &primitive) {
 
-		bool result;
+		Boolean result;
 
 		switch (primitive.getType()) {
 
-			case CHAR:
+			case Type::CHAR:
 
-				result = this->getInt() != primitive.getChar();
+				result.setBool(this->getInt() != primitive.getChar());
 				break;
-			case SHORT:
+			case Type::SHORT:
 
-				result = this->getInt() != primitive.getShort();
+				result.setBool(this->getInt() != primitive.getShort());
 				break;
-			case INTEGER:
+			case Type::INTEGER:
 
-				result = this->getInt() != primitive.getInt();
+				result.setBool(this->getInt() != primitive.getInt());
 				break;
-			case LONG:
+			case Type::LONG:
 
-				result = this->getInt() != primitive.getLong();
+				result.setBool(this->getInt() != primitive.getLong());
 				break;
-			case FLOAT:
+			case Type::FLOAT:
 
 				// TODO: Test if this is possible with the issues caused by it's precision
-				result = this->getInt() != primitive.getFloat();
+				result.setBool(this->getInt() != primitive.getFloat());
 				break;
-			case DOUBLE:
+			case Type::DOUBLE:
 
 				// TODO: Test if this is possible with the issues caused by it's precision
-				result = this->getInt() != primitive.getDouble();
+				result.setBool(this->getInt() != primitive.getDouble());
 				break;
 			default:
 
-				throw new exception("Unsupported operation");
+				Primitive::operator!=(primitive);
 		};
 
 		return result;
 	}
 
 	// Greater than
-	bool Integer::operator>(Primitive &primitive) {
+	Primitive Integer::operator>(Primitive &primitive) {
 
-		bool result;
+		Boolean result;
 
 		switch (primitive.getType()) {
 
-			case CHAR:
+			case Type::CHAR:
 
-				result = this->getInt() > primitive.getChar();
+				result.setBool(this->getInt() > primitive.getChar());
 				break;
-			case SHORT:
+			case Type::SHORT:
 
-				result = this->getInt() > primitive.getShort();
+				result.setBool(this->getInt() > primitive.getShort());
 				break;
-			case INTEGER:
+			case Type::INTEGER:
 
-				result = this->getInt() > primitive.getInt();
+				result.setBool(this->getInt() > primitive.getInt());
 				break;
-			case LONG:
+			case Type::LONG:
 
-				result = this->getInt() > primitive.getLong();
+				result.setBool(this->getInt() > primitive.getLong());
 				break;
-			case FLOAT:
+			case Type::FLOAT:
 
 				// TODO: Test if this is possible with the issues caused by it's precision
-				result = this->getInt() > primitive.getFloat();
+				result.setBool(this->getInt() > primitive.getFloat());
 				break;
-			case DOUBLE:
+			case Type::DOUBLE:
 
 				// TODO: Test if this is possible with the issues caused by it's precision
-				result = this->getInt() > primitive.getDouble();
+				result.setBool(this->getInt() > primitive.getDouble());
 				break;
 			default:
 
-				throw new exception("Unsupported operation");
+				Primitive::operator>(primitive);
 		};
 
 		return result;
 	}
 
 	// Less than
-	bool Integer::operator<(Primitive &primitive) {
+	Primitive Integer::operator<(Primitive &primitive) {
 
-		bool result;
+		Boolean result;
 
 		switch (primitive.getType()) {
 
-			case CHAR:
+			case Type::CHAR:
 
-				result = this->getInt() < primitive.getChar();
+				result.setBool(this->getInt() < primitive.getChar());
 				break;
-			case SHORT:
+			case Type::SHORT:
 
-				result = this->getInt() < primitive.getShort();
+				result.setBool(this->getInt() < primitive.getShort());
 				break;
-			case INTEGER:
+			case Type::INTEGER:
 
-				result = this->getInt() < primitive.getInt();
+				result.setBool(this->getInt() < primitive.getInt());
 				break;
-			case LONG:
+			case Type::LONG:
 
-				result = this->getInt() < primitive.getLong();
+				result.setBool(this->getInt() < primitive.getLong());
 				break;
-			case FLOAT:
+			case Type::FLOAT:
 
 				// TODO: Test if this is possible with the issues caused by it's precision
-				result = this->getInt() < primitive.getFloat();
+				result.setBool(this->getInt() < primitive.getFloat());
 				break;
-			case DOUBLE:
+			case Type::DOUBLE:
 
 				// TODO: Test if this is possible with the issues caused by it's precision
-				result = this->getInt() < primitive.getDouble();
+				result.setBool(this->getInt() < primitive.getDouble());
 				break;
 			default:
 
-				throw new exception("Unsupported operation");
+				Primitive::operator<(primitive);
 		};
 
 		return result;
 	}
 
 	// Greater than or equal to
-	bool Integer::operator>=(Primitive &primitive) {
+	Primitive Integer::operator>=(Primitive &primitive) {
 
-		bool result;
+		Boolean result;
 
 		switch (primitive.getType()) {
 
-			case CHAR:
+			case Type::CHAR:
 
-				result = this->getInt() >= primitive.getChar();
+				result.setBool(this->getInt() >= primitive.getChar());
 				break;
-			case SHORT:
+			case Type::SHORT:
 
-				result = this->getInt() >= primitive.getShort();
+				result.setBool(this->getInt() >= primitive.getShort());
 				break;
-			case INTEGER:
+			case Type::INTEGER:
 
-				result = this->getInt() >= primitive.getInt();
+				result.setBool(this->getInt() >= primitive.getInt());
 				break;
-			case LONG:
+			case Type::LONG:
 
-				result = this->getInt() >= primitive.getLong();
+				result.setBool(this->getInt() >= primitive.getLong());
 				break;
-			case FLOAT:
+			case Type::FLOAT:
 
 				// TODO: Test if this is possible with the issues caused by it's precision
-				result = this->getInt() >= primitive.getFloat();
+				result.setBool(this->getInt() >= primitive.getFloat());
 				break;
-			case DOUBLE:
+			case Type::DOUBLE:
 
 				// TODO: Test if this is possible with the issues caused by it's precision
-				result = this->getInt() >= primitive.getDouble();
+				result.setBool(this->getInt() >= primitive.getDouble());
 				break;
 			default:
 
-				throw new exception("Unsupported operation");
+				Primitive::operator>=(primitive);
 		};
 
 		return result;
 	}
 
 	// Less than or equal to
-	bool Integer::operator<=(Primitive &primitive) {
+	Primitive Integer::operator<=(Primitive &primitive) {
 
-		bool result;
+		Boolean result;
 
 		switch (primitive.getType()) {
 
-			case CHAR:
+			case Type::CHAR:
 
-				result = this->getInt() <= primitive.getChar();
+				result.setBool(this->getInt() <= primitive.getChar());
 				break;
-			case SHORT:
+			case Type::SHORT:
 
-				result = this->getInt() <= primitive.getShort();
+				result.setBool(this->getInt() <= primitive.getShort());
 				break;
-			case INTEGER:
+			case Type::INTEGER:
 
-				result = this->getInt() <= primitive.getInt();
+				result.setBool(this->getInt() <= primitive.getInt());
 				break;
-			case LONG:
+			case Type::LONG:
 
-				result = this->getInt() <= primitive.getLong();
+				result.setBool(this->getInt() <= primitive.getLong());
 				break;
-			case FLOAT:
+			case Type::FLOAT:
 
 				// TODO: Test if this is possible with the issues caused by it's precision
-				result = this->getInt() <= primitive.getFloat();
+				result.setBool(this->getInt() <= primitive.getFloat());
 				break;
-			case DOUBLE:
+			case Type::DOUBLE:
 
 				// TODO: Test if this is possible with the issues caused by it's precision
-				result = this->getInt() <= primitive.getDouble();
+				result.setBool(this->getInt() <= primitive.getDouble());
 				break;
 			default:
 
-				throw new exception("Unsupported operation");
+				Primitive::operator<=(primitive);
 		};
 
 		return result;
