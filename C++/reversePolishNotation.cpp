@@ -30,19 +30,19 @@ namespace day {
 	Primitive ReversePolishNotation::evaluateEquation(const char *equation, int length) {
 
 		// Recreated each time to avoid old invalid data being left from previous invalid equations
-		map<string, Primitive&> values;
+		map<string, Primitive> values;
 		Primitive result;
 
 		string editedEquation = stripValuesFromEquation(equation, length, values);
 
 		editedEquation = convertInfixToPostFix(editedEquation.c_str(), editedEquation.size());
 
-		result = calcResult(editedEquation.c_str(), editedEquation.size(), values);
+		result = (Primitive&)calcResult(editedEquation.c_str(), editedEquation.size(), values);
 
 		return result;
 	}
 
-	string ReversePolishNotation::stripValuesFromEquation(const char *equation, int length, map<string, Primitive&> &values) {
+	string ReversePolishNotation::stripValuesFromEquation(const char *equation, int length, map<string, Primitive> &values) {
 
 		if (equation == nullptr)
 			throw invalid_argument("Equation is null");
@@ -61,16 +61,15 @@ namespace day {
 
 			// TODO: Fix to work when whitespace is before the minus sign
 			// Check whether a minus sign is being used to subtract or to make the number negative
-			if (equation[i] == '-' && (i == 0 || (isOperator(equation[i - 1]) && equation[i - 1] != ')'))) {
+			if (equation[i] == '-' && (i == 0 || (isOperator(result[i - 1]) && result[i - 1] != ')'))) {
 
 				if (i + 1 == length)
 					throw invalid_argument("Equation is invalid");
 
 				if (equation[i + 1] == '(') {
 
-					// Multiply result of calculations in parenthesis by -1 to substitute for making the result negative directly
-					result.push_back(DEFAULT_NEGATIVE_ONE_VALUE);
-					result.push_back('*');
+					// Place DEFAULT_UNARY_MINUS_SIGN to differentiate from a regular minus sign
+					result.push_back(DEFAULT_UNARY_MINUS_SIGN);
 				} else if(isdigit(equation[i + 1])){
 
 					// Replace the number in the resulting equation with an argument
@@ -81,9 +80,8 @@ namespace day {
 					i = endPos;
 				} else {
 
-					// Multiply variable by -1 to substitute for making it negative directly
-					result.push_back(DEFAULT_NEGATIVE_ONE_VALUE);
-					result.push_back('*');
+					// Place DEFAULT_UNARY_MINUS_SIGN to differentiate from a regular minus sign
+					result.push_back(DEFAULT_UNARY_MINUS_SIGN);
 
 					// Get the variable from the string
 					string variable = getVar(equation, length, i + 1, endPos);
@@ -91,17 +89,18 @@ namespace day {
 					// Insert prefix before the variable and skip the minus sign in the resulting equation
 					result.append(DEFAULT_ARG_PREFIX + variable);
 
-					// If the variable doesn't exist then a null value is set for it and it is assumed the variable will be initialized outside of scope
+					// If the variable doesn't exist then a null value is set for it and it is assumed the variable will be initialized from outside of scope
 					if(!values.count(variable))
-						values.emplace(variable, nullptr);
+						values.emplace(variable, Primitive());
 
 					i = endPos;
 				}
 			} else if (isdigit(equation[i]) || equation[i] == '.') {
 
 				// Replace the number in the resulting equation with an argument
-				result.append(DEFAULT_ARG_PREFIX + to_string(nextArgument++));
-				values.emplace(getNumber(equation, length, i, endPos));
+				string key = to_string(nextArgument++);
+				result.append(DEFAULT_ARG_PREFIX + key);
+				values.emplace(key, getNumber(equation, length, i, endPos));
 
 				i = endPos;
 			} else if (isalpha(equation[i])) {
@@ -112,9 +111,9 @@ namespace day {
 				// Insert prefix before the variable and skip the minus sign in the resulting equation
 				result.append(DEFAULT_ARG_PREFIX + variable);
 
-				// If the variable doesn't exist then a null value is set for it and it is assumed the variable will be initialized outside of scope
+				// If the variable doesn't exist then a null value is set for it and it is assumed the variable will be initialized from outside of scope
 				if (!values.count(variable))
-					values.emplace(variable, nullptr);
+					values.emplace(variable, Primitive());
 
 				i = endPos;
 			// if the equation is in the format of a(b) then it is expanded to a*(b)
@@ -204,7 +203,7 @@ namespace day {
 		return postFixString;
 	}
 
-	Primitive ReversePolishNotation::calcResult(const char *equation, int length, map<string, Primitive&> &values) {
+	Primitive& ReversePolishNotation::calcResult(const char *equation, int length, map<string, Primitive> &values) {
 
 		if (equation == nullptr)
 			throw invalid_argument("Equation is null");
@@ -246,7 +245,7 @@ namespace day {
 				case '/':
 
 					// Divides second operand from the first
-					// Handling divide by 0 exception is out of scope
+					// Handling divide by 0 exception is out of scope and an exception will be thrown
 					getOperandsFromStack(operandStack, primitive1, primitive2);
 					operandStack.push(primitive1 / primitive2);
 					break;
@@ -292,9 +291,11 @@ namespace day {
 					break;
 				default:
 
-					if (equation[i] == DEFAULT_NEGATIVE_ONE_VALUE) {
+					if (equation[i] == DEFAULT_UNARY_MINUS_SIGN) {
 
-						operandStack.push(Double(-1));
+						primitive1 = operandStack.top();
+						operandStack.pop();
+						operandStack.push(-primitive1);
 					} else if (equation[i] == DEFAULT_ARG_PREFIX) {
 
 						string argument = getVar(equation, length, i + 1, i);

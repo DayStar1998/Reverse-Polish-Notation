@@ -29,6 +29,8 @@
 #include <cctype>
 
 #include "Primitives/primitives.h"
+#include "Primitives/double.h"
+#include "Primitives/integer.h"
 
 using std::string;
 using std::isdigit;
@@ -52,9 +54,9 @@ namespace day {
 				the number
 
 		Returns:
-			type Primitive*, the wrapped value after it has been extracted
+			type Primitive, the wrapped value after it has been extracted
 	******************************************************************************/
-	 Primitive* getNumber(const char *data, int length, int start, int &end);
+	 Primitive getNumber(const char *data, int length, int start, int &end);
 
 	/******************************************************************************
 		Function Name: getVar

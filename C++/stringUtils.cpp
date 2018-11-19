@@ -27,9 +27,9 @@
 
 namespace day {
 
-	Primitive* getNumber(const char *data, int length, int start, int &end) {
+	Primitive getNumber(const char *data, int length, int start, int &end) {
 
-		Primitive *result = nullptr;
+		Primitive result;
 		string number = "";
 		int pos = start;
 
@@ -63,9 +63,9 @@ namespace day {
 
 		// Convert to Double or Integer
 		if (hasDecimal)
-			result = new Double(stod(number));
+			result = (Primitive&)Double(stod(number));
 		else
-			result = new Integer(stoi(number));
+			result = (Primitive&)Integer(stoi(number));
 
 		return result;
 	}

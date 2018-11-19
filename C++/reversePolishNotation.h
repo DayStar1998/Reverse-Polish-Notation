@@ -38,7 +38,7 @@
 
 #include "stringUtils.h"
 #include "Primitives/primitives.h"
-#include "Primitives/double.h";
+#include "Primitives/double.h"
 
 using std::string;
 using std::stack;
@@ -61,7 +61,7 @@ namespace day {
 		// Generic prefix for values in equation
 		const char DEFAULT_ARG_PREFIX = '`';
 		// Default slot for inserted -1 values
-		const char DEFAULT_NEGATIVE_ONE_VALUE = '~';
+		const char DEFAULT_UNARY_MINUS_SIGN = '#';
 	public:
 
 		/******************************************************************************
@@ -102,7 +102,7 @@ namespace day {
 				Named variables in the equation must begin with an alphabetical
 					character
 		******************************************************************************/
-		string stripValuesFromEquation(const char *equation, int length, map<string, Primitive&> &values);
+		string stripValuesFromEquation(const char *equation, int length, map<string, Primitive> &values);
 
 		/******************************************************************************
 			Function Name: convertInfixToPostFix
@@ -147,7 +147,7 @@ namespace day {
 			Throws:
 				Throws exception if the equation is unsolvable.
 		******************************************************************************/
-		Primitive calcResult(const char *equation, int length, map<string, Primitive&> &values);
+		Primitive& calcResult(const char *equation, int length, map<string, Primitive> &values);
 
 	private:
 
