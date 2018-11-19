@@ -28,6 +28,12 @@
 #pragma once
 
 #include "primitives.h"
+#include "boolean.h"
+#include "double.h"
+#include "float.h"
+#include "integer.h"
+#include "long.h"
+#include "short.h"
 
 namespace day {
 
@@ -112,6 +118,17 @@ namespace day {
 				type Primitive, the resulting value
 		******************************************************************************/
 		Primitive operator-(Primitive &primitive) override;
+
+		/******************************************************************************
+			Function Name: operator-
+
+			Des:
+				Override unary minus operator
+
+			Returns:
+				type Primitive, the resulting value
+		******************************************************************************/
+		Primitive operator-() override;
 
 		/******************************************************************************
 			Function Name: operator*
@@ -298,9 +315,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be compared to
 
 			Returns:
-				type bool, the resulting value
+				type Primitive, the resulting value
 		******************************************************************************/
-		bool operator==(Primitive &primitive) override;
+		Primitive operator==(Primitive &primitive) override;
 
 		/******************************************************************************
 			Function Name: operator!=
@@ -312,9 +329,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be compared to
 
 			Returns:
-				type bool, the resulting value
+				type Primitive, the resulting value
 		******************************************************************************/
-		bool operator!=(Primitive &primitive) override;
+		Primitive operator!=(Primitive &primitive) override;
 
 		/******************************************************************************
 			Function Name: operator>
@@ -326,9 +343,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be compared to
 
 			Returns:
-				type bool, the resulting value
+				type Primitive, the resulting value
 		******************************************************************************/
-		bool operator>(Primitive &primitive) override;
+		Primitive operator>(Primitive &primitive) override;
 
 		/******************************************************************************
 			Function Name: operator<
@@ -340,9 +357,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be compared to
 
 			Returns:
-				type bool, the resulting value
+				type Primitive, the resulting value
 		******************************************************************************/
-		bool operator<(Primitive &primitive) override;
+		Primitive operator<(Primitive &primitive) override;
 
 		/******************************************************************************
 			Function Name: operator>=
@@ -354,9 +371,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be compared to
 
 			Returns:
-				type bool, the resulting value
+				type Primitive, the resulting value
 		******************************************************************************/
-		bool operator>=(Primitive &primitive) override;
+		Primitive operator>=(Primitive &primitive) override;
 
 		/******************************************************************************
 			Function Name: operator<=
@@ -368,9 +385,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be compared to
 
 			Returns:
-				type bool, the resulting value
+				type Primitive, the resulting value
 		******************************************************************************/
-		bool operator<=(Primitive &primitive) override;
+		Primitive operator<=(Primitive &primitive) override;
 
 		/******************************************************************************
 			Compound assignment operators

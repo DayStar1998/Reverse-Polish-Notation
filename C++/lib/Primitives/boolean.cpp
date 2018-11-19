@@ -27,20 +27,20 @@
 
 namespace day {
 
-	// Assignment
-	Boolean& Boolean::operator=(Primitive &primitive) {
-
-		if (primitive.getType() == BOOLEAN)
-			this->setBool(primitive.getBool());
-		else
-			throw new exception("Unsupported operation");
-
-		return *this;
-	}
-
 	string Boolean::toString() {
 
 		return to_string(data);
+	}
+
+	// Assignment
+	Boolean& Boolean::operator=(Primitive &primitive) {
+
+		if (primitive.getType() == Type::BOOLEAN)
+			this->setBool(primitive.getBool());
+		else
+			Primitive::operator=(primitive);
+
+		return *this;
 	}
 
 	// Logical NOT
@@ -56,10 +56,10 @@ namespace day {
 
 		Boolean result;
 
-		if (primitive.getType() == BOOLEAN)
+		if (primitive.getType() == Type::BOOLEAN)
 			result.setBool(this->getBool() && primitive.getBool());
 		else
-			throw new exception("Unsupported operation");
+			Primitive::operator&&(primitive);
 
 		return result;
 	}
@@ -69,10 +69,10 @@ namespace day {
 
 		Boolean result;
 
-		if (primitive.getType() == BOOLEAN)
+		if (primitive.getType() == Type::BOOLEAN)
 			result.setBool(this->getBool() || primitive.getBool());
 		else
-			throw new exception("Unsupported operation");
+			Primitive::operator||(primitive);
 
 		return result;
 	}
