@@ -28,14 +28,9 @@
 #include <string>
 #include <cctype>
 
-#include "Primitives/primitives.h"
-#include "Primitives/double.h"
-#include "Primitives/integer.h"
-
 using std::string;
 using std::isdigit;
 using std::isalnum;
-using std::stod;
 
 namespace day {
 
@@ -49,14 +44,18 @@ namespace day {
 		Params:
 			data - type char *, the data the number is to be extracted from.
 			length - type int, the length of the param data.
-			start - type int, starting location in param data
+			includeDecimal - type bool, whether or not to consider a decimal point
+				to be part of the number.
+			start - type int, starting location in param data.
 			end - type int &, output to return the location of the last char of
-				the number
+				the number.
+			hasDecimal - type bool &, output if the number includes a decimal.
+				Does nothing if includeDecimal is false.
 
 		Returns:
-			type shared_ptr<Primitive>, the wrapped value after it has been extracted
+			type string, the extracted number as a string
 	******************************************************************************/
-	shared_ptr<Primitive> getNumber(const char *data, int length, int start, int &end);
+	string getNumber(const char *data, int length, bool includeDecimal, int start, int &end, bool &hasDecimal);
 
 	/******************************************************************************
 		Function Name: getVar
@@ -93,5 +92,5 @@ namespace day {
 				Does not support bool operators
 				TODO: Add support for bool operators
 		******************************************************************************/
-		bool isOperator(char value);
+	bool isOperator(char value);
 };

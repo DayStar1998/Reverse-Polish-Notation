@@ -27,16 +27,15 @@
 
 namespace day {
 
-	shared_ptr<Primitive> getNumber(const char *data, int length, int start, int &end) {
+	string getNumber(const char *data, int length, bool includeDecimal, int start, int &end, bool &hasDecimal) {
 
-		shared_ptr<Primitive> result;
-		string number = "";
+		string result = "";
 		int pos = start;
 
 		// Skip the negative sign to avoid checking if the sign is relative to this number or just a minus sign
 		if (data[start] == '-') {
 
-			number.push_back('-');
+			result.push_back('-');
 			pos++;
 		}
 
@@ -49,23 +48,27 @@ namespace day {
 
 			// Check if current char is a number or a decimal point
 			if (isdigit(data[i]))
-				number.push_back(data[i]);
+				result.push_back(data[i]);
 			else if (data[i] == '.') {
 
+				// Break if decimal point is a period instead of part of the number
+				if (!includeDecimal)
+					break;
+
+				// Break if one decimal point has already been found. Second is seen as a period
+				// TODO: Should this throw an exception or otherwise report back if it is an error?
+				if (hasDecimal)
+					break;
+
 				hasDecimal = true;
-				number.push_back(data[i]);
+				result.push_back(data[i]);
 			} else {
 
+				// Set end to the last char in the number
 				end = i - 1;
 				break;
 			}
 		}
-
-		// Convert to Double or Integer
-		if (hasDecimal)
-			result = make_shared<Double>(stod(number));
-		else
-			result = make_shared<Integer>(stoi(number));
 
 		return result;
 	}

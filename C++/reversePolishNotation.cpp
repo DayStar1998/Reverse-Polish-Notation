@@ -314,6 +314,24 @@ namespace day {
 		return result;
 	}
 
+	shared_ptr<Primitive> ReversePolishNotation::getNumber(const char *data, int length, int start, int &end) {
+
+		shared_ptr<Primitive> result;
+
+		bool hasDecimal = false;
+
+		// Get the number as a string
+		string number = day::getNumber(data, length, true, start, end, hasDecimal);
+
+		// Convert to Double or Integer
+		if (hasDecimal)
+			result = make_shared<Double>(stod(number));
+		else
+			result = make_shared<Integer>(stoi(number));
+
+		return result;
+	}
+
 	char ReversePolishNotation::nextVariable(int &nextArgument) {
 
 		char result;
