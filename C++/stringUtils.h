@@ -54,9 +54,9 @@ namespace day {
 				the number
 
 		Returns:
-			type Primitive, the wrapped value after it has been extracted
+			type shared_ptr<Primitive>, the wrapped value after it has been extracted
 	******************************************************************************/
-	 Primitive getNumber(const char *data, int length, int start, int &end);
+	shared_ptr<Primitive> getNumber(const char *data, int length, int start, int &end);
 
 	/******************************************************************************
 		Function Name: getVar
@@ -76,4 +76,22 @@ namespace day {
 			type double, the value after it has been extracted
 	******************************************************************************/
 	string getVar(const char *data, int length, int start, int &end);
+
+		/******************************************************************************
+			Function Name: isOperator
+
+			Des:
+				Checks if the value is an operator.
+
+			Params:
+				value - type char, the value to be checked.
+
+			Returns:
+				type bool, true if it is an operator, otherwise false.
+
+			Note:
+				Does not support bool operators
+				TODO: Add support for bool operators
+		******************************************************************************/
+		bool isOperator(char value);
 };

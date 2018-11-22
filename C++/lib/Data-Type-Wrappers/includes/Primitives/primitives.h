@@ -36,6 +36,8 @@
 using std::exception;
 using std::string;
 using std::to_string;
+using std::shared_ptr;
+using std::make_shared;
 
 namespace day {
 
@@ -46,7 +48,7 @@ namespace day {
 		// TODO: Find way to make this scale better, currently adding anything here requires updating affected overrides in EVERY child class
 		enum class Type {
 
-			VOID,
+			NULLPTR,
 			CHAR,
 			SHORT,
 			INTEGER,
@@ -56,16 +58,61 @@ namespace day {
 			BOOLEAN
 		};
 
-	protected:
+	private:
 
+		// The type of data being stored
 		const Type TYPE;
+
+		/*
+			Data
+
+			Six possible ways to do this that I am aware of.
+				1. List all possible types of data.
+						Currently this means a guaranteed size of at least 224 bits per instance. This is before adding
+						any types such as long long and it will continue to grow with every new type supported. On the
+						upside, it would be the easiest to implement and would be great for performance.
+				2. Union of the various types.
+						This would mean the size of every instance would always be as large as the largest supported
+						type, which is currently long/double of 64 bits. This would lead to issues converting between
+						the various integer types and float/double types. I currently don't know how to use unions well
+						enough for this to be viable.
+				3. Array of unsigned chars.
+						This can be set to the exact number of bytes required so there is never an issue with memory
+						being wasted. However, the conversion between types could be very costly performance-wise and
+						error prone.
+				4. Have data be be stored in the specific class using that type.
+						This should overall be the best way both performance-wise and memory-wise. Unfortunately, the
+						overriding of the assignment '=' operator prevents reassigning a child class to a generic
+						variable of type Primitive. I have been unable to find a way to get around this issue which
+						makes this method unusable.
+				5. Store data as a string.
+						It can be easily converted between types, but takes up more space. Specifically, 1 byte for
+						the end character and 1 byte for each place in the number. Conversion would also give
+						performance overhead. Might be possible to implement data as bytes similar to option 3 which
+						would make the string the size of the data type + 1 byte.
+				6. Turn Primitive into a template class of type 'T'.
+						'T' being the data type. T would be set by the child class. This would be trivial to implement,
+						however, this breaks the whole generic type Primitive system where a data structure full of
+						multiple different types of Primitive could be created. With this kind of implementation it
+						would be far cheaper and easier to just use the data types directly.
+
+				All of these will need to allow for a form of type casting where even if the incorrect data type is
+				asked for then it would be converted and returned as that type.
+
+				1 - The memory cost is not worth it and there are better ways to do it.
+				6 - With this kind of implementation it would be far cheaper and easier to just use the data types directly.
+				4 - Requires use of pointers. The problem is Primitives are meant to be created on the fly and dropped
+					without worrying about deleting them from memory. Possible workaround would be using smart pointers
+
+				Option 4 using smart pointers appears to be the best choice at this time
+		*/
 
 	public:
 
 		/******************************************************************************
-		Constructor
+			Constructor
 		******************************************************************************/
-		Primitive(Type type = Type::VOID) : TYPE(type) {}
+		Primitive(Type type = Type::NULLPTR) : TYPE(type) {}
 
 		/******************************************************************************
 			Function Name: getType
@@ -100,14 +147,110 @@ namespace day {
 		******************************************************************************/
 		virtual string toString() { throw new exception("ToString has not been written yet"); };
 
-		// Default getters
-		virtual char getChar() { throw new exception("Char is not available for this type"); }
-		virtual short getShort() { throw new exception("Char is not available for this type"); }
-		virtual int getInt() { throw new exception("Int is not available for this type"); }
-		virtual long getLong() { throw new exception("Long is not available for this type"); }
-		virtual float getFloat() { throw new exception("Float is not available for this type"); }
-		virtual double getDouble() { throw new exception("Double is not available for this type"); }
-		virtual bool getBool() { throw new exception("Bool is not available for this type"); }
+		/******************************************************************************
+			Function Name: getChar
+
+			Des:
+				Get the data as a char
+
+			Returns:
+				type char, the data as a char
+		******************************************************************************/
+		virtual char getChar() {
+
+			string message = "getChar is not available for type " + typeName();
+			throw new exception(message.c_str());
+		}
+
+		/******************************************************************************
+			Function Name: getShort
+
+			Des:
+				Get the data as a short
+
+			Returns:
+				type short, the data as a short
+		******************************************************************************/
+		virtual short getShort() {
+
+			string message = "getShort is not available for type " + typeName();
+			throw new exception(message.c_str());
+		}
+
+		/******************************************************************************
+			Function Name: getInt
+
+			Des:
+				Get the data as an int
+
+			Returns:
+				type int, the data as an int
+		******************************************************************************/
+		virtual int getInt() {
+
+			string message = "getInt is not available for type " + typeName();
+			throw new exception(message.c_str());
+		}
+
+		/******************************************************************************
+			Function Name: getLong
+
+			Des:
+				Get the data as a long
+
+			Returns:
+				type long, the data as a long
+		******************************************************************************/
+		virtual long getLong() {
+
+			string message = "getLong is not available for type " + typeName();
+			throw new exception(message.c_str());
+		}
+
+		/******************************************************************************
+			Function Name: getFloat
+
+			Des:
+				Get the data as a float
+
+			Returns:
+				type float, the data as a float
+		******************************************************************************/
+		virtual float getFloat() {
+
+			string message = "getFloat is not available for type " + typeName();
+			throw new exception(message.c_str());
+		}
+
+		/******************************************************************************
+			Function Name: getDouble
+
+			Des:
+				Get the data as a double
+
+			Returns:
+				type double, the data as a double
+		******************************************************************************/
+		virtual double getDouble() {
+
+			string message = "getDouble is not available for type " + typeName();
+			throw new exception(message.c_str());
+		}
+
+		/******************************************************************************
+			Function Name: getBool
+
+			Des:
+				Get the data as a bool
+
+			Returns:
+				type bool, the data as a bool
+		******************************************************************************/
+		virtual bool getBool() {
+			
+			string message = "getBool is not available for type " + typeName();
+			throw new exception(message.c_str());
+		}
 
 		// Default setters
 		virtual void setChar(char data) { throw new exception("Char is not available for this type"); }
@@ -123,10 +266,10 @@ namespace day {
 		******************************************************************************/
 
 		/******************************************************************************
-			Function Name: operator=
+			Function Name: assignment
 
 			Des:
-				Override assignment operator
+				Assign the value of primitive to this
 
 			Params:
 				primitive - type Primitive &, the primitive type this is to be
@@ -135,7 +278,7 @@ namespace day {
 			Returns:
 				type Primitive &, the resulting value
 		******************************************************************************/
-		virtual Primitive& operator=(Primitive &primitive);
+		virtual Primitive& assignment(Primitive &primitive);
 
 		/******************************************************************************
 			Function Name: operator+
@@ -147,9 +290,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be added to
 
 			Returns:
-				type Primitive, the resulting value
+				type shared_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		virtual Primitive operator+(Primitive &primitive);
+		virtual shared_ptr<Primitive> operator+(Primitive &primitive);
 
 		/******************************************************************************
 			Function Name: operator-
@@ -161,9 +304,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be subtracted by
 
 			Returns:
-				type Primitive, the resulting value
+				type shared_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		virtual Primitive operator-(Primitive &primitive);
+		virtual shared_ptr<Primitive> operator-(Primitive &primitive);
 
 		/******************************************************************************
 			Function Name: operator-
@@ -175,9 +318,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be subtracted by
 
 			Returns:
-				type Primitive, the resulting value
+				type shared_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		virtual Primitive operator-();
+		virtual shared_ptr<Primitive> operator-();
 
 		/******************************************************************************
 			Function Name: operator*
@@ -189,9 +332,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be multiplied by
 
 			Returns:
-				type Primitive, the resulting value
+				type shared_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		virtual Primitive operator*(Primitive &primitive);
+		virtual shared_ptr<Primitive> operator*(Primitive &primitive);
 
 		/******************************************************************************
 			Function Name: operator/
@@ -203,9 +346,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be divided by
 
 			Returns:
-				type Primitive, the resulting value
+				type shared_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		virtual Primitive operator/(Primitive &primitive);
+		virtual shared_ptr<Primitive> operator/(Primitive &primitive);
 
 		/******************************************************************************
 			Function Name: operator%
@@ -217,9 +360,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be modulated by
 
 			Returns:
-				type Primitive, the resulting value
+				type shared_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		virtual Primitive operator%(Primitive &primitive);
+		virtual shared_ptr<Primitive> operator%(Primitive &primitive);
 
 		/******************************************************************************
 			Function Name: operator++
@@ -239,9 +382,9 @@ namespace day {
 				Override postfix increment operator
 
 			Returns:
-				type Primitive, the resulting value
+				type shared_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		virtual Primitive operator++(int);
+		virtual shared_ptr<Primitive> operator++(int);
 
 		/******************************************************************************
 			Function Name: operator--
@@ -261,9 +404,9 @@ namespace day {
 				Override postfix decrement operator
 
 			Returns:
-				type Primitive, the resulting value
+				type shared_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		virtual Primitive operator--(int);
+		virtual shared_ptr<Primitive> operator--(int);
 
 		/******************************************************************************
 			Bitwise operators
@@ -279,9 +422,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be bitwise OR'd by
 
 			Returns:
-				type Primitive, the resulting value
+				type shared_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		virtual Primitive operator|(Primitive &primitive);
+		virtual shared_ptr<Primitive> operator|(Primitive &primitive);
 
 		/******************************************************************************
 			Function Name: operator&
@@ -293,9 +436,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be bitwise AND'd by
 
 			Returns:
-				type Primitive, the resulting value
+				type shared_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		virtual Primitive operator&(Primitive &primitive);
+		virtual shared_ptr<Primitive> operator&(Primitive &primitive);
 
 		/******************************************************************************
 			Function Name: operator~
@@ -304,9 +447,9 @@ namespace day {
 				Override bitwise NOT operator
 
 			Returns:
-				type Primitive, the resulting value
+				type shared_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		virtual Primitive operator~();
+		virtual shared_ptr<Primitive> operator~();
 
 		/******************************************************************************
 			Function Name: operator^
@@ -318,9 +461,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be bitwise XOR'd by
 
 			Returns:
-				type Primitive, the resulting value
+				type shared_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		virtual Primitive operator^(Primitive &primitive);
+		virtual shared_ptr<Primitive> operator^(Primitive &primitive);
 
 		/******************************************************************************
 			Function Name: operator<<
@@ -332,9 +475,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be shifted by
 
 			Returns:
-				type Primitive, the resulting value
+				type shared_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		virtual Primitive operator<<(Primitive &primitive);
+		virtual shared_ptr<Primitive> operator<<(Primitive &primitive);
 
 		/******************************************************************************
 			Function Name: operator>>
@@ -346,9 +489,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be shifted by
 
 			Returns:
-				type Primitive, the resulting value
+				type shared_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		virtual Primitive operator>>(Primitive &primitive);
+		virtual shared_ptr<Primitive> operator>>(Primitive &primitive);
 
 		/******************************************************************************
 			Comparison operators
@@ -364,9 +507,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be compared to
 
 			Returns:
-				type Primitive, the resulting value
+				type shared_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		virtual Primitive operator==(Primitive &primitive);
+		virtual shared_ptr<Primitive> operator==(Primitive &primitive);
 
 		/******************************************************************************
 			Function Name: operator!=
@@ -378,9 +521,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be compared to
 
 			Returns:
-				type Primitive, the resulting value
+				type shared_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		virtual Primitive operator!=(Primitive &primitive);
+		virtual shared_ptr<Primitive> operator!=(Primitive &primitive);
 
 		/******************************************************************************
 			Function Name: operator>
@@ -392,9 +535,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be compared to
 
 			Returns:
-				type Primitive, the resulting value
+				type shared_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		virtual Primitive operator>(Primitive &primitive);
+		virtual shared_ptr<Primitive> operator>(Primitive &primitive);
 
 		/******************************************************************************
 			Function Name: operator<
@@ -406,9 +549,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be compared to
 
 			Returns:
-				type Primitive, the resulting value
+				type shared_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		virtual Primitive operator<(Primitive &primitive);
+		virtual shared_ptr<Primitive> operator<(Primitive &primitive);
 
 		/******************************************************************************
 			Function Name: operator>=
@@ -420,9 +563,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be compared to
 
 			Returns:
-				type Primitive, the resulting value
+				type shared_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		virtual Primitive operator>=(Primitive &primitive);
+		virtual shared_ptr<Primitive> operator>=(Primitive &primitive);
 
 		/******************************************************************************
 			Function Name: operator<=
@@ -434,9 +577,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be compared to
 
 			Returns:
-				type Primitive, the resulting value
+				type shared_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		virtual Primitive operator<=(Primitive &primitive);
+		virtual shared_ptr<Primitive> operator<=(Primitive &primitive);
 
 		/******************************************************************************
 			Compound assignment operators
@@ -593,9 +736,9 @@ namespace day {
 				Override logical NOT operator
 
 			Returns:
-				type Primitive, the resulting value
+				type shared_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		virtual Primitive operator!();
+		virtual shared_ptr<Primitive> operator!();
 
 		/******************************************************************************
 			Function Name: operator&&
@@ -607,9 +750,9 @@ namespace day {
 				primitive - type Primitive &, the value to be compared to
 
 			Returns:
-				type Primitive, the resulting value
+				type shared_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		virtual Primitive operator&&(Primitive &primitive);
+		virtual shared_ptr<Primitive> operator&&(Primitive &primitive);
 
 		/******************************************************************************
 			Function Name: operator||
@@ -621,8 +764,8 @@ namespace day {
 				primitive - type Primitive &, the value to be compared to
 
 			Returns:
-				type Primitive, the resulting value
+				type shared_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		virtual Primitive operator||(Primitive &primitive);
+		virtual shared_ptr<Primitive> operator||(Primitive &primitive);
 	};
 }

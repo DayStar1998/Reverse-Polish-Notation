@@ -38,26 +38,26 @@ namespace day {
 		if (primitive.getType() == Type::BOOLEAN)
 			this->setBool(primitive.getBool());
 		else
-			Primitive::operator=(primitive);
+			Primitive::assignment(primitive);
 
 		return *this;
 	}
 
 	// Logical NOT
-	Primitive Boolean::operator!() {
+	shared_ptr<Primitive> Boolean::operator!() {
 
-		Boolean result(!this->getBool());
+		shared_ptr<Primitive> result = make_shared<Boolean>(!this->getBool());
 
 		return result;
 	}
 
 	// Logical AND
-	Primitive Boolean::operator&&(Primitive &primitive) {
+	shared_ptr<Primitive> Boolean::operator&&(Primitive &primitive) {
 
-		Boolean result;
+		shared_ptr<Primitive> result = make_shared<Boolean>();
 
 		if (primitive.getType() == Type::BOOLEAN)
-			result.setBool(this->getBool() && primitive.getBool());
+			result->setBool(this->getBool() && primitive.getBool());
 		else
 			Primitive::operator&&(primitive);
 
@@ -65,12 +65,12 @@ namespace day {
 	}
 
 	// Logical OR
-	Primitive Boolean::operator||(Primitive &primitive) {
+	shared_ptr<Primitive> Boolean::operator||(Primitive &primitive) {
 
-		Boolean result;
+		shared_ptr<Primitive> result = make_shared<Boolean>();
 
 		if (primitive.getType() == Type::BOOLEAN)
-			result.setBool(this->getBool() || primitive.getBool());
+			result->setBool(this->getBool() || primitive.getBool());
 		else
 			Primitive::operator||(primitive);
 

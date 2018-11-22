@@ -38,9 +38,9 @@ namespace day {
 
 		switch (this->getType()) {
 
-			case Type::VOID:
+			case Type::NULLPTR:
 
-				result = "void";
+				result = "null";
 				break;
 			case Type::CHAR:
 
@@ -79,50 +79,49 @@ namespace day {
 	}
 
 	// Assignment
-	Primitive& Primitive::operator=(Primitive &primitive) {
+	Primitive& Primitive::assignment(Primitive &primitive) {
 
-		// TODO: Default case for if 'this' is type VOID
 		string message = "Assignment '=' operation between type " + this->typeName() + " and type " + primitive.typeName() + " is not supported";
 		throw new exception(message.c_str());
 	}
 
 	// Addition
-	Primitive Primitive::Primitive::operator+(Primitive &primitive) {
+	shared_ptr<Primitive> Primitive::Primitive::operator+(Primitive &primitive) {
 
 		string message = "Addition '+' operation between type " + this->typeName() + " and type " + primitive.typeName() + " is not supported";
 		throw new exception(message.c_str());
 	}
 
 	// Subtraction
-	Primitive Primitive::operator-(Primitive &primitive) {
+	shared_ptr<Primitive> Primitive::operator-(Primitive &primitive) {
 
 		string message = "Subtraction '-' operation between type " + this->typeName() + " and type " + primitive.typeName() + " is not supported";
 		throw new exception(message.c_str());
 	}
 
 	// Unary minus
-	Primitive Primitive::operator-() {
+	shared_ptr<Primitive> Primitive::operator-() {
 
 		string message = "Unary minus '-' operation for type " + this->typeName() + " is not supported";
 		throw new exception(message.c_str());
 	}
 
 	// Multiplication
-	Primitive Primitive::operator*(Primitive &primitive) {
+	shared_ptr<Primitive> Primitive::operator*(Primitive &primitive) {
 
 		string message = "Multiplication '*' operation between type " + this->typeName() + " and type " + primitive.typeName() + " is not supported";
 		throw new exception(message.c_str());
 	}
 
 	// Division
-	Primitive Primitive::operator/(Primitive &primitive) {
+	shared_ptr<Primitive> Primitive::operator/(Primitive &primitive) {
 
 		string message = "Division '/' operation between type " + this->typeName() + " and type " + primitive.typeName() + " is not supported";
 		throw new exception(message.c_str());
 	}
 
 	// Modulation
-	Primitive Primitive::operator%(Primitive &primitive) {
+	shared_ptr<Primitive> Primitive::operator%(Primitive &primitive) {
 
 		string message = "Modulation '%' operation between type " + this->typeName() + " and type " + primitive.typeName() + " is not supported";
 		throw new exception(message.c_str());
@@ -136,7 +135,7 @@ namespace day {
 	}
 
 	// Postfix incrementation
-	Primitive Primitive::operator++(int) {
+	shared_ptr<Primitive> Primitive::operator++(int) {
 
 		string message = "Postfix incrementation '++' operation for type " + this->typeName() + " is not supported";
 		throw new exception(message.c_str());
@@ -150,91 +149,91 @@ namespace day {
 	}
 
 	// Postfix decrementation
-	Primitive Primitive::operator--(int) {
+	shared_ptr<Primitive> Primitive::operator--(int) {
 
 		string message = "Postfix decrementation '--' operation for type " + this->typeName() + " is not supported";
 		throw new exception(message.c_str());
 	}
 
 	// Bitwise OR
-	Primitive Primitive::operator|(Primitive &primitive) {
+	shared_ptr<Primitive> Primitive::operator|(Primitive &primitive) {
 
 		string message = "Bitwise OR '|' operation between type " + this->typeName() + " and type " + primitive.typeName() + " is not supported";
 		throw new exception(message.c_str());
 	}
 
 	// Bitwise AND
-	Primitive Primitive::operator&(Primitive &primitive) {
+	shared_ptr<Primitive> Primitive::operator&(Primitive &primitive) {
 
 		string message = "Bitwise AND '&' operation between type " + this->typeName() + " and type " + primitive.typeName() + " is not supported";
 		throw new exception(message.c_str());
 	}
 
 	// Bitwise NOT
-	Primitive Primitive::operator~() {
+	shared_ptr<Primitive> Primitive::operator~() {
 
 		string message = "Bitwise NOT '~' operation for type " + this->typeName() + " is not supported";
 		throw new exception(message.c_str());
 	}
 
 	// Bitwise XOR
-	Primitive Primitive::operator^(Primitive &primitive) {
+	shared_ptr<Primitive> Primitive::operator^(Primitive &primitive) {
 
 		string message = "Bitwise XOR '^' operation between type " + this->typeName() + " and type " + primitive.typeName() + " is not supported";
 		throw new exception(message.c_str());
 	}
 
 	// Bitwise left shift
-	Primitive Primitive::operator<<(Primitive &primitive) {
+	shared_ptr<Primitive> Primitive::operator<<(Primitive &primitive) {
 
 		string message = "Bitwise left shift '<<' operation between type " + this->typeName() + " and type " + primitive.typeName() + " is not supported";
 		throw new exception(message.c_str());
 	}
 
 	// Bitwise right shift
-	Primitive Primitive::operator>>(Primitive &primitive) {
+	shared_ptr<Primitive> Primitive::operator>>(Primitive &primitive) {
 
 		string message = "Bitwise right shift '>>' operation between type " + this->typeName() + " and type " + primitive.typeName() + " is not supported";
 		throw new exception(message.c_str());
 	}
 
 	// Equal to
-	Primitive Primitive::operator==(Primitive &primitive) {
+	shared_ptr<Primitive> Primitive::operator==(Primitive &primitive) {
 
 		string message = "Equal to '==' operation between type " + this->typeName() + " and type " + primitive.typeName() + " is not supported";
 		throw new exception(message.c_str());
 	}
 
 	// Not equal to
-	Primitive Primitive::operator!=(Primitive &primitive) {
+	shared_ptr<Primitive> Primitive::operator!=(Primitive &primitive) {
 
 		string message = "Not equal to '!=' operation between type " + this->typeName() + " and type " + primitive.typeName() + " is not supported";
 		throw new exception(message.c_str());
 	}
 
 	// Greater than
-	Primitive Primitive::operator>(Primitive &primitive) {
+	shared_ptr<Primitive> Primitive::operator>(Primitive &primitive) {
 
 		string message = "Greater than '>' operation between type " + this->typeName() + " and type " + primitive.typeName() + " is not supported";
 		throw new exception(message.c_str());
 	}
 
 	// Less than
-	Primitive Primitive::operator<(Primitive &primitive) {
+	shared_ptr<Primitive> Primitive::operator<(Primitive &primitive) {
 
 		string message = "Less than '<' operation between type " + this->typeName() + " and type " + primitive.typeName() + " is not supported";
 		throw new exception(message.c_str());
 	}
 
 	// Greater than or equal to
-	Primitive Primitive::operator>=(Primitive &primitive) {
+	shared_ptr<Primitive> Primitive::operator>=(Primitive &primitive) {
 
 		string message = "Greater than or equal to '>=' operation between type " + this->typeName() + " and type " + primitive.typeName() + " is not supported";
 		throw new exception(message.c_str());
 	}
 
 	// Less than or equal to
-	Primitive Primitive::operator<=(Primitive &primitive) {
+	shared_ptr<Primitive> Primitive::operator<=(Primitive &primitive) {
 
 		string message = "Less than or equal to '<=' operation between type " + this->typeName() + " and type " + primitive.typeName() + " is not supported";
 		throw new exception(message.c_str());
@@ -245,7 +244,7 @@ namespace day {
 
 		try {
 
-			*this = (Primitive&)(*this + primitive);
+			this->assignment(*(*this + primitive));
 		} catch (exception e) {
 
 			string message = "Addition assignment '+=' operation between type " + this->typeName() + " and type " + primitive.typeName() + " is not supported";
@@ -260,7 +259,7 @@ namespace day {
 
 		try {
 
-			*this = (Primitive&)(*this - primitive);
+			this->assignment(*(*this - primitive));
 		} catch (exception e) {
 
 			string message = "Subtraction assignment '-=' operation between type " + this->typeName() + " and type " + primitive.typeName() + " is not supported";
@@ -275,7 +274,7 @@ namespace day {
 
 		try {
 
-			*this = (Primitive&)(*this * primitive);
+			this->assignment(*(*this * primitive));
 		} catch (exception e) {
 
 			string message = "Multiplication assignment '*=' operation between type " + this->typeName() + " and type " + primitive.typeName() + " is not supported";
@@ -290,7 +289,7 @@ namespace day {
 
 		try {
 
-			*this = (Primitive&)(*this / primitive);
+			this->assignment(*(*this / primitive));
 		} catch (DivideByZeroException e) {
 
 			throw e;
@@ -308,7 +307,7 @@ namespace day {
 
 		try {
 
-			*this = (Primitive&)(*this % primitive);
+			this->assignment(*(*this % primitive));
 		} catch (DivideByZeroException e) {
 
 			throw e;
@@ -326,7 +325,7 @@ namespace day {
 
 		try {
 
-			*this = (Primitive&)(*this & primitive);
+			this->assignment(*(*this & primitive));
 		} catch (exception e) {
 
 			string message = "Bitwise AND assignment '&=' operation between type " + this->typeName() + " and type " + primitive.typeName() + " is not supported";
@@ -341,7 +340,7 @@ namespace day {
 
 		try {
 
-			*this = (Primitive&)(*this | primitive);
+			this->assignment(*(*this | primitive));
 		} catch (exception e) {
 
 			string message = "Bitwise OR assignment '|=' operation between type " + this->typeName() + " and type " + primitive.typeName() + " is not supported";
@@ -356,7 +355,7 @@ namespace day {
 
 		try {
 
-			*this = (Primitive&)(*this ^ primitive);
+			this->assignment(*(*this ^ primitive));
 		} catch (exception e) {
 
 			string message = "Bitwise XOR assignment '^=' operation between type " + this->typeName() + " and type " + primitive.typeName() + " is not supported";
@@ -371,7 +370,7 @@ namespace day {
 
 		try {
 
-			*this = (Primitive&)(*this << primitive);
+			this->assignment(*(*this << primitive));
 		} catch (exception e) {
 
 			string message = "Bitwise shift left assignment '<<=' operation between type " + this->typeName() + " and type " + primitive.typeName() + " is not supported";
@@ -386,7 +385,7 @@ namespace day {
 
 		try {
 
-			*this = (Primitive&)(*this >> primitive);
+			this->assignment(*(*this >> primitive));
 		} catch (exception e) {
 
 			string message = "Bitwise shift right assignment '>>=' operation between type " + this->typeName() + " and type " + primitive.typeName() + " is not supported";
@@ -397,21 +396,21 @@ namespace day {
 	}
 
 	// Logical NOT
-	Primitive Primitive::operator!() {
+	shared_ptr<Primitive> Primitive::operator!() {
 
 		string message = "Logical NOT '!' operation for type " + this->typeName() + " is not supported";
 		throw new exception(message.c_str());
 	}
 
 	// Logical AND
-	Primitive Primitive::operator&&(Primitive &primitive) {
+	shared_ptr<Primitive> Primitive::operator&&(Primitive &primitive) {
 
 		string message = "Logical AND '&&' operation between type " + this->typeName() + " and type " + primitive.typeName() + " is not supported";
 		throw new exception(message.c_str());
 	}
 
 	// Logical OR
-	Primitive Primitive::operator||(Primitive &primitive) {
+	shared_ptr<Primitive> Primitive::operator||(Primitive &primitive) {
 
 		string message = "Logical OR || between type " + this->typeName() + " and type " + primitive.typeName() + " is not supported";
 		throw new exception(message.c_str());

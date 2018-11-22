@@ -45,7 +45,7 @@ namespace day {
 	public:
 
 		/******************************************************************************
-		Constructor
+			Constructor
 		******************************************************************************/
 		Short(short data = 0) : Primitive(Type::SHORT), data(data) {}
 
@@ -60,13 +60,99 @@ namespace day {
 		******************************************************************************/
 		string toString() override;
 
-		// Getter
+		/******************************************************************************
+			Function Name: getChar
+
+			Des:
+				Get the data as a char
+
+			Returns:
+				type char, the data as a char
+		******************************************************************************/
+		inline char getChar() override {
+
+			return (char)data;
+		}
+
+		/******************************************************************************
+			Function Name: getShort
+
+			Des:
+				Get the data as a short
+
+			Returns:
+				type short, the data as a short
+		******************************************************************************/
 		inline short getShort() override {
 
 			return data;
 		}
 
-		// Setter
+		/******************************************************************************
+			Function Name: getInt
+
+			Des:
+				Get the data as an int
+
+			Returns:
+				type int, the data as an int
+		******************************************************************************/
+		inline int getInt() override {
+
+			return (int)data;
+		}
+
+		/******************************************************************************
+			Function Name: getLong
+
+			Des:
+				Get the data as a long
+
+			Returns:
+				type long, the data as a long
+		******************************************************************************/
+		inline long getLong() override {
+
+			return (long)data;
+		}
+
+		/******************************************************************************
+			Function Name: getFloat
+
+			Des:
+				Get the data as a float
+
+			Returns:
+				type float, the data as a float
+		******************************************************************************/
+		inline float getFloat() override {
+
+			return (float)data;
+		}
+
+		/******************************************************************************
+			Function Name: getDouble
+
+			Des:
+				Get the data as a double
+
+			Returns:
+				type double, the data as a double
+		******************************************************************************/
+		inline double getDouble() override {
+
+			return (double)data;
+		}
+
+		/******************************************************************************
+			Function Name: setShort
+
+			Des:
+				Setter for data
+
+			Param:
+				data - type short, the new value for the data
+		******************************************************************************/
 		inline void setShort(short data) override {
 
 			this->data = data;
@@ -89,7 +175,22 @@ namespace day {
 			Returns:
 				type Short &, the resulting value
 		******************************************************************************/
-		Short& operator=(Primitive &primitive) override;
+		Short& operator=(Primitive &primitive);
+
+		/******************************************************************************
+			Function Name: assignment
+
+			Des:
+				Assign the value of primitive to this
+
+			Params:
+				primitive - type Primitive &, the primitive type this is to be
+					assigned to
+
+			Returns:
+				type Short &, the resulting value
+		******************************************************************************/
+		Short& assignment(Primitive &primitive) override;
 
 		/******************************************************************************
 			Function Name: operator+
@@ -101,9 +202,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be added to
 
 			Returns:
-				type Primitive, the resulting value
+				type shared_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		Primitive operator+(Primitive &primitive) override;
+		shared_ptr<Primitive> operator+(Primitive &primitive) override;
 
 		/******************************************************************************
 			Function Name: operator-
@@ -115,9 +216,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be subtracted by
 
 			Returns:
-				type Primitive, the resulting value
+				type shared_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		Primitive operator-(Primitive &primitive) override;
+		shared_ptr<Primitive> operator-(Primitive &primitive) override;
 
 		/******************************************************************************
 			Function Name: operator-
@@ -126,9 +227,9 @@ namespace day {
 				Override unary minus operator
 
 			Returns:
-				type Primitive, the resulting value
+				type shared_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		Primitive operator-() override;
+		shared_ptr<Primitive> operator-() override;
 
 		/******************************************************************************
 			Function Name: operator*
@@ -140,9 +241,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be multiplied by
 
 			Returns:
-				type Primitive, the resulting value
+				type shared_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		Primitive operator*(Primitive &primitive) override;
+		shared_ptr<Primitive> operator*(Primitive &primitive) override;
 
 		/******************************************************************************
 			Function Name: operator/
@@ -154,9 +255,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be divided by
 
 			Returns:
-				type Primitive, the resulting value
+				type shared_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		Primitive operator/(Primitive &primitive) override;
+		shared_ptr<Primitive> operator/(Primitive &primitive) override;
 
 		/******************************************************************************
 			Function Name: operator%
@@ -168,9 +269,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be modulated by
 
 			Returns:
-				type Primitive, the resulting value
+				type shared_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		Primitive operator%(Primitive &primitive) override;
+		shared_ptr<Primitive> operator%(Primitive &primitive) override;
 
 		/******************************************************************************
 			Function Name: operator++
@@ -190,9 +291,9 @@ namespace day {
 				Override postfix increment operator
 
 			Returns:
-				type Primitive, the resulting value
+				type shared_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		Primitive operator++(int) override;
+		shared_ptr<Primitive> operator++(int) override;
 
 		/******************************************************************************
 			Function Name: operator--
@@ -212,9 +313,9 @@ namespace day {
 				Override postfix decrement operator
 
 			Returns:
-				type Primitive, the resulting value
+				type shared_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		Primitive operator--(int) override;
+		shared_ptr<Primitive> operator--(int) override;
 
 		/******************************************************************************
 			Bitwise operators
@@ -230,9 +331,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be bitwise OR'd by
 
 			Returns:
-				type Primitive, the resulting value
+				type shared_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		Primitive operator|(Primitive &primitive) override;
+		shared_ptr<Primitive> operator|(Primitive &primitive) override;
 
 		/******************************************************************************
 			Function Name: operator&
@@ -244,9 +345,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be bitwise AND'd by
 
 			Returns:
-				type Primitive, the resulting value
+				type shared_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		Primitive operator&(Primitive &primitive) override;
+		shared_ptr<Primitive> operator&(Primitive &primitive) override;
 
 		/******************************************************************************
 			Function Name: operator~
@@ -255,9 +356,9 @@ namespace day {
 				Override bitwise NOT operator
 
 			Returns:
-				type Primitive, the resulting value
+				type shared_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		Primitive operator~() override;
+		shared_ptr<Primitive> operator~() override;
 
 		/******************************************************************************
 			Function Name: operator^
@@ -269,9 +370,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be bitwise XOR'd by
 
 			Returns:
-				type Primitive, the resulting value
+				type shared_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		Primitive operator^(Primitive &primitive) override;
+		shared_ptr<Primitive> operator^(Primitive &primitive) override;
 
 		/******************************************************************************
 			Function Name: operator<<
@@ -283,9 +384,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be shifted by
 
 			Returns:
-				type Primitive, the resulting value
+				type shared_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		Primitive operator<<(Primitive &primitive) override;
+		shared_ptr<Primitive> operator<<(Primitive &primitive) override;
 
 		/******************************************************************************
 			Function Name: operator>>
@@ -297,9 +398,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be shifted by
 
 			Returns:
-				type Primitive, the resulting value
+				type shared_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		Primitive operator>>(Primitive &primitive) override;
+		shared_ptr<Primitive> operator>>(Primitive &primitive) override;
 
 		/******************************************************************************
 			Comparison operators
@@ -315,9 +416,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be compared to
 
 			Returns:
-				type Primitive, the resulting value
+				type shared_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		Primitive operator==(Primitive &primitive) override;
+		shared_ptr<Primitive> operator==(Primitive &primitive) override;
 
 		/******************************************************************************
 			Function Name: operator!=
@@ -329,9 +430,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be compared to
 
 			Returns:
-				type Primitive, the resulting value
+				type shared_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		Primitive operator!=(Primitive &primitive) override;
+		shared_ptr<Primitive> operator!=(Primitive &primitive) override;
 
 		/******************************************************************************
 			Function Name: operator>
@@ -343,9 +444,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be compared to
 
 			Returns:
-				type Primitive, the resulting value
+				type shared_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		Primitive operator>(Primitive &primitive) override;
+		shared_ptr<Primitive> operator>(Primitive &primitive) override;
 
 		/******************************************************************************
 			Function Name: operator<
@@ -357,9 +458,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be compared to
 
 			Returns:
-				type Primitive, the resulting value
+				type shared_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		Primitive operator<(Primitive &primitive) override;
+		shared_ptr<Primitive> operator<(Primitive &primitive) override;
 
 		/******************************************************************************
 			Function Name: operator>=
@@ -371,9 +472,9 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be compared to
 
 			Returns:
-				type Primitive, the resulting value
+				type shared_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		Primitive operator>=(Primitive &primitive) override;
+		shared_ptr<Primitive> operator>=(Primitive &primitive) override;
 
 		/******************************************************************************
 			Function Name: operator<=
@@ -385,8 +486,8 @@ namespace day {
 				primitive - type Primitive &, the primitive type to be compared to
 
 			Returns:
-				type Primitive, the resulting value
+				type shared_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		Primitive operator<=(Primitive &primitive) override;
+		shared_ptr<Primitive> operator<=(Primitive &primitive) override;
 	};
 }

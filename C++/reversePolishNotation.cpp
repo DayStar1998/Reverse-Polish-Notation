@@ -27,22 +27,22 @@
 
 namespace day {
 
-	Primitive ReversePolishNotation::evaluateEquation(const char *equation, int length) {
+	shared_ptr<Primitive> ReversePolishNotation::evaluateEquation(const char *equation, int length) {
 
 		// Recreated each time to avoid old invalid data being left from previous invalid equations
-		map<string, Primitive> values;
-		Primitive result;
+		map<string, shared_ptr<Primitive>> values;
+		shared_ptr<Primitive> result;
 
 		string editedEquation = stripValuesFromEquation(equation, length, values);
 
 		editedEquation = convertInfixToPostFix(editedEquation.c_str(), editedEquation.size());
 
-		result = (Primitive&)calcResult(editedEquation.c_str(), editedEquation.size(), values);
+		result = calcResult(editedEquation.c_str(), editedEquation.size(), values);
 
 		return result;
 	}
 
-	string ReversePolishNotation::stripValuesFromEquation(const char *equation, int length, map<string, Primitive> &values) {
+	string ReversePolishNotation::stripValuesFromEquation(const char *equation, int length, map<string, shared_ptr<Primitive>> &values) {
 
 		if (equation == nullptr)
 			throw invalid_argument("Equation is null");
@@ -203,14 +203,14 @@ namespace day {
 		return postFixString;
 	}
 
-	Primitive& ReversePolishNotation::calcResult(const char *equation, int length, map<string, Primitive> &values) {
+	shared_ptr<Primitive> ReversePolishNotation::calcResult(const char *equation, int length, map<string, shared_ptr<Primitive>> &values) {
 
 		if (equation == nullptr)
 			throw invalid_argument("Equation is null");
 
-		stack<Primitive> operandStack;
-		Primitive result;
-		Primitive primitive1, primitive2;
+		stack<shared_ptr<Primitive>> operandStack;
+		shared_ptr<Primitive> result;
+		shared_ptr<Primitive> primitive1, primitive2;
 
 		for (int i = 0; i < length; i++) {
 
@@ -221,6 +221,7 @@ namespace day {
 
 					// Assign the value of the second operand to the first
 					getOperandsFromStack(operandStack, primitive1, primitive2);
+					// TODO: Should I be doing something else here?
 					operandStack.push(primitive1 = primitive2);
 
 					break;
@@ -228,46 +229,46 @@ namespace day {
 
 					// Adds operands to each other
 					getOperandsFromStack(operandStack, primitive1, primitive2);
-					operandStack.push(primitive1 + primitive2);
+					operandStack.push(*primitive1 + *primitive2);
 					break;
 				case '-':
 
 					// Subtracts second operand from the first
 					getOperandsFromStack(operandStack, primitive1, primitive2);
-					operandStack.push(primitive1 - primitive2);
+					operandStack.push(*primitive1 - *primitive2);
 					break;
 				case '*':
 
 					// Multiplies operands with each other
 					getOperandsFromStack(operandStack, primitive1, primitive2);
-					operandStack.push(primitive1 * primitive2);
+					operandStack.push(*primitive1 * *primitive2);
 					break;
 				case '/':
 
 					// Divides second operand from the first
 					// Handling divide by 0 exception is out of scope and an exception will be thrown
 					getOperandsFromStack(operandStack, primitive1, primitive2);
-					operandStack.push(primitive1 / primitive2);
+					operandStack.push(*primitive1 / *primitive2);
 					break;
 				case '%':
 
 					// Modulates first operand by the second
 					// Handling divide by 0 exception is out of scope
 					getOperandsFromStack(operandStack, primitive1, primitive2);
-					operandStack.push(primitive1 % primitive2);
+					operandStack.push(*primitive1 % *primitive2);
 					break;
 				case '|':
 
 					// First operand bitwise OR the second operand
 					getOperandsFromStack(operandStack, primitive1, primitive2);
-					operandStack.push(primitive1 | primitive2);
+					operandStack.push(*primitive1 | *primitive2);
 
 					break;
 				case '&':
 
 					// First operand bitwise AND the second operand
 					getOperandsFromStack(operandStack, primitive1, primitive2);
-					operandStack.push(primitive1 & primitive2);
+					operandStack.push(*primitive1 & *primitive2);
 
 					break;
 				case '~':
@@ -275,19 +276,19 @@ namespace day {
 					// Bitwise NOT the operand
 					primitive1 = operandStack.top();
 					operandStack.pop();
-					operandStack.push(~primitive1);
+					operandStack.push(~*primitive1);
 					break;
 				case '^':
 
 					// First operand XOR the second operand
 					getOperandsFromStack(operandStack, primitive1, primitive2);
-					operandStack.push(primitive1 ^ primitive2);
+					operandStack.push(*primitive1 ^ *primitive2);
 					break;
 				case '!':
 					// Get boolean off top of the stack and NOT it
 					primitive1 = operandStack.top();
 					operandStack.pop();
-					operandStack.push(!primitive1);
+					operandStack.push(!*primitive1);
 					break;
 				default:
 
@@ -295,7 +296,7 @@ namespace day {
 
 						primitive1 = operandStack.top();
 						operandStack.pop();
-						operandStack.push(-primitive1);
+						operandStack.push(-*primitive1);
 					} else if (equation[i] == DEFAULT_ARG_PREFIX) {
 
 						string argument = getVar(equation, length, i + 1, i);
@@ -325,28 +326,6 @@ namespace day {
 			throw invalid_argument("Equation is too long");
 
 		nextArgument++;
-
-		return result;
-	}
-
-	bool ReversePolishNotation::isOperator(char value) {
-
-		bool result = false;
-
-		// TODO: Add support for bool operators
-
-		switch (value) {
-
-			case '(':
-			case ')':
-			case '^':
-			case '*':
-			case '/':
-			case '+':
-			case '-':
-
-				result = true;
-		};
 
 		return result;
 	}
@@ -404,7 +383,7 @@ namespace day {
 		return result;
 	}
 
-	void ReversePolishNotation::getOperandsFromStack(stack<Primitive> &operandStack, Primitive &value1, Primitive &value2) {
+	void ReversePolishNotation::getOperandsFromStack(stack<shared_ptr<Primitive>> &operandStack, shared_ptr<Primitive> value1, shared_ptr<Primitive> value2) {
 
 		if (operandStack.size() < 2)
 			throw invalid_argument("Equation is invalid");

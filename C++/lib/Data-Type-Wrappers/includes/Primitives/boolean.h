@@ -39,7 +39,7 @@ namespace day {
 	public:
 
 		/******************************************************************************
-		Constructor
+			Constructor
 		******************************************************************************/
 		Boolean(bool data = false) : Primitive(Type::BOOLEAN), data(data) {}
 
@@ -54,13 +54,29 @@ namespace day {
 		******************************************************************************/
 		string toString() override;
 
-		// Getter
+		/******************************************************************************
+			Function Name: getBool
+
+			Des:
+				Get the data as a bool
+
+			Returns:
+				type bool, the data as a bool
+		******************************************************************************/
 		inline bool getBool() override {
 
 			return data;
 		}
 
-		// Setter
+		/******************************************************************************
+			Function Name: setBool
+
+			Des:
+				Setter for data
+
+			Param:
+				data - type bool, the new value for the data
+		******************************************************************************/
 		inline void setBool(bool data) override {
 
 			this->data = data;
@@ -83,7 +99,7 @@ namespace day {
 			Returns:
 				type Boolean &, the resulting value
 		******************************************************************************/
-		Boolean& operator=(Primitive &primitive) override;
+		Boolean& operator=(Primitive &primitive);
 
 		/******************************************************************************
 			Logic Operators
@@ -96,9 +112,9 @@ namespace day {
 				Override logical NOT operator
 
 			Returns:
-				type Primitive, the resulting value
+				type shared_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		Primitive operator!() override;
+		shared_ptr<Primitive> operator!() override;
 
 		/******************************************************************************
 			Function Name: operator&&
@@ -110,9 +126,9 @@ namespace day {
 				primitive - type Primitive &, the value to be compared to
 
 			Returns:
-				type Primitive, the resulting value
+				type shared_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		Primitive operator&&(Primitive &primitive) override;
+		shared_ptr<Primitive> operator&&(Primitive &primitive) override;
 
 		/******************************************************************************
 			Function Name: operator||
@@ -124,8 +140,8 @@ namespace day {
 				primitive - type Primitive &, the value to be compared to
 
 			Returns:
-				type Primitive, the resulting value
+				type shared_ptr<Primitive>, the resulting value
 		******************************************************************************/
-		Primitive operator||(Primitive &primitive) override;
+		shared_ptr<Primitive> operator||(Primitive &primitive) override;
 	};
 }

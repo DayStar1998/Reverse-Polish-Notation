@@ -49,6 +49,7 @@ using std::pow;
 using std::to_string;
 using std::isalpha;
 using std::isblank;
+using std::shared_ptr;
 
 namespace day {
 
@@ -75,9 +76,9 @@ namespace day {
 				length - type int, the length of the param equation.
 
 			Returns:
-				type double, the answer to the equation
+				type shared_ptr<Primitive>, the answer to the equation
 		******************************************************************************/
-		Primitive evaluateEquation(const char *equation, int length);
+		shared_ptr<Primitive> evaluateEquation(const char *equation, int length);
 
 		/******************************************************************************
 			Function Name: stripValuesFromEquation
@@ -89,8 +90,9 @@ namespace day {
 				equation - type const char *, the data the number is to be
 					extracted from.
 				length - type int, the length of the param equation.
-				values - type map<string, Primitive>, output map containing all
-					values corresponding to the variables in param equation.
+				values - type map<string, shared_ptr<Primitive>>, output map
+					containing all values corresponding to the variables in param
+					equation.
 
 			Returns:
 				type string, the equation with all values replaced with letters
@@ -102,7 +104,7 @@ namespace day {
 				Named variables in the equation must begin with an alphabetical
 					character
 		******************************************************************************/
-		string stripValuesFromEquation(const char *equation, int length, map<string, Primitive> &values);
+		string stripValuesFromEquation(const char *equation, int length, map<string, shared_ptr<Primitive>> &values);
 
 		/******************************************************************************
 			Function Name: convertInfixToPostFix
@@ -138,18 +140,37 @@ namespace day {
 					replaced with letters. Case matters so 'A' is not equal to 'a.'
 					Example input: AB+c*.
 				length - type int, the length of the param equation.
-				values - type map<string, Primitive>, array containing all values
-					corresponding to the variables in param equation.
+				values - type map<string, shared_ptr<Primitive>>, array containing
+					all values corresponding to the variables in param equation.
 
 			Returns:
-				type Primitive, result of the equation.
+				type shared_ptr<Primitive>, result of the equation.
 
 			Throws:
 				Throws exception if the equation is unsolvable.
 		******************************************************************************/
-		Primitive& calcResult(const char *equation, int length, map<string, Primitive> &values);
+		shared_ptr<Primitive> calcResult(const char *equation, int length, map<string, shared_ptr<Primitive>> &values);
 
 	private:
+
+	/******************************************************************************
+		Function Name: getNumber
+
+		Des:
+			Extract a numerical value from the string starting from the specified
+				location.
+
+		Params:
+			data - type char *, the data the number is to be extracted from.
+			length - type int, the length of the param data.
+			start - type int, starting location in param data
+			end - type int &, output to return the location of the last char of
+				the number
+
+		Returns:
+			type shared_ptr<Primitive>, the wrapped value after it has been extracted
+	******************************************************************************/
+		shared_ptr<Primitive> getNumber(const char *data, int length, int start, int &end);
 
 		/******************************************************************************
 			Function Name: nextVariable
@@ -170,35 +191,19 @@ namespace day {
 		char nextVariable(int &nextArgument);
 
 		/******************************************************************************
-			Function Name: isOperator
-
-			Des:
-				Checks if the value is an operator.
-
-			Params:
-				value - type char, the value to be checked.
-
-			Returns:
-				type bool, true if it is an operator, otherwise false.
-
-			Note:
-				Does not support bool operators
-				TODO: Add support for bool operators
-		******************************************************************************/
-		bool isOperator(char value);
-
-		/******************************************************************************
 			Function Name: isLowerPrecedence
 
 			Des:
-				Checks if the first operator has lower precedence than the second operator.
+				Checks if the first operator has lower precedence than the second
+					operator.
 
 			Params:
 				firstOperator - type char, the first operator.
 				secondOperator - type char, the second operator.
 
 			Returns:
-				type bool, is the first operator lower precedence than the second one, otherwise false.
+				type bool, is the first operator lower precedence than the second one,
+					otherwise false.
 		******************************************************************************/
 		bool isLowerPrecedence(char firstOperator, char secondOperator);
 
@@ -221,17 +226,19 @@ namespace day {
 			Function Name: getOperandsFromStack
 
 			Des:
-				Pops the top two int's off the top of the stack.
+				Pops the top two Primitive's off the top of the stack.
 
 			Params:
-				operandStack - type stack<bool> &, is a stack containing all unprocessed
-					operands.
-				value1 - type int &, output to get the first int in the equation.
-				value2 - type int &, output to get the second int in the equation.
+				operandStack - type stack<shared_ptr<Primitive>> &, is a stack
+					containing all unprocessed operands.
+				value1 - type shared_ptr<Primitive>, output to get the first int in
+					the equation.
+				value2 - type shared_ptr<Primitive>, output to get the second int in
+					the equation.
 
 			Throws:
 				Throws exception if the there are less than 2 operands on the stack.
 		******************************************************************************/
-		void getOperandsFromStack(stack<Primitive> &operandStack, Primitive &value1, Primitive &value2);
+		void getOperandsFromStack(stack<shared_ptr<Primitive>> &operandStack, shared_ptr<Primitive> value1, shared_ptr<Primitive> value2);
 	};
 }

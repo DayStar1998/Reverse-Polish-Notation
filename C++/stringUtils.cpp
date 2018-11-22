@@ -27,9 +27,9 @@
 
 namespace day {
 
-	Primitive getNumber(const char *data, int length, int start, int &end) {
+	shared_ptr<Primitive> getNumber(const char *data, int length, int start, int &end) {
 
-		Primitive result;
+		shared_ptr<Primitive> result;
 		string number = "";
 		int pos = start;
 
@@ -63,9 +63,9 @@ namespace day {
 
 		// Convert to Double or Integer
 		if (hasDecimal)
-			result = (Primitive&)Double(stod(number));
+			result = make_shared<Double>(stod(number));
 		else
-			result = (Primitive&)Integer(stoi(number));
+			result = make_shared<Integer>(stoi(number));
 
 		return result;
 	}
@@ -89,6 +89,28 @@ namespace day {
 				break;
 			}
 		}
+
+		return result;
+	}
+
+	bool isOperator(char value) {
+
+		bool result = false;
+
+		// TODO: Add support for bool operators
+
+		switch (value) {
+
+			case '(':
+			case ')':
+			case '^':
+			case '*':
+			case '/':
+			case '+':
+			case '-':
+
+				result = true;
+		};
 
 		return result;
 	}
