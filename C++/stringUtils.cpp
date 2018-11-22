@@ -42,7 +42,7 @@ namespace day {
 		// Avoid having to increment with every iteration to prevent it from not being set if the loop runs until equal to length
 		end = length - 1;
 
-		bool hasDecimal = false;
+		hasDecimal = false;
 
 		for (int i = pos; i < length; i++) {
 
