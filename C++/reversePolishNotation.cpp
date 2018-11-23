@@ -59,9 +59,10 @@ namespace day {
 			if (isblank(equation[i]))
 				continue;
 
-			// TODO: Fix to work when whitespace is before the minus sign
+			char backOfResultString = result[result.length() - 1];
+
 			// Check whether a minus sign is being used to subtract or to make the number negative
-			if (equation[i] == '-' && (i == 0 || (isOperator(result[i - 1]) && result[i - 1] != ')'))) {
+			if (equation[i] == '-' && (i == 0 || (isOperator(backOfResultString) && backOfResultString != ')'))) {
 
 				if (i + 1 == length)
 					throw invalid_argument("Equation is invalid");
@@ -78,6 +79,12 @@ namespace day {
 					values.emplace(key, getNumber(equation, length, i, endPos));
 
 					i = endPos;
+				} else if (equation[i + 1] == '-') {
+				
+					// TODO: Support post- pre- decrementation
+					// Skip this '-' and the next one because negativing a negative number makes it positive
+					i++;
+					continue;
 				} else {
 
 					// Place DEFAULT_UNARY_MINUS_SIGN to differentiate from a regular minus sign
@@ -89,9 +96,9 @@ namespace day {
 					// Insert prefix before the variable and skip the minus sign in the resulting equation
 					result.append(DEFAULT_ARG_PREFIX + variable);
 
-					// If the variable doesn't exist then a null value is set for it and it is assumed the variable will be initialized from outside of scope
+					// If the variable doesn't exist then a null value is set for it and it is assumed the variable will be initialized during this equation
 					if(!values.count(variable))
-						values.emplace(variable, Primitive());
+						values.emplace(variable, make_shared<Primitive>());
 
 					i = endPos;
 				}
@@ -111,17 +118,17 @@ namespace day {
 				// Insert prefix before the variable and skip the minus sign in the resulting equation
 				result.append(DEFAULT_ARG_PREFIX + variable);
 
-				// If the variable doesn't exist then a null value is set for it and it is assumed the variable will be initialized from outside of scope
+				// If the variable doesn't exist then a null value is set for it and it is assumed the variable will be initialized during this equation
 				if (!values.count(variable))
-					values.emplace(variable, Primitive());
+					values.emplace(variable, make_shared<Primitive>());
 
 				i = endPos;
-			// if the equation is in the format of a(b) then it is expanded to a*(b)
+			// If the equation is in the format of a(b) then it is expanded to a*(b)
 			} else if (equation[i] == '(' && i > 0 && isdigit(equation[i - 1])) {
 
 				result.push_back('*');
 				result.push_back(equation[i]);
-			// if the equation is in the format of (a)b then it is expanded to (a)*b
+			// If the equation is in the format of (a)b then it is expanded to (a)*b
 			} else if (equation[i] == ')' && i + 1 != length && isdigit(equation[i + 1])) {
 
 				result.push_back(equation[i]);
@@ -152,10 +159,10 @@ namespace day {
 				if (operatorStack.size() == 0) {
 
 					operatorStack.push(equation[i]);
-				//IF the current operator has lower precedence than the operator on top of the operator stack
+				//If the current operator has lower precedence than the operator on top of the operator stack
 				} else if (isLowerPrecedence(operatorStack.top(), equation[i])) {
 
-					// IF the current operator is a ')' then pop operators off the stack into the post-fix string
+					// If the current operator is a ')' then pop operators off the stack into the post-fix string
 					//		until the matching '(' is found
 					if (equation[i] == ')') {
 
@@ -225,18 +232,6 @@ namespace day {
 					operandStack.push(primitive1 = primitive2);
 
 					break;
-				case '+':
-
-					// Adds operands to each other
-					getOperandsFromStack(operandStack, primitive1, primitive2);
-					operandStack.push(*primitive1 + *primitive2);
-					break;
-				case '-':
-
-					// Subtracts second operand from the first
-					getOperandsFromStack(operandStack, primitive1, primitive2);
-					operandStack.push(*primitive1 - *primitive2);
-					break;
 				case '*':
 
 					// Multiplies operands with each other
@@ -257,6 +252,19 @@ namespace day {
 					getOperandsFromStack(operandStack, primitive1, primitive2);
 					operandStack.push(*primitive1 % *primitive2);
 					break;
+				case '+':
+
+					// Adds operands to each other
+					getOperandsFromStack(operandStack, primitive1, primitive2);
+					operandStack.push(*primitive1 + *primitive2);
+					break;
+				case '-':
+
+					// Subtracts second operand from the first
+					getOperandsFromStack(operandStack, primitive1, primitive2);
+					operandStack.push(*primitive1 - *primitive2);
+					break;
+				// Bitwise operators
 				case '|':
 
 					// First operand bitwise OR the second operand
@@ -284,6 +292,7 @@ namespace day {
 					getOperandsFromStack(operandStack, primitive1, primitive2);
 					operandStack.push(*primitive1 ^ *primitive2);
 					break;
+				// Logic operators
 				case '!':
 					// Get boolean off top of the stack and NOT it
 					primitive1 = operandStack.top();
@@ -320,6 +329,8 @@ namespace day {
 
 		bool hasDecimal = false;
 
+		// TODO: Support casting numbers, eg. 1f to float
+
 		// Get the number as a string
 		string number = day::getNumber(data, length, true, start, end, hasDecimal);
 
@@ -348,7 +359,7 @@ namespace day {
 		return result;
 	}
 
-	bool ReversePolishNotation::isLowerPrecedence(char firstOperator, char secondOperator) {
+	bool ReversePolishNotation::isLowerPrecedence(string firstOperator, string secondOperator) {
 
 		bool result;
 		precedenceLevel firstPrecedenceLevel, secondPrecedenceLevel;
@@ -364,31 +375,129 @@ namespace day {
 		return result;
 	}
 
-	ReversePolishNotation::precedenceLevel ReversePolishNotation::getPrecedenceLevel(char curOperator) {
+	ReversePolishNotation::precedenceLevel ReversePolishNotation::getPrecedenceLevel(string curOperator) {
 
 		precedenceLevel result;
 
-		switch (curOperator) {
+		// TODO: Add support for operation assignment
+		switch (curOperator[0]) {
 
+			// Opening parenthesis
 			case '(':
 
 				result = OPENING_PARENTHESIS;
 				break;
-			case '+':
-			case '-':
+			// Assignment or equal to
+			case '=':
 
-				result = ADD_SUB;
+				// Check if the operator is an assignment or a comparative equal to
+				if (curOperator.length() == 2) {
+
+					if (curOperator[1] == '=')
+						result = EQUAL_NOT_EQUAL;
+					else
+						throw invalid_argument(curOperator + "is not a valid operator");
+				}else
+					result = OPERATION_ASSIGNMENT;
+
 				break;
+			// Logical NOT or not equal to
+			case '!':
+
+				// Check if the operator is a logical NOT or a comparative not equal to
+				if (curOperator.length() == 2) {
+
+					if (curOperator[1] == '=')
+						result = EQUAL_NOT_EQUAL;
+					else
+						throw invalid_argument(curOperator + "is not a valid operator");
+				} else
+					result = BITWISE_LOGICAL_NOT;
+
+				break;
+			// Bitwise NOT
+			case '~':
+
+				result = BITWISE_LOGICAL_NOT;
+				break;
+			// Multiplication, division, or modulation
 			case '*':
 			case '/':
 			case '%':
 
 				result = MUL_DIV_MOD;
 				break;
+			// Addition or subtraction
+			case '+':
+			case '-':
+				result = ADD_SUB;
+				break;
+			// Bitwise AND or logical AND
+			case '&':
+
+				// Check if the operator is a bitwise AND or a logical AND
+				if (curOperator.length() == 2) {
+
+					if (curOperator[1] == '&')
+						result = LOGICAL_AND;
+					else
+						throw invalid_argument(curOperator + "is not a valid operator");
+				}else
+					result = BITWISE_AND;
+
+				break;
+			// Bitwise OR or logical OR
+			case '|':
+
+				// Check if the operator is a bitwise OR or a logical OR
+				if (curOperator.length() == 2) {
+
+					if (curOperator[1] == '|')
+						result = LOGICAL_OR;
+					else
+						throw invalid_argument(curOperator + "is not a valid operator");
+				} else
+					result = BITWISE_OR;
+
+				break;
+			// Bitwise XOR
 			case '^':
 
-				result = EXP;
+				result = BITWISE_XOR;
 				break;
+			// Greater than, greater than or equal to, or bitwise right shift
+			case '>':
+
+				// Check if the operator is a bitwise right shift, a greater than, or a greater than or equal to
+				if (curOperator.length() == 2) {
+
+					if (curOperator[1] == '>')
+						result = BITWISE_LEFT_RIGHT_SHIFT;
+					else if (curOperator[1] == '=')
+						result = GREATER_LESSER_EQUAL;
+					else
+						throw invalid_argument(curOperator + "is not a valid operator");
+				} else
+					result = GREATER_LESSER_EQUAL;
+
+				break;
+			// Less than, less than or equal to, or bitwise left shift
+			case '<':
+
+				// Check if the operator is a bitwise left shift, a less than, or a less than or equal to
+				if (curOperator.length() == 2) {
+
+					if (curOperator[1] == '<')
+						result = BITWISE_LEFT_RIGHT_SHIFT;
+					else if (curOperator[1] == '=')
+						result = GREATER_LESSER_EQUAL;
+					else
+						throw invalid_argument(curOperator + "is not a valid operator");
+				} else
+					result = GREATER_LESSER_EQUAL;
+
+				break;
+			// Closing parenthesis
 			case ')':
 
 				result = CLOSING_PARENTHESIS;
@@ -401,7 +510,7 @@ namespace day {
 		return result;
 	}
 
-	void ReversePolishNotation::getOperandsFromStack(stack<shared_ptr<Primitive>> &operandStack, shared_ptr<Primitive> value1, shared_ptr<Primitive> value2) {
+	void ReversePolishNotation::getOperandsFromStack(stack<shared_ptr<Primitive>> &operandStack, shared_ptr<Primitive> &value1, shared_ptr<Primitive> &value2) {
 
 		if (operandStack.size() < 2)
 			throw invalid_argument("Equation is invalid");

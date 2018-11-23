@@ -100,17 +100,23 @@ namespace day {
 
 		bool result = false;
 
-		// TODO: Add support for bool operators
-
 		switch (value) {
 
 			case '(':
 			case ')':
-			case '^':
 			case '*':
 			case '/':
+			case '%':
 			case '+':
 			case '-':
+			case '|':
+			case '&':
+			case '~':
+			case '^':
+			case '>':
+			case '<':
+			case '!':
+			case '=':
 
 				result = true;
 		};

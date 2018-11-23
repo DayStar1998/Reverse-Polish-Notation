@@ -57,7 +57,24 @@ namespace day {
 
 	private:
 
-		enum precedenceLevel { OPENING_PARENTHESIS, ADD_SUB, MUL_DIV_MOD, EXP, CLOSING_PARENTHESIS };
+		enum precedenceLevel {
+
+			OPENING_PARENTHESIS,
+			OPERATION_ASSIGNMENT,
+			LOGICAL_OR,
+			LOGICAL_AND,
+			BITWISE_OR,
+			BITWISE_XOR,
+			BITWISE_AND,
+			EQUAL_NOT_EQUAL,
+			GREATER_LESSER_EQUAL,
+			BITWISE_LEFT_RIGHT_SHIFT,
+			ADD_SUB,
+			MUL_DIV_MOD,
+			EXP, // TODO: Not currently used
+			BITWISE_LOGICAL_NOT,
+			CLOSING_PARENTHESIS
+		};
 
 		// Generic prefix for values in equation
 		const char DEFAULT_ARG_PREFIX = '`';
@@ -198,14 +215,14 @@ namespace day {
 					operator.
 
 			Params:
-				firstOperator - type char, the first operator.
-				secondOperator - type char, the second operator.
+				firstOperator - type string, the first operator.
+				secondOperator - type string, the second operator.
 
 			Returns:
 				type bool, is the first operator lower precedence than the second one,
 					otherwise false.
 		******************************************************************************/
-		bool isLowerPrecedence(char firstOperator, char secondOperator);
+		bool isLowerPrecedence(string firstOperator, string secondOperator);
 
 		/******************************************************************************
 			Function Name: getPrecedenceLevel
@@ -214,13 +231,13 @@ namespace day {
 				Finds the precedence level of the operator.
 
 			Params:
-				curOperator - type char, the operator to be checked.
+				curOperator - type string, the operator to be checked.
 
 			Returns:
 				type ReversePolishNotation::precedenceLevel, the level of precedence
 					that the operator has.
 		******************************************************************************/
-		precedenceLevel getPrecedenceLevel(char curOperator);
+		precedenceLevel getPrecedenceLevel(string curOperator);
 
 		/******************************************************************************
 			Function Name: getOperandsFromStack
@@ -231,14 +248,14 @@ namespace day {
 			Params:
 				operandStack - type stack<shared_ptr<Primitive>> &, is a stack
 					containing all unprocessed operands.
-				value1 - type shared_ptr<Primitive>, output to get the first int in
+				value1 - type shared_ptr<Primitive> &, output to get the first int in
 					the equation.
-				value2 - type shared_ptr<Primitive>, output to get the second int in
+				value2 - type shared_ptr<Primitive> &, output to get the second int in
 					the equation.
 
 			Throws:
 				Throws exception if the there are less than 2 operands on the stack.
 		******************************************************************************/
-		void getOperandsFromStack(stack<shared_ptr<Primitive>> &operandStack, shared_ptr<Primitive> value1, shared_ptr<Primitive> value2);
+		void getOperandsFromStack(stack<shared_ptr<Primitive>> &operandStack, shared_ptr<Primitive> &value1, shared_ptr<Primitive> &value2);
 	};
 }
