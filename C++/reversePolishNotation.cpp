@@ -58,7 +58,10 @@ namespace day {
 			if (isblank(equation[i]))
 				continue;
 
-			char backOfResultString = result[result.length() - 1];
+			char backOfResultString = 0;
+
+			if (result.length() > 0)
+				backOfResultString = result[result.length() - 1];
 
 			// Check whether a minus sign is being used to subtract or to make the number negative
 			if (equation[i] == '-' && (i == 0 || (isOperator(backOfResultString) && backOfResultString != ')'))) {
@@ -324,6 +327,62 @@ namespace day {
 						// First operand XOR the second operand
 						getOperandsFromStack(operandStack, label1, label2);
 						values[to_string(tmpLabelNums)] = *values.at(label1) ^ *values.at(label2);
+						operandStack.push(to_string(tmpLabelNums++));
+					// Bitwise left shift
+					} else if (currentOperator == "<<") {
+
+						// First operand shift left by the second operand
+						getOperandsFromStack(operandStack, label1, label2);
+						values[to_string(tmpLabelNums)] = *values.at(label1) << *values.at(label2);
+						operandStack.push(to_string(tmpLabelNums++));
+					// Bitwise right shift
+					} else if (currentOperator == ">>") {
+
+						// First operand shift right by the second operand
+						getOperandsFromStack(operandStack, label1, label2);
+						values[to_string(tmpLabelNums)] = *values.at(label1) >> *values.at(label2);
+						operandStack.push(to_string(tmpLabelNums++));
+					// Equal to
+					} else if (currentOperator == "==") {
+
+						// First operand is equal to the second operand
+						getOperandsFromStack(operandStack, label1, label2);
+						values[to_string(tmpLabelNums)] = *values.at(label1) == *values.at(label2);
+						operandStack.push(to_string(tmpLabelNums++));
+					// Not equal to
+					} else if (currentOperator == "!=") {
+
+						// First operand is not equal to the second operand
+						getOperandsFromStack(operandStack, label1, label2);
+						values[to_string(tmpLabelNums)] = *values.at(label1) != *values.at(label2);
+						operandStack.push(to_string(tmpLabelNums++));
+					// Greater than
+					} else if (currentOperator == ">") {
+
+						// First operand is greater than the second operand
+						getOperandsFromStack(operandStack, label1, label2);
+						values[to_string(tmpLabelNums)] = *values.at(label1) > *values.at(label2);
+						operandStack.push(to_string(tmpLabelNums++));
+					// Greater than or equal to
+					} else if (currentOperator == ">=") {
+
+						// First operand is greater than or equal to the second operand
+						getOperandsFromStack(operandStack, label1, label2);
+						values[to_string(tmpLabelNums)] = *values.at(label1) >= *values.at(label2);
+						operandStack.push(to_string(tmpLabelNums++));
+					// Less than
+					} else if (currentOperator == "<") {
+
+						// First operand is less than the second operand
+						getOperandsFromStack(operandStack, label1, label2);
+						values[to_string(tmpLabelNums)] = *values.at(label1) < *values.at(label2);
+						operandStack.push(to_string(tmpLabelNums++));
+					// Less than or equal to
+					} else if (currentOperator == "<=") {
+
+						// First operand is less than or equal to the second operand
+						getOperandsFromStack(operandStack, label1, label2);
+						values[to_string(tmpLabelNums)] = *values.at(label1) <= *values.at(label2);
 						operandStack.push(to_string(tmpLabelNums++));
 					// Logical NOT
 					} else if (currentOperator == "!") {
