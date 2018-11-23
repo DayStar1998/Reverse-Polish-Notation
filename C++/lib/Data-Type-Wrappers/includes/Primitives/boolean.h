@@ -102,6 +102,95 @@ namespace day {
 		Boolean& operator=(Primitive &primitive);
 
 		/******************************************************************************
+			Bitwise Operators
+		******************************************************************************/
+
+		/******************************************************************************
+			Function Name: operator~
+
+			Des:
+				Override bitwise NOT operator
+
+			Returns:
+				type shared_ptr<Primitive>, the resulting value
+		******************************************************************************/
+		shared_ptr<Primitive> operator~() override;
+
+		/******************************************************************************
+			Function Name: operator&
+
+			Des:
+				Override bitwise AND operator
+
+			Params:
+				primitive - type Primitive &, the value to be compared to
+
+			Returns:
+				type shared_ptr<Primitive>, the resulting value
+		******************************************************************************/
+		shared_ptr<Primitive> operator&(Primitive &primitive) override;
+
+		/******************************************************************************
+			Function Name: operator|
+
+			Des:
+				Override bitwise OR operator
+
+			Params:
+				primitive - type Primitive &, the value to be compared to
+
+			Returns:
+				type shared_ptr<Primitive>, the resulting value
+		******************************************************************************/
+		shared_ptr<Primitive> operator|(Primitive &primitive) override;
+
+		/******************************************************************************
+			Function Name: operator^
+
+			Des:
+				Override bitwise XOR operator
+
+			Params:
+				primitive - type Primitive &, the value to be compared to
+
+			Returns:
+				type shared_ptr<Primitive>, the resulting value
+		******************************************************************************/
+		shared_ptr<Primitive> operator^(Primitive &primitive) override;
+
+		/******************************************************************************
+			Comparison operators
+		******************************************************************************/
+
+		/******************************************************************************
+			Function Name: operator==
+
+			Des:
+				Override equal to operator
+
+			Params:
+				primitive - type Primitive &, the primitive type to be compared to
+
+			Returns:
+				type shared_ptr<Primitive>, the resulting value
+		******************************************************************************/
+		shared_ptr<Primitive> operator==(Primitive &primitive) override;
+
+		/******************************************************************************
+			Function Name: operator!=
+
+			Des:
+				Override not equal to operator
+
+			Params:
+				primitive - type Primitive &, the primitive type to be compared to
+
+			Returns:
+				type shared_ptr<Primitive>, the resulting value
+		******************************************************************************/
+		shared_ptr<Primitive> operator!=(Primitive &primitive) override;
+
+		/******************************************************************************
 			Logic Operators
 		******************************************************************************/
 

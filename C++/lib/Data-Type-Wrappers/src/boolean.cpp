@@ -29,18 +29,81 @@ namespace day {
 
 	string Boolean::toString() {
 
-		return to_string(data);
+		string result;
+
+		// Using to_string returns 0 or 1. Result should be "true" or "false"
+		if (data)
+			result = "true";
+		else
+			result = "false";
+
+		return result;
 	}
 
 	// Assignment
 	Boolean& Boolean::operator=(Primitive &primitive) {
 
-		if (primitive.getType() == Type::BOOLEAN)
-			this->setBool(primitive.getBool());
-		else
-			Primitive::assignment(primitive);
+		this->setBool(primitive.getBool());
 
 		return *this;
+	}
+
+	// Bitwise NOT
+	shared_ptr<Primitive> Boolean::operator~() {
+
+		shared_ptr<Primitive> result = make_shared<Boolean>(~this->getBool());
+
+		return result;
+	}
+
+	// Bitwise AND
+	shared_ptr<Primitive> Boolean::operator&(Primitive &primitive) {
+
+		shared_ptr<Primitive> result = make_shared<Boolean>();
+
+		result->setBool(this->getBool() & primitive.getBool());
+
+		return result;
+	}
+
+	// Bitwise OR
+	shared_ptr<Primitive> Boolean::operator|(Primitive &primitive) {
+
+		shared_ptr<Primitive> result = make_shared<Boolean>();
+
+		result->setBool(this->getBool() | primitive.getBool());
+
+		return result;
+	}
+
+	// Bitwise XOR
+	shared_ptr<Primitive> Boolean::operator^(Primitive &primitive) {
+
+		shared_ptr<Primitive> result = make_shared<Boolean>();
+
+		result->setBool(this->getBool() ^ primitive.getBool());
+
+		return result;
+	}
+
+	// Equal to
+	shared_ptr<Primitive> Boolean::operator==(Primitive &primitive) {
+
+		shared_ptr<Primitive> result = make_shared<Boolean>();
+
+		result->setBool(this->getBool() == primitive.getBool());
+
+		return result;
+	}
+
+	// Not equal to
+	shared_ptr<Primitive> Boolean::operator!=(Primitive &primitive) {
+
+		shared_ptr<Primitive> result = make_shared<Boolean>();
+
+		result->setBool(this->getBool() != primitive.getBool());
+
+		return result;
 	}
 
 	// Logical NOT
@@ -56,10 +119,7 @@ namespace day {
 
 		shared_ptr<Primitive> result = make_shared<Boolean>();
 
-		if (primitive.getType() == Type::BOOLEAN)
-			result->setBool(this->getBool() && primitive.getBool());
-		else
-			Primitive::operator&&(primitive);
+		result->setBool(this->getBool() && primitive.getBool());
 
 		return result;
 	}
@@ -69,10 +129,7 @@ namespace day {
 
 		shared_ptr<Primitive> result = make_shared<Boolean>();
 
-		if (primitive.getType() == Type::BOOLEAN)
-			result->setBool(this->getBool() || primitive.getBool());
-		else
-			Primitive::operator||(primitive);
+		result->setBool(this->getBool() || primitive.getBool());
 
 		return result;
 	}

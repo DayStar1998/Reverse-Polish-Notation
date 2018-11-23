@@ -145,6 +145,20 @@ namespace day {
 		}
 
 		/******************************************************************************
+			Function Name: getBool
+
+			Des:
+				Get the data as a bool
+
+			Returns:
+				type bool, the data as a bool
+		******************************************************************************/
+		inline bool getBool() override {
+
+			return data > 0;
+		}
+
+		/******************************************************************************
 			Function Name: setDouble
 
 			Des:
@@ -311,7 +325,7 @@ namespace day {
 			Function Name: operator==
 
 			Des:
-				Override equals operator
+				Override equal to operator
 
 			Params:
 				primitive - type Primitive &, the primitive type to be compared to
@@ -325,7 +339,7 @@ namespace day {
 			Function Name: operator!=
 
 			Des:
-				Override not equal operator
+				Override not equal to operator
 
 			Params:
 				primitive - type Primitive &, the primitive type to be compared to
