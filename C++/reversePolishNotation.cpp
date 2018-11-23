@@ -366,8 +366,48 @@ namespace day {
 		// Get the number as a string
 		string number = day::getNumber(data, length, true, start, end, hasDecimal);
 
-		// Convert to Double or Integer
-		if (hasDecimal)
+		if (end + 1 != length) {
+
+			switch (data[end + 1]) {
+
+				// Integer
+				case 'i':
+				case 'I':
+
+					result = make_shared<Integer>(stoi(number));
+					end++;
+					break;
+				// Float
+				case 'f':
+				case 'F':
+
+					result = make_shared<Float>(stof(number));
+					end++;
+					break;
+				// Double
+				case 'd':
+				case 'D':
+
+					result = make_shared<Double>(stod(number));
+					end++;
+					break;
+				// Long
+				case 'l':
+				case 'L':
+
+					result = make_shared<Long>(stol(number));
+					end++;
+					break;
+				default:
+
+					// Default to either double or integer depending on whether the number has a decimal point in it
+					if (hasDecimal)
+						result = make_shared<Double>(stod(number));
+					else
+						result = make_shared<Integer>(stoi(number));
+			}
+		// Default to either double or integer depending on whether the number has a decimal point in it
+		} else if (hasDecimal)
 			result = make_shared<Double>(stod(number));
 		else
 			result = make_shared<Integer>(stoi(number));
