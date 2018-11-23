@@ -45,10 +45,9 @@ namespace day {
 	string ReversePolishNotation::stripValuesFromEquation(const char *equation, int length, map<string, shared_ptr<Primitive>> &values) {
 
 		if (equation == nullptr)
-			throw invalid_argument("Equation is null");
+			throw exception("Equation is null");
 
 		string result = "";
-		int endPos;
 
 		// Counter value to show next available argument
 		int nextArgument = 0;
@@ -65,7 +64,7 @@ namespace day {
 			if (equation[i] == '-' && (i == 0 || (isOperator(backOfResultString) && backOfResultString != ')'))) {
 
 				if (i + 1 == length)
-					throw invalid_argument("Equation is invalid");
+					throw exception("Equation is invalid");
 
 				if (equation[i + 1] == '(') {
 
@@ -76,9 +75,7 @@ namespace day {
 					// Replace the number in the resulting equation with an argument prefixed with DEFAULT_ARG_PREFIX
 					string key = DEFAULT_ARG_PREFIX + to_string(nextArgument++);
 					result.append(key);
-					values[key] = getNumber(equation, length, i, endPos);
-
-					i = endPos;
+					values[key] = getNumber(equation, length, i, i);
 				} else if (equation[i + 1] == '-') {
 
 					// TODO: Support post- pre- incrementation/decrementation
@@ -90,8 +87,17 @@ namespace day {
 					// Place DEFAULT_UNARY_MINUS_SIGN to differentiate from a regular minus sign
 					result.push_back(DEFAULT_UNARY_MINUS_SIGN);
 
-					// Get the variable from the string and prefix it with DEFAULT_ARG_PREFIX
-					string variable = DEFAULT_ARG_PREFIX + getVar(equation, length, i + 1, endPos);
+					// Skip the '-' to get the variable from the string and prefix it with DEFAULT_ARG_PREFIX
+					string variable = getVar(equation, length, i + 1, i);
+
+					// Check if the variable is a bool and throw an exception if it is
+					if (variable == "true" || variable == "false") {
+
+						string message = variable + " is a reserved word and can't be used as a variable";
+						throw new exception(message.c_str());
+					}
+
+					variable = DEFAULT_ARG_PREFIX + variable;
 
 					// Add the variable to the string
 					result.append(variable);
@@ -99,30 +105,43 @@ namespace day {
 					// If the variable doesn't exist then a null value is set for it and it is assumed the variable will be initialized during this equation
 					if (!values.count(variable))
 						values[variable] = make_shared<Primitive>();
-
-					i = endPos;
 				}
 			} else if (isdigit(equation[i]) || equation[i] == '.') {
 
 				// Replace the number in the resulting equation with an argument
 				string key = DEFAULT_ARG_PREFIX + to_string(nextArgument++);
 				result.append(key);
-				values[key] = getNumber(equation, length, i, endPos);
-
-				i = endPos;
+				values[key] = getNumber(equation, length, i, i);
 			} else if (isalpha(equation[i])) {
 
-				// Get the variable from the string and prefix it with DEFAULT_ARG_PREFIX
-				string variable = DEFAULT_ARG_PREFIX + getVar(equation, length, i, endPos);
+				// Get the variable from the string
+				string variable = getVar(equation, length, i, i);
 
-				// Add the variable to the string
-				result.append(variable);
+				// Check if the variable is a bool
+				if (variable == "true") {
 
-				// If the variable doesn't exist then a null value is set for it and it is assumed the variable will be initialized during this equation
-				if (!values.count(variable))
-					values[variable] = make_shared<Primitive>();
+					// Insert a boolean of true
+					string key = DEFAULT_ARG_PREFIX + to_string(nextArgument++);
+					result.append(key);
+					values[key] = make_shared<Boolean>(true);
+				} else if (variable == "false") {
 
-				i = endPos;
+					// Insert a boolean of false
+					string key = DEFAULT_ARG_PREFIX + to_string(nextArgument++);
+					result.append(key);
+					values[key] = make_shared<Boolean>(false);
+				} else {
+
+					// Prefix the variable with DEFAULT_ARG_PREFIX
+					variable = DEFAULT_ARG_PREFIX + variable;
+
+					// Add the variable to the string
+					result.append(variable);
+
+					// If the variable doesn't exist then a null value is set for it and it is assumed the variable will be initialized during this equation
+					if (!values.count(variable))
+						values[variable] = make_shared<Primitive>();
+				}
 			// If the equation is in the format of a(b) then it is expanded to a*(b)
 			} else if (equation[i] == '(' && i > 0 && isalnum(equation[i - 1])) {
 
@@ -143,7 +162,7 @@ namespace day {
 	string ReversePolishNotation::convertInfixToPostFix(const char *equation, int length) {
 
 		if (equation == nullptr)
-			throw invalid_argument("Equation is null");
+			throw new exception("Equation is null");
 
 		stack<string> operatorStack;
 		string postFixString;
@@ -171,7 +190,7 @@ namespace day {
 						while (operatorStack.top() != "(") {
 
 							if (operatorStack.empty())
-								throw invalid_argument("Too many closing parenthesis");
+								throw new exception("Too many closing parenthesis");
 
 							postFixString += DEFAULT_ARG_PREFIX + operatorStack.top();
 							operatorStack.pop();
@@ -189,7 +208,7 @@ namespace day {
 					if (equation[i] != '(') {
 
 						if (operatorStack.empty())
-							throw invalid_argument("Too many closing parenthesis");
+							throw new exception("Too many closing parenthesis");
 
 						postFixString += DEFAULT_ARG_PREFIX + operatorStack.top();
 						operatorStack.pop();
@@ -215,7 +234,7 @@ namespace day {
 	shared_ptr<Primitive> ReversePolishNotation::calcResult(const char *equation, int length, map<string, shared_ptr<Primitive>> &values) {
 
 		if (equation == nullptr)
-			throw invalid_argument("Equation is null");
+			throw new exception("Equation is null");
 
 		stack<string> operandStack;
 		shared_ptr<Primitive> result;
@@ -328,8 +347,11 @@ namespace day {
 						getOperandsFromStack(operandStack, label1, label2);
 						values[to_string(tmpLabelNums)] = *values.at(label1) || *values.at(label2);
 						operandStack.push(to_string(tmpLabelNums++));
-					} else
-						throw invalid_argument(currentOperator + " is not yet supported");
+					} else {
+
+						string message = currentOperator + " is not a supported operator";
+						throw new exception(message.c_str());
+					}
 				// Unary minus
 				} else if (equation[i + 1] == DEFAULT_UNARY_MINUS_SIGN) {
 
@@ -342,7 +364,7 @@ namespace day {
 					string argument = getVar(equation, length, i + 1, i);
 					operandStack.push(DEFAULT_ARG_PREFIX + argument);
 				} else
-					throw invalid_argument("Equation is invalid");
+					throw new exception("Equation is invalid");
 			}
 		}
 
@@ -350,7 +372,7 @@ namespace day {
 		operandStack.pop();
 
 		if (!operandStack.empty())
-			throw invalid_argument("Equation is invalid");
+			throw new exception("Equation is invalid");
 
 		return result;
 	}
@@ -424,7 +446,7 @@ namespace day {
 		else if ('A' + nextArgument - 26 <= 'Z')
 			result = 'A' + nextArgument - 26;
 		else
-			throw invalid_argument("Equation is too long");
+			throw new exception("Equation is too long");
 
 		nextArgument++;
 
@@ -467,8 +489,11 @@ namespace day {
 
 					if (curOperator[1] == '=')
 						result = EQUAL_NOT_EQUAL;
-					else
-						throw invalid_argument(curOperator + "is not a valid operator");
+					else {
+
+						string message = curOperator + "is not a valid operator";
+						throw new exception(message.c_str());
+					}
 				} else
 					result = OPERATION_ASSIGNMENT;
 
@@ -481,8 +506,11 @@ namespace day {
 
 					if (curOperator[1] == '=')
 						result = EQUAL_NOT_EQUAL;
-					else
-						throw invalid_argument(curOperator + "is not a valid operator");
+					else {
+
+						string message = curOperator + "is not a valid operator";
+						throw new exception(message.c_str());
+					}
 				} else
 					result = BITWISE_LOGICAL_NOT;
 
@@ -512,8 +540,11 @@ namespace day {
 
 					if (curOperator[1] == '&')
 						result = LOGICAL_AND;
-					else
-						throw invalid_argument(curOperator + "is not a valid operator");
+					else {
+
+						string message = curOperator + "is not a valid operator";
+						throw new exception(message.c_str());
+					}
 				} else
 					result = BITWISE_AND;
 
@@ -526,8 +557,11 @@ namespace day {
 
 					if (curOperator[1] == '|')
 						result = LOGICAL_OR;
-					else
-						throw invalid_argument(curOperator + "is not a valid operator");
+					else {
+
+						string message = curOperator + "is not a valid operator";
+						throw new exception(message.c_str());
+					}
 				} else
 					result = BITWISE_OR;
 
@@ -547,8 +581,11 @@ namespace day {
 						result = BITWISE_LEFT_RIGHT_SHIFT;
 					else if (curOperator[1] == '=')
 						result = GREATER_LESSER_EQUAL;
-					else
-						throw invalid_argument(curOperator + "is not a valid operator");
+					else {
+
+						string message = curOperator + "is not a valid operator";
+						throw new exception(message.c_str());
+					}
 				} else
 					result = GREATER_LESSER_EQUAL;
 
@@ -563,8 +600,11 @@ namespace day {
 						result = BITWISE_LEFT_RIGHT_SHIFT;
 					else if (curOperator[1] == '=')
 						result = GREATER_LESSER_EQUAL;
-					else
-						throw invalid_argument(curOperator + "is not a valid operator");
+					else {
+
+						string message = curOperator + "is not a valid operator";
+						throw new exception(message.c_str());
+					}
 				} else
 					result = GREATER_LESSER_EQUAL;
 
@@ -576,7 +616,8 @@ namespace day {
 				break;
 			default:
 
-				throw invalid_argument(curOperator + "is not a valid operator");
+				string message = curOperator + "is not a valid operator";
+				throw new exception(message.c_str());
 		};
 
 		return result;
@@ -585,7 +626,7 @@ namespace day {
 	void ReversePolishNotation::getOperandsFromStack(stack<string> &operandStack, string &value1, string &value2) {
 
 		if (operandStack.size() < 2)
-			throw invalid_argument("Equation is invalid");
+			throw exception("Equation is invalid");
 
 		value2 = operandStack.top();
 		operandStack.pop();
