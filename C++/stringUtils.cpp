@@ -32,17 +32,14 @@ namespace day {
 		string result = "";
 		int pos = start;
 
+		hasDecimal = false;
+
 		// Skip the negative sign to avoid checking if the sign is relative to this number or just a minus sign
 		if (data[start] == '-') {
 
 			result.push_back('-');
 			pos++;
 		}
-
-		// Avoid having to increment with every iteration to prevent it from not being set if the loop runs until equal to length
-		end = length - 1;
-
-		hasDecimal = false;
 
 		for (int i = pos; i < length; i++) {
 
@@ -62,12 +59,11 @@ namespace day {
 
 				hasDecimal = true;
 				result.push_back(data[i]);
-			} else {
-
-				// Set end to the last char in the number
-				end = i - 1;
+			} else
 				break;
-			}
+
+			// Set end to the position of the last char in the number
+			end = i;
 		}
 
 		return result;
@@ -75,22 +71,53 @@ namespace day {
 
 	string getVar(const char *data, int length, int start, int &end) {
 
-		string result;
+		string result = "";
 		int pos = start;
-
-		// Avoid having to increment with every iteration to prevent it from not being set if the loop runs until equal to length
-		end = length - 1;
 
 		for (int i = pos; i < length; i++) {
 
-			// Check if current char is a alphabetical character or number
+			// Check if the current char is an alphabetical character or number
 			if (isalnum(data[i]))
 				result.push_back(data[i]);
-			else {
-
-				end = i - 1;
+			else
 				break;
+
+			// Set end to the position of the last char in the number
+			end = i;
+		}
+
+		return result;
+	}
+
+	string getOperator(const char *data, int length, int start, int &end) {
+
+		string result = "";
+		int pos = start;
+
+		// TODO: Consider hard coding these so it only returns valid operators eg. fail on ">*("
+		for (int i = pos; i < length; i++) {
+
+			// Special case for parenthesis. They should never be combined with another operator
+			if (data[i] == '(' || data[i] == ')') {
+
+				if (result.length() > 0)
+					break;
+				else {
+
+					result = data[i];
+					end = i;
+					break;
+				}
 			}
+
+			// Check if the current char is an operator
+			if (isOperator(data[i]))
+				result.push_back(data[i]);
+			else
+				break;
+
+			// Set end to the position of the last char in the number
+			end = i;
 		}
 
 		return result;

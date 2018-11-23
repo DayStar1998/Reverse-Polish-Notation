@@ -72,25 +72,42 @@ namespace day {
 				the number
 
 		Returns:
-			type double, the value after it has been extracted
+			type string, the value after it has been extracted
 	******************************************************************************/
 	string getVar(const char *data, int length, int start, int &end);
 
-		/******************************************************************************
-			Function Name: isOperator
+	/******************************************************************************
+		Function Name: getOperator
 
-			Des:
-				Checks if the value is an operator.
+		Des:
+			Extract an operator from the string.
 
-			Params:
-				value - type char, the value to be checked.
+		Params:
+			data - type char *, the data the operator is to be extracted from.
+			length - type int, the length of the param data.
+			start - type int, starting location in param data
+			end - type int &, output to return the location of the last char of
+				the operator
 
-			Returns:
-				type bool, true if it is an operator, otherwise false.
+		Returns:
+			type string, the operator after it has been extracted
+	******************************************************************************/
+	string getOperator(const char *data, int length, int start, int &end);
 
-			Note:
-				Does not support bool operators
-				TODO: Add support for bool operators
-		******************************************************************************/
+	/******************************************************************************
+		Function Name: isOperator
+
+		Des:
+			Checks if the value is an operator.
+
+		Params:
+			value - type char, the value to be checked.
+
+		Returns:
+			type bool, true if it is an operator, otherwise false.
+
+		Note:
+			Does not support bool operators
+	******************************************************************************/
 	bool isOperator(char value);
 };
