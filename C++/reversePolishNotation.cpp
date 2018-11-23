@@ -71,17 +71,17 @@ namespace day {
 
 					// Place DEFAULT_UNARY_MINUS_SIGN to differentiate from a regular minus sign
 					result.push_back(DEFAULT_UNARY_MINUS_SIGN);
-				} else if(isdigit(equation[i + 1])){
+				} else if (isdigit(equation[i + 1])) {
 
-					// Replace the number in the resulting equation with an argument
-					string key = to_string(nextArgument++);
-					result.append(DEFAULT_ARG_PREFIX + key);
-					values.emplace(key, getNumber(equation, length, i, endPos));
+					// Replace the number in the resulting equation with an argument prefixed with DEFAULT_ARG_PREFIX
+					string key = DEFAULT_ARG_PREFIX + to_string(nextArgument++);
+					result.append(key);
+					values[key] = getNumber(equation, length, i, endPos);
 
 					i = endPos;
 				} else if (equation[i + 1] == '-') {
-				
-					// TODO: Support post- pre- decrementation
+
+					// TODO: Support post- pre- incrementation/decrementation
 					// Skip this '-' and the next one because negativing a negative number makes it positive
 					i++;
 					continue;
@@ -90,46 +90,46 @@ namespace day {
 					// Place DEFAULT_UNARY_MINUS_SIGN to differentiate from a regular minus sign
 					result.push_back(DEFAULT_UNARY_MINUS_SIGN);
 
-					// Get the variable from the string
-					string variable = getVar(equation, length, i + 1, endPos);
+					// Get the variable from the string and prefix it with DEFAULT_ARG_PREFIX
+					string variable = DEFAULT_ARG_PREFIX + getVar(equation, length, i + 1, endPos);
 
-					// Insert prefix before the variable and skip the minus sign in the resulting equation
-					result.append(DEFAULT_ARG_PREFIX + variable);
+					// Add the variable to the string
+					result.append(variable);
 
 					// If the variable doesn't exist then a null value is set for it and it is assumed the variable will be initialized during this equation
-					if(!values.count(variable))
-						values.emplace(variable, make_shared<Primitive>());
+					if (!values.count(variable))
+						values[variable] = make_shared<Primitive>();
 
 					i = endPos;
 				}
 			} else if (isdigit(equation[i]) || equation[i] == '.') {
 
 				// Replace the number in the resulting equation with an argument
-				string key = to_string(nextArgument++);
-				result.append(DEFAULT_ARG_PREFIX + key);
-				values.emplace(key, getNumber(equation, length, i, endPos));
+				string key = DEFAULT_ARG_PREFIX + to_string(nextArgument++);
+				result.append(key);
+				values[key] = getNumber(equation, length, i, endPos);
 
 				i = endPos;
 			} else if (isalpha(equation[i])) {
 
-				// Get the variable from the string
-				string variable = getVar(equation, length, i, endPos);
+				// Get the variable from the string and prefix it with DEFAULT_ARG_PREFIX
+				string variable = DEFAULT_ARG_PREFIX + getVar(equation, length, i, endPos);
 
-				// Insert prefix before the variable and skip the minus sign in the resulting equation
-				result.append(DEFAULT_ARG_PREFIX + variable);
+				// Add the variable to the string
+				result.append(variable);
 
 				// If the variable doesn't exist then a null value is set for it and it is assumed the variable will be initialized during this equation
 				if (!values.count(variable))
-					values.emplace(variable, make_shared<Primitive>());
+					values[variable] = make_shared<Primitive>();
 
 				i = endPos;
 			// If the equation is in the format of a(b) then it is expanded to a*(b)
-			} else if (equation[i] == '(' && i > 0 && isdigit(equation[i - 1])) {
+			} else if (equation[i] == '(' && i > 0 && isalnum(equation[i - 1])) {
 
 				result.push_back('*');
 				result.push_back(equation[i]);
 			// If the equation is in the format of (a)b then it is expanded to (a)*b
-			} else if (equation[i] == ')' && i + 1 != length && isdigit(equation[i + 1])) {
+			} else if (equation[i] == ')' && i + 1 != length && isalnum(equation[i + 1])) {
 
 				result.push_back(equation[i]);
 				result.push_back('*');
@@ -145,7 +145,7 @@ namespace day {
 		if (equation == nullptr)
 			throw invalid_argument("Equation is null");
 
-		stack<char> operatorStack;
+		stack<string> operatorStack;
 		string postFixString;
 
 		for (int i = 0; i < length; i++) {
@@ -156,22 +156,24 @@ namespace day {
 				postFixString += equation[i];
 			} else {
 
+				string currentOperator = getOperator(equation, length, i, i);
+
 				if (operatorStack.size() == 0) {
 
-					operatorStack.push(equation[i]);
+					operatorStack.push(currentOperator);
 				//If the current operator has lower precedence than the operator on top of the operator stack
-				} else if (isLowerPrecedence(operatorStack.top(), equation[i])) {
+				} else if (isLowerPrecedence(operatorStack.top(), currentOperator)) {
 
 					// If the current operator is a ')' then pop operators off the stack into the post-fix string
 					//		until the matching '(' is found
 					if (equation[i] == ')') {
 
-						while (operatorStack.top() != '(') {
+						while (operatorStack.top() != "(") {
 
 							if (operatorStack.empty())
 								throw invalid_argument("Too many closing parenthesis");
 
-							postFixString += operatorStack.top();
+							postFixString += DEFAULT_ARG_PREFIX + operatorStack.top();
 							operatorStack.pop();
 						}
 
@@ -179,7 +181,7 @@ namespace day {
 						operatorStack.pop();
 					} else {
 
-						operatorStack.push(equation[i]);
+						operatorStack.push(currentOperator);
 					}
 				} else {
 
@@ -189,11 +191,11 @@ namespace day {
 						if (operatorStack.empty())
 							throw invalid_argument("Too many closing parenthesis");
 
-						postFixString += operatorStack.top();
+						postFixString += DEFAULT_ARG_PREFIX + operatorStack.top();
 						operatorStack.pop();
 					}
 
-					operatorStack.push(equation[i]);
+					operatorStack.push(currentOperator);
 				}
 			}
 		}
@@ -201,8 +203,8 @@ namespace day {
 		while (!operatorStack.empty()) {
 
 			// Allow input to leave off the closing parenthesis at the end
-			if (operatorStack.top() != '(')
-				postFixString += operatorStack.top();
+			if (operatorStack.top() != "(")
+				postFixString += DEFAULT_ARG_PREFIX + operatorStack.top();
 
 			operatorStack.pop();
 		}
@@ -215,106 +217,136 @@ namespace day {
 		if (equation == nullptr)
 			throw invalid_argument("Equation is null");
 
-		stack<shared_ptr<Primitive>> operandStack;
+		stack<string> operandStack;
 		shared_ptr<Primitive> result;
-		shared_ptr<Primitive> primitive1, primitive2;
+		string label1, label2;
+
+		// Counter for temporary labels for calculated answers that are pushed back on the operandStack
+		int tmpLabelNums = 0;
 
 		for (int i = 0; i < length; i++) {
 
-			switch (equation[i]) {
+			if (equation[i] == DEFAULT_ARG_PREFIX) {
 
-				// Arithmetic operators
-				case '=':
+				if (isOperator(equation[i + 1])) {
 
-					// Assign the value of the second operand to the first
-					getOperandsFromStack(operandStack, primitive1, primitive2);
-					// TODO: Should I be doing something else here?
-					operandStack.push(primitive1 = primitive2);
+					string currentOperator = getOperator(equation, length, i + 1, i);
 
-					break;
-				case '*':
+					// Assignment
+					if (currentOperator == "=") {
 
-					// Multiplies operands with each other
-					getOperandsFromStack(operandStack, primitive1, primitive2);
-					operandStack.push(*primitive1 * *primitive2);
-					break;
-				case '/':
+						// Assign the value of the second operand to the first
+						getOperandsFromStack(operandStack, label1, label2);
+						values.at(label1) = values.at(label2);
+						operandStack.push(label1);
+					// Multiplication
+					} else if (currentOperator == "*") {
 
-					// Divides second operand from the first
-					// Handling divide by 0 exception is out of scope and an exception will be thrown
-					getOperandsFromStack(operandStack, primitive1, primitive2);
-					operandStack.push(*primitive1 / *primitive2);
-					break;
-				case '%':
+						// Multiplies operands with each other
+						getOperandsFromStack(operandStack, label1, label2);
+						values[to_string(tmpLabelNums)] = *values.at(label1) * *values.at(label2);
+						operandStack.push(to_string(tmpLabelNums++));
+					// Division
+					} else if (currentOperator == "/") {
 
-					// Modulates first operand by the second
-					// Handling divide by 0 exception is out of scope
-					getOperandsFromStack(operandStack, primitive1, primitive2);
-					operandStack.push(*primitive1 % *primitive2);
-					break;
-				case '+':
+						// Divides second operand from the first
+						// Handling divide by 0 exception is out of scope and an exception will be thrown
+						getOperandsFromStack(operandStack, label1, label2);
+						values[to_string(tmpLabelNums)] = *values.at(label1) / *values.at(label2);
+						operandStack.push(to_string(tmpLabelNums++));
+					// Modulation
+					} else if (currentOperator == "%") {
 
-					// Adds operands to each other
-					getOperandsFromStack(operandStack, primitive1, primitive2);
-					operandStack.push(*primitive1 + *primitive2);
-					break;
-				case '-':
+						// Modulates first operand by the second
+						// Handling divide by 0 exception is out of scope
+						getOperandsFromStack(operandStack, label1, label2);
+						values[to_string(tmpLabelNums)] = *values.at(label1) % *values.at(label2);
+						operandStack.push(to_string(tmpLabelNums++));
+					// Addition
+					} else if (currentOperator == "+") {
 
-					// Subtracts second operand from the first
-					getOperandsFromStack(operandStack, primitive1, primitive2);
-					operandStack.push(*primitive1 - *primitive2);
-					break;
-				// Bitwise operators
-				case '|':
+						// Add the first operand to the second operand
+						getOperandsFromStack(operandStack, label1, label2);
+						values[to_string(tmpLabelNums)] = *values.at(label1) + *values.at(label2);
+						operandStack.push(to_string(tmpLabelNums++));
+					// Subtraction
+					} else if (currentOperator == "-") {
 
-					// First operand bitwise OR the second operand
-					getOperandsFromStack(operandStack, primitive1, primitive2);
-					operandStack.push(*primitive1 | *primitive2);
+						// Subtracts second operand from the first
+						getOperandsFromStack(operandStack, label1, label2);
+						values[to_string(tmpLabelNums)] = *values.at(label1) - *values.at(label2);
+						operandStack.push(to_string(tmpLabelNums++));
+					// Bitwise OR
+					} else if (currentOperator == "|") {
 
-					break;
-				case '&':
+						// First operand bitwise OR the second operand
+						getOperandsFromStack(operandStack, label1, label2);
+						values[to_string(tmpLabelNums)] = *values.at(label1) | *values.at(label2);
+						operandStack.push(to_string(tmpLabelNums++));
+					// Bitwise AND
+					} else if (currentOperator == "&") {
 
-					// First operand bitwise AND the second operand
-					getOperandsFromStack(operandStack, primitive1, primitive2);
-					operandStack.push(*primitive1 & *primitive2);
+						// First operand bitwise AND the second operand
+						getOperandsFromStack(operandStack, label1, label2);
+						values[to_string(tmpLabelNums)] = *values.at(label1) & *values.at(label2);
+						operandStack.push(to_string(tmpLabelNums++));
+					// Bitwise NOT
+					} else if (currentOperator == "~") {
 
-					break;
-				case '~':
-
-					// Bitwise NOT the operand
-					primitive1 = operandStack.top();
-					operandStack.pop();
-					operandStack.push(~*primitive1);
-					break;
-				case '^':
-
-					// First operand XOR the second operand
-					getOperandsFromStack(operandStack, primitive1, primitive2);
-					operandStack.push(*primitive1 ^ *primitive2);
-					break;
-				// Logic operators
-				case '!':
-					// Get boolean off top of the stack and NOT it
-					primitive1 = operandStack.top();
-					operandStack.pop();
-					operandStack.push(!*primitive1);
-					break;
-				default:
-
-					if (equation[i] == DEFAULT_UNARY_MINUS_SIGN) {
-
-						primitive1 = operandStack.top();
+						// Bitwise NOT the operand
+						label1 = operandStack.top();
 						operandStack.pop();
-						operandStack.push(-*primitive1);
-					} else if (equation[i] == DEFAULT_ARG_PREFIX) {
 
-						string argument = getVar(equation, length, i + 1, i);
-						operandStack.push(values[argument]);
-					} else throw invalid_argument("Equation is invalid");
-			};
+						values[to_string(tmpLabelNums)] = ~*values.at(label1);
+						operandStack.push(to_string(tmpLabelNums++));
+					// Bitwise XOR
+					} else if (currentOperator == "^") {
+
+						// First operand XOR the second operand
+						getOperandsFromStack(operandStack, label1, label2);
+						values[to_string(tmpLabelNums)] = *values.at(label1) ^ *values.at(label2);
+						operandStack.push(to_string(tmpLabelNums++));
+					// Logical NOT
+					} else if (currentOperator == "!") {
+
+						// Get boolean off top of the stack and NOT it
+						label1 = operandStack.top();
+						operandStack.pop();
+						values[to_string(tmpLabelNums)] = !*values.at(label1);
+						operandStack.push(to_string(tmpLabelNums++));
+					// Logical AND
+					} else if (currentOperator == "&&") {
+
+						// First operand AND the second operand
+						getOperandsFromStack(operandStack, label1, label2);
+						values[to_string(tmpLabelNums)] = *values.at(label1) && *values.at(label2);
+						operandStack.push(to_string(tmpLabelNums++));
+					// Logical OR
+					} else if (currentOperator == "||") {
+
+						// First operand OR the second operand
+						getOperandsFromStack(operandStack, label1, label2);
+						values[to_string(tmpLabelNums)] = *values.at(label1) || *values.at(label2);
+						operandStack.push(to_string(tmpLabelNums++));
+					} else
+						throw invalid_argument(currentOperator + " is not yet supported");
+				// Unary minus
+				} else if (equation[i + 1] == DEFAULT_UNARY_MINUS_SIGN) {
+
+					label1 = operandStack.top();
+					operandStack.pop();
+					values[to_string(tmpLabelNums)] = -*values.at(label1);
+					operandStack.push(to_string(tmpLabelNums++));
+				} else if (isalnum(equation[i + 1])) {
+
+					string argument = getVar(equation, length, i + 1, i);
+					operandStack.push(DEFAULT_ARG_PREFIX + argument);
+				} else
+					throw invalid_argument("Equation is invalid");
+			}
 		}
 
-		result = operandStack.top();
+		result = values.at(operandStack.top());
 		operandStack.pop();
 
 		if (!operandStack.empty())
@@ -397,7 +429,7 @@ namespace day {
 						result = EQUAL_NOT_EQUAL;
 					else
 						throw invalid_argument(curOperator + "is not a valid operator");
-				}else
+				} else
 					result = OPERATION_ASSIGNMENT;
 
 				break;
@@ -442,7 +474,7 @@ namespace day {
 						result = LOGICAL_AND;
 					else
 						throw invalid_argument(curOperator + "is not a valid operator");
-				}else
+				} else
 					result = BITWISE_AND;
 
 				break;
@@ -510,7 +542,7 @@ namespace day {
 		return result;
 	}
 
-	void ReversePolishNotation::getOperandsFromStack(stack<shared_ptr<Primitive>> &operandStack, shared_ptr<Primitive> &value1, shared_ptr<Primitive> &value2) {
+	void ReversePolishNotation::getOperandsFromStack(stack<string> &operandStack, string &value1, string &value2) {
 
 		if (operandStack.size() < 2)
 			throw invalid_argument("Equation is invalid");

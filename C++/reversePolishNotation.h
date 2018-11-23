@@ -32,7 +32,6 @@
 #include <cctype>
 #include <stack>
 #include <map>
-//#include <vector>
 #include <cmath>
 #include <stdexcept>
 
@@ -43,11 +42,11 @@
 using std::string;
 using std::stack;
 using std::map;
-//using std::vector;
 using std::invalid_argument;
 using std::pow;
 using std::to_string;
 using std::isalpha;
+using std::isalnum;
 using std::isblank;
 using std::shared_ptr;
 
@@ -243,19 +242,19 @@ namespace day {
 			Function Name: getOperandsFromStack
 
 			Des:
-				Pops the top two Primitive's off the top of the stack.
+				Pops the top two operands off the top of the stack.
 
 			Params:
-				operandStack - type stack<shared_ptr<Primitive>> &, is a stack
-					containing all unprocessed operands.
-				value1 - type shared_ptr<Primitive> &, output to get the first int in
-					the equation.
-				value2 - type shared_ptr<Primitive> &, output to get the second int in
-					the equation.
+				operandStack - type stack<string> &, is a stack containing all
+					unprocessed operands.
+				value1 - type string &, output to get the first operand in the
+					equation.
+				value2 - type string &, output to get the second operand in the
+					equation.
 
 			Throws:
 				Throws exception if the there are less than 2 operands on the stack.
 		******************************************************************************/
-		void getOperandsFromStack(stack<shared_ptr<Primitive>> &operandStack, shared_ptr<Primitive> &value1, shared_ptr<Primitive> &value2);
+		void getOperandsFromStack(stack<string> &operandStack, string &value1, string &value2);
 	};
 }
