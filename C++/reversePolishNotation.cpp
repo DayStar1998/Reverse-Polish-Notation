@@ -438,11 +438,9 @@ namespace day {
 
 	shared_ptr<Primitive> ReversePolishNotation::getNumber(const char *data, int length, int start, int &end) {
 
-		shared_ptr<Primitive> result;
+		shared_ptr<Primitive> result = nullptr;
 
 		bool hasDecimal = false;
-
-		// TODO: Support casting numbers, eg. 1f to float
 
 		// Get the number as a string
 		string number = day::getNumber(data, length, true, start, end, hasDecimal);
@@ -479,19 +477,18 @@ namespace day {
 					result = make_shared<Long>(stol(number));
 					end++;
 					break;
-				default:
-
-					// Default to either double or integer depending on whether the number has a decimal point in it
-					if (hasDecimal)
-						result = make_shared<Double>(stod(number));
-					else
-						result = make_shared<Integer>(stoi(number));
 			}
-		// Default to either double or integer depending on whether the number has a decimal point in it
-		} else if (hasDecimal)
-			result = make_shared<Double>(stod(number));
-		else
-			result = make_shared<Integer>(stoi(number));
+		}
+
+		// If the result was not set then use defaults
+		if (result == nullptr) {
+
+			// Default to either double or integer depending on whether the number has a decimal point in it
+			if (hasDecimal)
+				result = make_shared<Double>(stod(number));
+			else
+				result = make_shared<Integer>(stoi(number));
+		}
 
 		return result;
 	}
@@ -515,7 +512,7 @@ namespace day {
 	bool ReversePolishNotation::isLowerPrecedence(string firstOperator, string secondOperator) {
 
 		bool result;
-		precedenceLevel firstPrecedenceLevel, secondPrecedenceLevel;
+		PrecedenceLevel firstPrecedenceLevel, secondPrecedenceLevel;
 
 		firstPrecedenceLevel = getPrecedenceLevel(firstOperator);
 		secondPrecedenceLevel = getPrecedenceLevel(secondOperator);
@@ -528,156 +525,72 @@ namespace day {
 		return result;
 	}
 
-	ReversePolishNotation::precedenceLevel ReversePolishNotation::getPrecedenceLevel(string curOperator) {
+	ReversePolishNotation::PrecedenceLevel ReversePolishNotation::getPrecedenceLevel(string curOperator) {
 
-		precedenceLevel result;
+		PrecedenceLevel result;
 
-		// TODO: Add support for operation assignment
-		switch (curOperator[0]) {
+		// Opening parenthesis
+		if (curOperator == "(") {
 
-			// Opening parenthesis
-			case '(':
+			result = PrecedenceLevel::OPENING_PARENTHESIS;
+		// Assignment
+		// TODO: Support operation assignment
+		} else if (curOperator == "=") {
 
-				result = OPENING_PARENTHESIS;
-				break;
-			// Assignment or equal to
-			case '=':
+			result = PrecedenceLevel::OPERATION_ASSIGNMENT;
+		// Logical OR
+		} else if (curOperator == "||") {
 
-				// Check if the operator is an assignment or a comparative equal to
-				if (curOperator.length() == 2) {
+			result = PrecedenceLevel::LOGICAL_OR;
+		// Logical AND
+		} else if (curOperator == "&&") {
 
-					if (curOperator[1] == '=')
-						result = EQUAL_NOT_EQUAL;
-					else {
+			result = PrecedenceLevel::LOGICAL_AND;
+		// Bitwise OR
+		} else if (curOperator == "|") {
 
-						string message = curOperator + "is not a valid operator";
-						throw new exception(message.c_str());
-					}
-				} else
-					result = OPERATION_ASSIGNMENT;
+			result = PrecedenceLevel::BITWISE_OR;
+		// Bitwise XOR
+		} else if (curOperator == "^") {
 
-				break;
-			// Logical NOT or not equal to
-			case '!':
+			result = PrecedenceLevel::BITWISE_XOR;
+		// Bitwise AND
+		} else if (curOperator == "&") {
 
-				// Check if the operator is a logical NOT or a comparative not equal to
-				if (curOperator.length() == 2) {
+			result = PrecedenceLevel::BITWISE_AND;
+		// Equal to or not equal to
+		} else if (curOperator == "==" || curOperator == "!=") {
 
-					if (curOperator[1] == '=')
-						result = EQUAL_NOT_EQUAL;
-					else {
+			result = PrecedenceLevel::EQUAL_NOT_EQUAL;
+		// Greater than, greater than or equal to, less than, or less than or equal
+		} else if (curOperator == ">" || curOperator == ">=" || curOperator == "<" || curOperator == "<=") {
 
-						string message = curOperator + "is not a valid operator";
-						throw new exception(message.c_str());
-					}
-				} else
-					result = BITWISE_LOGICAL_NOT;
+			result = PrecedenceLevel::GREATER_LESSER_EQUAL;
+		// Bitwise left shift or bitwise right shift
+		} else if (curOperator == "<<" || curOperator == ">>") {
 
-				break;
-			// Bitwise NOT
-			case '~':
+			result = PrecedenceLevel::BITWISE_LEFT_RIGHT_SHIFT;
+		// Addition or subtraction
+		} else if (curOperator == "+" || curOperator == "-") {
 
-				result = BITWISE_LOGICAL_NOT;
-				break;
-			// Multiplication, division, or modulation
-			case '*':
-			case '/':
-			case '%':
+			result = PrecedenceLevel::ADD_SUB;
+		// Multiplication, division, or modulation
+		} else if (curOperator == "*" || curOperator == "/" || curOperator == "%") {
 
-				result = MUL_DIV_MOD;
-				break;
-			// Addition or subtraction
-			case '+':
-			case '-':
-				result = ADD_SUB;
-				break;
-			// Bitwise AND or logical AND
-			case '&':
+			result = PrecedenceLevel::MUL_DIV_MOD;
+		// Logical NOT or bitwise NOT
+		} else if (curOperator == "!" || curOperator == "~") {
 
-				// Check if the operator is a bitwise AND or a logical AND
-				if (curOperator.length() == 2) {
+			result = PrecedenceLevel::BITWISE_LOGICAL_NOT;
+		// Closing parenthesis
+		} else if (curOperator == ")") {
 
-					if (curOperator[1] == '&')
-						result = LOGICAL_AND;
-					else {
+			result = PrecedenceLevel::CLOSING_PARENTHESIS;
+		} else {
 
-						string message = curOperator + "is not a valid operator";
-						throw new exception(message.c_str());
-					}
-				} else
-					result = BITWISE_AND;
-
-				break;
-			// Bitwise OR or logical OR
-			case '|':
-
-				// Check if the operator is a bitwise OR or a logical OR
-				if (curOperator.length() == 2) {
-
-					if (curOperator[1] == '|')
-						result = LOGICAL_OR;
-					else {
-
-						string message = curOperator + "is not a valid operator";
-						throw new exception(message.c_str());
-					}
-				} else
-					result = BITWISE_OR;
-
-				break;
-			// Bitwise XOR
-			case '^':
-
-				result = BITWISE_XOR;
-				break;
-			// Greater than, greater than or equal to, or bitwise right shift
-			case '>':
-
-				// Check if the operator is a bitwise right shift, a greater than, or a greater than or equal to
-				if (curOperator.length() == 2) {
-
-					if (curOperator[1] == '>')
-						result = BITWISE_LEFT_RIGHT_SHIFT;
-					else if (curOperator[1] == '=')
-						result = GREATER_LESSER_EQUAL;
-					else {
-
-						string message = curOperator + "is not a valid operator";
-						throw new exception(message.c_str());
-					}
-				} else
-					result = GREATER_LESSER_EQUAL;
-
-				break;
-			// Less than, less than or equal to, or bitwise left shift
-			case '<':
-
-				// Check if the operator is a bitwise left shift, a less than, or a less than or equal to
-				if (curOperator.length() == 2) {
-
-					if (curOperator[1] == '<')
-						result = BITWISE_LEFT_RIGHT_SHIFT;
-					else if (curOperator[1] == '=')
-						result = GREATER_LESSER_EQUAL;
-					else {
-
-						string message = curOperator + "is not a valid operator";
-						throw new exception(message.c_str());
-					}
-				} else
-					result = GREATER_LESSER_EQUAL;
-
-				break;
-			// Closing parenthesis
-			case ')':
-
-				result = CLOSING_PARENTHESIS;
-				break;
-			default:
-
-				string message = curOperator + "is not a valid operator";
-				throw new exception(message.c_str());
-		};
+			string message = "'" + curOperator + "' is not a supported operator";
+			throw new exception(message.c_str());
+		}
 
 		return result;
 	}

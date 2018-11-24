@@ -56,7 +56,9 @@ namespace day {
 
 	private:
 
-		enum precedenceLevel {
+		// List of precedence in reverse order
+		// This uses C++ enum's being seen as numbers starting from 0. Higher precedence equals a higher number.
+		enum class PrecedenceLevel {
 
 			OPENING_PARENTHESIS,
 			OPERATION_ASSIGNMENT,
@@ -70,7 +72,8 @@ namespace day {
 			BITWISE_LEFT_RIGHT_SHIFT,
 			ADD_SUB,
 			MUL_DIV_MOD,
-			EXP, // TODO: Not currently used
+			// TODO: Not currently used
+			EXP,
 			BITWISE_LOGICAL_NOT,
 			CLOSING_PARENTHESIS
 		};
@@ -233,10 +236,10 @@ namespace day {
 				curOperator - type string, the operator to be checked.
 
 			Returns:
-				type ReversePolishNotation::precedenceLevel, the level of precedence
+				type ReversePolishNotation::PrecedenceLevel, the level of precedence
 					that the operator has.
 		******************************************************************************/
-		precedenceLevel getPrecedenceLevel(string curOperator);
+		ReversePolishNotation::PrecedenceLevel getPrecedenceLevel(string curOperator);
 
 		/******************************************************************************
 			Function Name: getOperandsFromStack
