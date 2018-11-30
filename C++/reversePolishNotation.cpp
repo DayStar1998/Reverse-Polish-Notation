@@ -78,7 +78,7 @@ namespace day {
 					// Replace the number in the resulting equation with an argument prefixed with DEFAULT_ARG_PREFIX
 					string key = DEFAULT_ARG_PREFIX + to_string(nextArgument++);
 					result.append(key);
-					values[key] = getNumber(equation, length, i, i);
+					values[key] = getValue(equation, length, i, i);
 				} else {
 
 					// Place DEFAULT_UNARY_MINUS_SIGN to differentiate from a regular minus sign
@@ -108,7 +108,7 @@ namespace day {
 				// Replace the number in the resulting equation with an argument
 				string key = DEFAULT_ARG_PREFIX + to_string(nextArgument++);
 				result.append(key);
-				values[key] = getNumber(equation, length, i, i);
+				values[key] = getValue(equation, length, i, i);
 			} else if (isalpha(equation[i])) {
 
 				// Get the variable from the string
@@ -139,6 +139,12 @@ namespace day {
 					if (!values.count(variable))
 						values[variable] = make_shared<Primitive>();
 				}
+			// If the equation contains a single quote
+			} else if (equation[i] == '\'') {
+
+				string key = DEFAULT_ARG_PREFIX + to_string(nextArgument++);
+				result.append(key);
+				values[key] = getValue(equation, length, i, i);
 			// If the equation is in the format of a(b) then it is expanded to a*(b)
 			} else if (equation[i] == '(' && i > 0 && isalnum(equation[i - 1])) {
 
@@ -251,9 +257,14 @@ namespace day {
 					// Assignment
 					if (currentOperator == "=") {
 
-						// Assign the value of the second operand to the first
 						getOperandsFromStack(operandStack, label1, label2);
-						values.at(label1) = values.at(label2);
+
+						// Re-assign the pointer of label1 if it is null, otherwise assign the data from label2 to label1
+						if (values.at(label1)->getType() == Primitive::Type::NULLPTR)
+							values.at(label1) = values.at(label2);
+						else
+							values.at(label1)->assignment(*values.at(label2));
+
 						operandStack.push(label1);
 					// Multiplication
 					} else if (currentOperator == "*") {
@@ -430,58 +441,75 @@ namespace day {
 		return result;
 	}
 
-	shared_ptr<Primitive> ReversePolishNotation::getNumber(const char *data, int length, int start, int &end) {
+	shared_ptr<Primitive> ReversePolishNotation::getValue(const char *data, int length, int start, int &end) {
 
 		shared_ptr<Primitive> result = nullptr;
 
 		bool hasDecimal = false;
 
+		string value;
+
+		// If the value has a single quote
+		if (data[start] == '\'') {
+
+			if (start + 2 < length && data[start + 2] == '\'') {
+
+				// Character
+				result = make_shared<Character>(data[start + 1]);
+
+				// Skip the character and quotes
+				end = start + 2;
+			} else
+				throw new exception("Equation is invalid");
 		// Get the number as a string
-		string number = day::getNumber(data, length, true, start, end, hasDecimal);
+		} else {
 
-		if (end + 1 != length) {
+			value = day::getNumber(data, length, true, start, end, hasDecimal);
 
-			switch (data[end + 1]) {
+			if (end + 1 != length) {
 
-				// Integer
-				case 'i':
-				case 'I':
+				switch (data[end + 1]) {
 
-					result = make_shared<Integer>(stoi(number));
-					end++;
-					break;
-				// Float
-				case 'f':
-				case 'F':
+					// Integer
+					case 'i':
+					case 'I':
 
-					result = make_shared<Float>(stof(number));
-					end++;
-					break;
-				// Double
-				case 'd':
-				case 'D':
+						result = make_shared<Integer>(stoi(value));
+						end++;
+						break;
+					// Float
+					case 'f':
+					case 'F':
 
-					result = make_shared<Double>(stod(number));
-					end++;
-					break;
-				// Long
-				case 'l':
-				case 'L':
+						result = make_shared<Float>(stof(value));
+						end++;
+						break;
+					// Double
+					case 'd':
+					case 'D':
 
-					result = make_shared<Long>(stol(number));
-					end++;
-					break;
+						result = make_shared<Double>(stod(value));
+						end++;
+						break;
+					// Long
+					case 'l':
+					case 'L':
+
+						result = make_shared<Long>(stol(value));
+						end++;
+						break;
+				}
 			}
-		}
 
-		// If the result was not set then use defaults
-		if (result == nullptr) {
+			// If the result was not set then use defaults
+			if (result == nullptr) {
 
-			// Default to either double or integer depending on whether the number has a decimal point in it
-			if (hasDecimal)
-				result = make_shared<Double>(stod(number));
-			else
-				result = make_shared<Integer>(stoi(number));
+				// Default to either double or integer depending on whether the number has a decimal point in it
+				if (hasDecimal)
+					result = make_shared<Double>(stod(value));
+				else
+					result = make_shared<Integer>(stoi(value));
+			}
 		}
 
 		return result;

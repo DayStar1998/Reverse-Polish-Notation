@@ -36,8 +36,7 @@
 #include <stdexcept>
 
 #include "stringUtils.h"
-#include "Primitives/primitives.h"
-#include "Primitives/double.h"
+#include "Primitives/primitivesHeader.h"
 
 using std::string;
 using std::stack;
@@ -173,11 +172,10 @@ namespace day {
 	private:
 
 	/******************************************************************************
-		Function Name: getNumber
+		Function Name: getValue
 
 		Des:
-			Extract a numerical value from the string starting from the specified
-				location.
+			Extract a value from the string starting from the specified location.
 
 		Params:
 			data - type char *, the data the number is to be extracted from.
@@ -189,7 +187,7 @@ namespace day {
 		Returns:
 			type shared_ptr<Primitive>, the wrapped value after it has been extracted
 	******************************************************************************/
-		shared_ptr<Primitive> getNumber(const char *data, int length, int start, int &end);
+		shared_ptr<Primitive> getValue(const char *data, int length, int start, int &end);
 
 		/******************************************************************************
 			Function Name: isLowerPrecedence
