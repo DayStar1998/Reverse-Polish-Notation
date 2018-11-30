@@ -192,24 +192,6 @@ namespace day {
 		shared_ptr<Primitive> getNumber(const char *data, int length, int start, int &end);
 
 		/******************************************************************************
-			Function Name: nextVariable
-
-			Des:
-				Get the next available variable
-
-			Params:
-				numVariablesUsed - type int &, modified input current total number of variables
-					used, output to show the new total number of variables used
-
-			Returns:
-				type char, the next available variable
-
-			Throws:
-				Throws exception if all variables have been used
-		******************************************************************************/
-		char nextVariable(int &nextArgument);
-
-		/******************************************************************************
 			Function Name: isLowerPrecedence
 
 			Des:

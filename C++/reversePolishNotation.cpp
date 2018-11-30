@@ -79,12 +79,6 @@ namespace day {
 					string key = DEFAULT_ARG_PREFIX + to_string(nextArgument++);
 					result.append(key);
 					values[key] = getNumber(equation, length, i, i);
-				} else if (equation[i + 1] == '-') {
-
-					// TODO: Support post- pre- incrementation/decrementation
-					// Skip this '-' and the next one because negativing a negative number makes it positive
-					i++;
-					continue;
 				} else {
 
 					// Place DEFAULT_UNARY_MINUS_SIGN to differentiate from a regular minus sign
@@ -280,7 +274,7 @@ namespace day {
 					} else if (currentOperator == "%") {
 
 						// Modulates first operand by the second
-						// Handling divide by 0 exception is out of scope
+						// Handling divide by 0 exception is out of scope and an exception will be thrown
 						getOperandsFromStack(operandStack, label1, label2);
 						values[to_string(tmpLabelNums)] = *values.at(label1) % *values.at(label2);
 						operandStack.push(to_string(tmpLabelNums++));
@@ -305,6 +299,13 @@ namespace day {
 						getOperandsFromStack(operandStack, label1, label2);
 						values[to_string(tmpLabelNums)] = *values.at(label1) | *values.at(label2);
 						operandStack.push(to_string(tmpLabelNums++));
+					// Bitwise XOR
+					} else if (currentOperator == "^") {
+
+						// First operand XOR the second operand
+						getOperandsFromStack(operandStack, label1, label2);
+						values[to_string(tmpLabelNums)] = *values.at(label1) ^ *values.at(label2);
+						operandStack.push(to_string(tmpLabelNums++));
 					// Bitwise AND
 					} else if (currentOperator == "&") {
 
@@ -320,13 +321,6 @@ namespace day {
 						operandStack.pop();
 
 						values[to_string(tmpLabelNums)] = ~*values.at(label1);
-						operandStack.push(to_string(tmpLabelNums++));
-					// Bitwise XOR
-					} else if (currentOperator == "^") {
-
-						// First operand XOR the second operand
-						getOperandsFromStack(operandStack, label1, label2);
-						values[to_string(tmpLabelNums)] = *values.at(label1) ^ *values.at(label2);
 						operandStack.push(to_string(tmpLabelNums++));
 					// Bitwise left shift
 					} else if (currentOperator == "<<") {
@@ -493,22 +487,6 @@ namespace day {
 		return result;
 	}
 
-	char ReversePolishNotation::nextVariable(int &nextArgument) {
-
-		char result;
-
-		if ('a' + nextArgument <= 'z')
-			result = 'a' + nextArgument;
-		else if ('A' + nextArgument - 26 <= 'Z')
-			result = 'A' + nextArgument - 26;
-		else
-			throw new exception("Equation is too long");
-
-		nextArgument++;
-
-		return result;
-	}
-
 	bool ReversePolishNotation::isLowerPrecedence(string firstOperator, string secondOperator) {
 
 		bool result;
@@ -588,7 +566,7 @@ namespace day {
 			result = PrecedenceLevel::CLOSING_PARENTHESIS;
 		} else {
 
-			string message = "'" + curOperator + "' is not a supported operator";
+			string message = "'" + curOperator + "' is not a supported operation";
 			throw new exception(message.c_str());
 		}
 
